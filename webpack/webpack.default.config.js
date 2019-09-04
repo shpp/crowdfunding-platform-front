@@ -6,7 +6,7 @@ module.exports = function (env) {
     return {
         entry: [
             path.join(__dirname, '..', 'frontend', 'index.js'),
-            path.join(__dirname, '..', 'frontend', 'assets', 'styles', 'index.scss'),
+            path.join(__dirname, '..', 'assets', 'styles', 'index.scss'),
         ],
         output: {
             path: path.join(__dirname, '..', 'dist'),
