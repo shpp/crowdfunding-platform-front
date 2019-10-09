@@ -1,4 +1,7 @@
+import Radium from 'radium';
 import ProgressBar from "./ProgressBar";
+import colors from '../theme/colors';
+import breakpoints from "../theme/breakpoints";
 
 const styles = {
   wrapper: {
@@ -7,8 +10,21 @@ const styles = {
     width: 'calc(100%/3 - 30px)',
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: '#fff',
-    transition: '0.3s'
+    backgroundColor: colors.white,
+    transition: '0.3s',
+    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
+    ':hover': {
+      transform: 'translateY(-4px)',
+      boxShadow: '0 20px 25px rgba(0, 0, 0, 0.15)',
+    },
+    [breakpoints.breakpointLarge]: {
+      margin: '0 15px 40px',
+      width: 'calc(100%/2 - 30px)',
+    },
+    [breakpoints.breakpointMedium]: {
+      margin: '0 0 30px',
+      width: 'calc(100%)',
+    }
   },
   publishedAt: {
     textAlign: 'right',
@@ -35,8 +51,8 @@ const styles = {
     textAlign: 'center'
   },
   button: {
-    backgroundColor: '#27ae60',
-    color: '#fff',
+    backgroundColor: colors.green,
+    color: colors.white,
     border: 'none',
     padding: '10px 25px',
     fontSize: '20px',
@@ -49,13 +65,6 @@ const ProjectCard = ({ project }) => {
   return (
     <div style={styles.wrapper} className="card">
       <style jsx>{`
-        .card {
-          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        }
-        .card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
-        }
         .card:hover h3{
           color: #27ae60;
         }
@@ -86,4 +95,4 @@ const ProjectCard = ({ project }) => {
   );
 };
 
-export default ProjectCard;
+export default Radium(ProjectCard);

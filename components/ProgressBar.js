@@ -1,14 +1,17 @@
+import colors from '../theme/colors'
+
 const styles = {
   wrapper: {
   },
   progressBar: {
-    backgroundImage: 'linear-gradient(to right, #4e53bd 0%, #17aeb6 30%, #27ae60 100%)',
+    backgroundImage:
+      `linear-gradient(to right, ${colors.progressGradientStart} 0%, ${colors.progressGradientMiddle} 30%, ${colors.progressGradientEnd} 100%)`,
     width: '100%',
     height: '8px',
     position: 'relative'
   },
   progressBarNotFundedPart: {
-    backgroundColor: '#e1e9ee',
+    backgroundColor: colors.progressGradientEmpty,
     position: 'absolute',
     right: 0,
     top: 0,

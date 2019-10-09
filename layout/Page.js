@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Radium from 'radium';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -11,6 +12,10 @@ const Layout = ({ children }) => (
         font-family: 'Open Sans',sans-serif;
         color: #2c3e50;
         background-color: #f5f5f5;
+        box-sizing: border-box;
+      }
+      * {
+        box-sizing: inherit;
       }
     `}</style>
     <Head>
@@ -18,10 +23,11 @@ const Layout = ({ children }) => (
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       <link rel="stylesheet" href="/_next/static/style.css" />
     </Head>
-    <Header />
-    {children}
-    <Footer />
+      <Header />
+      {children}
+      <Footer />
+
   </div>
 );
 
-export default Layout;
+export default Radium(Layout);
