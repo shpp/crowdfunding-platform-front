@@ -1,10 +1,15 @@
+import Radium from 'radium';
+import Link from 'next/link';
+import colors from '../theme/colors'
+import breakpoints from "../theme/breakpoints";
+
 const styles = {
   container: {
     padding: '5px 20px',
     display: 'flex',
     alignItems: 'center',
-    borderBottom: '5px solid #27ae60',
-    backgroundColor: '#fff'
+    borderBottom: `5px solid ${colors.green}`,
+    backgroundColor: colors.white
   },
   logo: {
     fontFamily: 'arial',
@@ -12,22 +17,26 @@ const styles = {
     fontWeight: '700',
     lineHeight: '80px',
     textDecoration: 'none',
-    display: 'flex'
+    display: 'flex',
+    [breakpoints.breakpointLarge]: {
+      lineHeight: '50px',
+      fontSize: '40px',
+    }
   },
   sh: {
-    color: '#000'
+    color: colors.black
   },
   plus: {
-    color: '#27ae60'
+    color: colors.green
   },
   slash: {
     fontSize: '70%',
     margin: '0 25px',
-    color: '#2c3e50'
+    color: colors.text
   },
   crowdfunding: {
     fontSize: '40%',
-    color: '#2c3e50'
+    color: colors.text
   },
   nav: {
   },
@@ -37,7 +46,7 @@ const styles = {
   },
   listItem: {
     padding: '5px 15px',
-    color: '#2c3e50',
+    color: colors.text,
   },
   listItemMiddle: {
     borderLeft: '2px solid #2c3e50',
@@ -48,22 +57,30 @@ const styles = {
 const Header = () => {
   return (
     <header style={styles.container}>
-      <a href="/" style={styles.logo}>
-        <span style={styles.sh}>Ш</span>
-        <span style={styles.plus}>++</span>
-        <span style={styles.slash}>/</span>
-        <span style={styles.crowdfunding}>crowdfunding platform</span>
-      </a>
+      <Link href="/">
+        <a style={styles.logo}>
+          <span style={styles.sh}>Ш</span>
+          <span style={styles.plus}>++</span>
+          <span style={styles.slash}>/</span>
+          <span style={styles.crowdfunding}>crowdfunding platform</span>
+        </a>
+      </Link>
       <nav>
         <ul style={styles.navList}>
           <li>
-            <a href="#" style={styles.listItem}>про нас</a>
+            <Link href="/about">
+              <a style={styles.listItem}>про нас</a>
+            </Link>
           </li>
           <li>
-            <a href="#" style={{...styles.listItem, ...styles.listItemMiddle}}>проекти</a>
+            <Link href="/">
+              <a href="#" style={{...styles.listItem, ...styles.listItemMiddle}}>проекти</a>
+            </Link>
           </li>
           <li>
-            <a href="#" style={styles.listItem}>вже зібрали</a>
+            <Link href="/">
+              <a href="#" style={styles.listItem}>вже зібрали</a>
+            </Link>
           </li>
         </ul>
       </nav>
@@ -71,4 +88,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Radium(Header);
