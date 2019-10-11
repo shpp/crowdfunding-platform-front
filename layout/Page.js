@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Radium from 'radium';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -30,4 +29,4 @@ const Layout = ({ children }) => (
   </div>
 );
 
-export default Radium(Layout);
+export default Layout;

@@ -1,7 +1,6 @@
-import Radium from 'radium';
+import { SliderReverse } from 'react-burgers'
 import Link from 'next/link';
 import colors from '../theme/colors'
-import breakpoints from "../theme/breakpoints";
 
 const styles = {
   container: {
@@ -9,7 +8,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     borderBottom: `5px solid ${colors.green}`,
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
   logo: {
     fontFamily: 'arial',
@@ -18,10 +17,6 @@ const styles = {
     lineHeight: '80px',
     textDecoration: 'none',
     display: 'flex',
-    [breakpoints.breakpointLarge]: {
-      lineHeight: '50px',
-      fontSize: '40px',
-    }
   },
   sh: {
     color: colors.black
@@ -45,47 +40,118 @@ const styles = {
     listStyle: 'none',
   },
   listItem: {
-    padding: '5px 15px',
+    padding: '5px 10px',
     color: colors.text,
+    whiteSpace: 'nowrap',
   },
   listItemMiddle: {
     borderLeft: '2px solid #2c3e50',
     borderRight: '2px solid #2c3e50'
+  },
+  burgerWrapper: {
+    display: 'none',
   }
 };
+class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state =  {
+      isMenuExpanded: false,
+    }
+  }
 
-const Header = () => {
-  return (
-    <header style={styles.container}>
-      <Link href="/">
-        <a style={styles.logo}>
-          <span style={styles.sh}>Ш</span>
-          <span style={styles.plus}>++</span>
-          <span style={styles.slash}>/</span>
-          <span style={styles.crowdfunding}>crowdfunding platform</span>
-        </a>
-      </Link>
-      <nav>
-        <ul style={styles.navList}>
-          <li>
-            <Link href="/about">
-              <a style={styles.listItem}>про нас</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/">
-              <a href="#" style={{...styles.listItem, ...styles.listItemMiddle}}>проекти</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/">
-              <a href="#" style={styles.listItem}>вже зібрали</a>
-            </Link>
-          </li>
-        </ul>
-      </nav>
-    </header>
-  );
+  toggleMenu = () => {
+    this.setState((prevState) => {
+      return { isMenuExpanded: !prevState.isMenuExpanded };
+    })
+  }
+
+  render() {
+    const { isMenuExpanded } = this.state;
+    return (
+      <header style={styles.container} className="site-header">
+        {!isMenuExpanded &&
+          <Link href="/">
+            <a style={styles.logo} className="logo">
+              <span style={styles.sh}>Ш</span>
+              <span style={styles.plus}>++</span>
+              <span style={styles.slash} className="logo__slash">/</span>
+              <span style={styles.crowdfunding}>crowdfunding platform</span>
+            </a>
+          </Link>
+        }
+        <nav>
+          <ul style={styles.navList} className="nav-list">
+            <li>
+              <Link href="/about">
+                <a style={styles.listItem} className="list-item">про нас</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/">
+                <a style={{...styles.listItem, ...styles.listItemMiddle}} className="list-item">
+                  проекти
+                </a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/">
+                <a style={styles.listItem} className="list-item">вже зібрали</a>
+              </Link>
+            </li>
+          </ul>
+        </nav>
+        <div onClick={this.toggleMenu} style={styles.burgerWrapper} className="burger-wrapper">
+          <SliderReverse
+            active={isMenuExpanded}
+            padding='12px 10px'
+            lineHeight={3}
+            width={30}
+          />
+        </div>
+        <style jsx>{
+          `@media screen and (max-width: 1240px){
+            .logo{
+              line-height: 50px !important;
+              font-size: 40px !important;
+            }
+          }
+          
+          @media screen and (max-width: 768px){
+            .nav-list{
+              display: ${isMenuExpanded ? 'flex' : 'none'} !important;
+              padding-left: 0;
+              margin: 0;
+            }
+            
+            .site-header{
+              justify-content: space-between !important;
+              padding: 5px 10px !important;
+            }
+            
+            .burger-wrapper{
+              display: block !important;
+            }
+          }
+          
+          @media screen and (max-width: 460px){
+            .logo__slash{
+              margin 0 5px !important;
+            }
+            
+            .logo{
+              line-height: 40px !important;
+              font-size: 30px !important;
+            }
+            
+            .list-item{
+              padding: 5px !important;
+            }
+          }
+      `}</style>
+      </header>
+    );
+  };
 };
 
-export default Radium(Header);
+export default Header;

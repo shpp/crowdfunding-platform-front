@@ -1,29 +1,29 @@
-import Radium, {StyleRoot} from 'radium';
 import Page from '../layout/Page';
+import colors from "../theme/colors";
 
 const styles = {
   container: {
     maxWidth: '85%',
-    display: 'flex',
-    margin: '0 auto',
-    padding: '30px 0 0 0'
+    margin: '30px auto 0',
+    padding: '5px 20px',
+    backgroundColor: colors.white,
   }
 };
 
 function AboutPage() {
   return (
-    <StyleRoot>
-      <Page>
-        <div style={styles.container}>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti,
-            eum explicabo ipsam laboriosam quam quas quod vero! At autem deserunt, dolores error in
-            nesciunt numquam perferendis perspiciatis rerum, tenetur veniam.
-          </p>
-        </div>
-      </Page>
-    </StyleRoot>
+    <Page>
+      <div style={styles.container}>
+        <p>Ш++ создана практиками.</p>
+        <p>Наша задача — объединить людей, заинтересованных в ИТ, а также предоставить им возможности для быстрого роста.</p>
+        <p>Наши знания отшлифованы годами работы в коммерческих проектах, потому мы уникальны и отличаемся от других учебных заведений.</p>
+        <p>Мы не государственная организация.</p>
+        <p>Мы работаем с мотивированными людьми, которые предпочитают изменять свою жизнь, а не лежать на диване.</p>
+        <p>У каждого пришедшего есть шанс, но кому-то придётся приложить немного больше усилий.</p>
+      </div>
+    </Page>
   );
 }
 
 
-export default Radium(AboutPage);
+export default AboutPage;
