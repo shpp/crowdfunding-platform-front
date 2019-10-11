@@ -1,8 +1,6 @@
-import Radium, {StyleRoot} from 'radium';
 import Page from '../layout/Page';
 import ProjectCard from "../components/ProjectCard";
 import projects from "../mock/projects";
-import breakpoints from "../theme/breakpoints";
 
 const styles = {
   container: {
@@ -11,14 +9,6 @@ const styles = {
     flexWrap: 'wrap',
     margin: '0 auto',
     padding: '30px 0 0 0',
-    [breakpoints.breakpointLarge]: {
-      maxWidth: 'initial',
-      width: '100%',
-      padding: '30px 30px 0'
-    },
-    [breakpoints.breakpointMedium]: {
-      padding: '20px 20px 0'
-    }
   }
 };
 
@@ -34,20 +24,34 @@ function HomePage() {
   };
 
   return (
-    <StyleRoot>
-      <Page>
-        <div style={styles.container}>
-          {getSortedProjects(projects).map(project => (
-            <ProjectCard
-              project={project}
-              key={project.id}
-            />
-          ))}
-        </div>
-      </Page>
-    </StyleRoot>
+    <Page>
+      <div style={styles.container} className="homepage">
+        {getSortedProjects(projects).map(project => (
+          <ProjectCard
+            project={project}
+            key={project.id}
+          />
+        ))}
+      </div>
+      <style jsx>{
+        `@media screen and (max-width: 1240px){
+            .homepage {
+              max-width: initial !important;
+              width: 100% !important;
+              padding: 30px 30px 0 !important;
+            }
+          }
+          
+          @media screen and (max-width: 768px){
+            .homepage {
+              padding: 20px 20px 0!important;
+              justify-content: center;
+            }
+          }
+      `}</style>
+    </Page>
   );
 }
 
 
-export default Radium(HomePage);
+export default HomePage;
