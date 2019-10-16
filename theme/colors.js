@@ -6,5 +6,5 @@ export default {
   progressGradientStart: '#4e53bd',
   progressGradientMiddle: '#17aeb6',
   progressGradientEnd: '#27ae60',
-  progressGradientEmpty: '#e1e9ee'
-}
+  progressGradientEmpty: '#e1e9ee',
+};

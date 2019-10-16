@@ -1,4 +1,4 @@
-import colors from '../theme/colors'
+import colors from '../theme/colors';
 
 const styles = {
   wrapper: {
@@ -8,7 +8,7 @@ const styles = {
       `linear-gradient(to right, ${colors.progressGradientStart} 0%, ${colors.progressGradientMiddle} 30%, ${colors.progressGradientEnd} 100%)`,
     width: '100%',
     height: '8px',
-    position: 'relative'
+    position: 'relative',
   },
   progressBarNotFundedPart: {
     backgroundColor: colors.progressGradientEmpty,
@@ -16,8 +16,8 @@ const styles = {
     right: 0,
     top: 0,
     bottom: 0,
-    width: '90%'
-  }
+    width: '90%',
+  },
 };
 
 const ProgressBar = ({ amount, funded }) => {
@@ -25,8 +25,7 @@ const ProgressBar = ({ amount, funded }) => {
   return (
     <div style={styles.wrapper}>
       <div style={styles.progressBar}>
-        <div style={{...styles.progressBarNotFundedPart, width: `${notFundedPercentage}%`}}>
-        </div>
+        <div style={{ ...styles.progressBarNotFundedPart, width: `${notFundedPercentage}%` }} />
       </div>
     </div>
   );
