@@ -1,6 +1,7 @@
-import { SliderReverse } from 'react-burgers'
+import React from 'react';
+import { SliderReverse } from 'react-burgers';
 import Link from 'next/link';
-import colors from '../theme/colors'
+import colors from '../theme/colors';
 
 const styles = {
   container: {
@@ -19,19 +20,19 @@ const styles = {
     display: 'flex',
   },
   sh: {
-    color: colors.black
+    color: colors.black,
   },
   plus: {
-    color: colors.green
+    color: colors.green,
   },
   slash: {
     fontSize: '70%',
     margin: '0 25px',
-    color: colors.text
+    color: colors.text,
   },
   crowdfunding: {
     fontSize: '40%',
-    color: colors.text
+    color: colors.text,
   },
   nav: {
   },
@@ -46,31 +47,33 @@ const styles = {
   },
   listItemMiddle: {
     borderLeft: '2px solid #2c3e50',
-    borderRight: '2px solid #2c3e50'
+    borderRight: '2px solid #2c3e50',
   },
   burgerWrapper: {
     display: 'none',
-  }
+  },
 };
+
 class Header extends React.Component {
   constructor(props) {
     super(props);
-    this.state =  {
+    this.state = {
       isMenuExpanded: false,
-    }
+    };
   }
 
   toggleMenu = () => {
     this.setState((prevState) => {
       return { isMenuExpanded: !prevState.isMenuExpanded };
-    })
+    });
   }
 
   render() {
     const { isMenuExpanded } = this.state;
     return (
       <header style={styles.container} className="site-header">
-        {!isMenuExpanded &&
+        {!isMenuExpanded
+          && (
           <Link href="/">
             <a style={styles.logo} className="logo">
               <span style={styles.sh}>Ш</span>
@@ -79,7 +82,7 @@ class Header extends React.Component {
               <span style={styles.crowdfunding}>crowdfunding platform</span>
             </a>
           </Link>
-        }
+          )}
         <nav>
           <ul style={styles.navList} className="nav-list">
             <li>
@@ -89,27 +92,35 @@ class Header extends React.Component {
             </li>
             <li>
               <Link href="/">
-                <a style={{...styles.listItem, ...styles.listItemMiddle}} className="list-item">
+                <a style={{ ...styles.listItem, ...styles.listItemMiddle }} className="list-item">
                   проекти
                 </a>
               </Link>
             </li>
             <li>
-              <Link href="/">
+              <Link href={{ pathname: '/', query: { filter: 'completed' } }}>
                 <a style={styles.listItem} className="list-item">вже зібрали</a>
               </Link>
             </li>
           </ul>
         </nav>
-        <div onClick={this.toggleMenu} style={styles.burgerWrapper} className="burger-wrapper">
+        <div
+          onClick={this.toggleMenu}
+          onKeyPress={() => {}}
+          style={styles.burgerWrapper}
+          className="burger-wrapper"
+          role="button"
+          tabIndex="0"
+        >
           <SliderReverse
             active={isMenuExpanded}
-            padding='12px 10px'
+            padding="12px 10px"
             lineHeight={3}
             width={30}
           />
         </div>
-        <style jsx>{
+        <style jsx>
+          {
           `@media screen and (max-width: 1240px){
             .logo{
               line-height: 50px !important;
@@ -148,10 +159,12 @@ class Header extends React.Component {
               padding: 5px !important;
             }
           }
-      `}</style>
+      `
+}
+        </style>
       </header>
     );
-  };
-};
+  }
+}
 
 export default Header;

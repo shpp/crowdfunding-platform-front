@@ -1,4 +1,4 @@
-import ProgressBar from "./ProgressBar";
+import ProgressBar from './ProgressBar';
 import colors from '../theme/colors';
 
 const styles = {
@@ -20,27 +20,27 @@ const styles = {
   },
   publishedAt: {
     textAlign: 'right',
-    opacity: '0.6'
+    opacity: '0.6',
   },
   image: {
     height: '150px',
     objectFit: 'cover',
-    margin: '0 0 10px'
+    margin: '0 0 10px',
   },
   projectTitle: {
-    margin: '5px 0'
+    margin: '5px 0',
   },
   description: {
     margin: '10px 0 15px',
-    flexGrow: 1
+    flexGrow: 1,
   },
   fundedText: {
     marginBottom: '5px',
-    display: 'inline-block'
+    display: 'inline-block',
   },
   buttonWrapper: {
     padding: '25px 0 15px',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   button: {
     backgroundColor: colors.green,
@@ -49,14 +49,14 @@ const styles = {
     padding: '10px 25px',
     fontSize: '20px',
     display: 'inline-block',
-    cursor: 'pointer'
-  }
+    cursor: 'pointer',
+  },
 };
 
 const ProjectCard = ({ project }) => {
   return (
     <div style={styles.wrapper} className="card">
-      <img src={project.image} alt="placeholder" style={styles.image}/>
+      <img src={project.image} alt="placeholder" style={styles.image} />
       <div style={styles.infoWrapper}>
         <h3 style={styles.projectTitle}>
           {project.name}
@@ -66,7 +66,9 @@ const ProjectCard = ({ project }) => {
         </p>
         {!project.completed && (
           <div>
-            <span style={styles.fundedText}>{`Вже зібрали: ${project.amountFunded} грн (з ${project.amount} грн)`}</span>
+            <span style={styles.fundedText}>
+              {`Вже зібрали: ${project.amountFunded} грн (з ${project.amount} грн)`}
+            </span>
             <ProgressBar
               amount={project.amount}
               funded={project.amountFunded}
@@ -75,7 +77,7 @@ const ProjectCard = ({ project }) => {
         )}
         {!project.completed && (
           <div style={styles.buttonWrapper}>
-            <button style={styles.button}>
+            <button style={styles.button} type="button">
               Підтримати
             </button>
           </div>
@@ -84,8 +86,9 @@ const ProjectCard = ({ project }) => {
         {/*   {`опубліковано ${new Date(project.creationTime).toLocaleDateString("ua-UA")}`} */}
         {/* </div> */}
       </div>
-      <style jsx>{`
-        .card:hover{
+      <style jsx>
+        {
+        `.card:hover{
           transform: translateY(-4px);
           box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15) !important;
         }
@@ -109,8 +112,9 @@ const ProjectCard = ({ project }) => {
         
         @media screen and (max-width: 460px){
 
-        }
-      `}</style>
+        }`
+      }
+      </style>
     </div>
   );
 };
