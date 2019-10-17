@@ -22,7 +22,6 @@ const Layout = ({ children }) => (
     <Head>
       <title>Ш++ Crowdfunding portal</title>
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      <link rel="stylesheet" href="/_next/static/style.css" />
     </Head>
     <Header />
     {children}
