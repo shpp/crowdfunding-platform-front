@@ -1,4 +1,7 @@
+import fetch from 'isomorphic-unfetch';
+import React from 'react';
 import ProgressBar from './ProgressBar';
+import placeholderData from '../mock/placeholderData';
 import colors from '../theme/colors';
 
 const styles = {
@@ -53,70 +56,112 @@ const styles = {
   },
 };
 
-const ProjectCard = ({ project }) => {
-  return (
-    <div style={styles.wrapper} className="card">
-      <img src={project.image} alt="placeholder" style={styles.image} />
-      <div style={styles.infoWrapper}>
-        <h3 style={styles.projectTitle}>
-          {project.name}
-        </h3>
-        <p style={styles.description}>
-          {project.description}
-        </p>
-        {!project.completed && (
-          <div>
-            <span style={styles.fundedText}>
-              {`Вже зібрали: ${project.amountFunded} грн (з ${project.amount} грн)`}
-            </span>
-            <ProgressBar
-              amount={project.amount}
-              funded={project.amountFunded}
-            />
-          </div>
-        )}
-        {!project.completed && (
-          <div style={styles.buttonWrapper}>
-            <button style={styles.button} type="button">
-              Підтримати
-            </button>
-          </div>
-        )}
-        {/* <div style={styles.publishedAt}> */}
-        {/*   {`опубліковано ${new Date(project.creationTime).toLocaleDateString("ua-UA")}`} */}
-        {/* </div> */}
-      </div>
-      <style jsx>
-        {
-        `.card:hover{
-          transform: translateY(-4px);
-          box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15) !important;
-        }
-        .card:hover h3{
-          color: ${colors.green};
-        }
-        
-        @media screen and (max-width: 1240px){
-          .card{
-            margin: 0 15px 40px !important;
-            width: calc(100%/2 - 30px) !important;
-          }
-        }
-        
-        @media screen and (max-width: 768px){
-          .card{
-            margin: 0 0 30px !important;
-            width: 100% !important;
-          }
-        }
-        
-        @media screen and (max-width: 460px){
+class ProjectCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.submitRef = React.createRef();
+    this.state = {
+      button: '',
+    };
+  }
 
-        }`
-      }
-      </style>
-    </div>
-  );
-};
+  async componentDidMount() {
+    const { project } = this.props;
+    const prefix = 'https://cors-anywhere.herokuapp.com/'; // TODO: Remove when CORS will be fixed
+    fetch(`${prefix}https://back.donate.2.shpp.me/api/v1/projects/button?id=${project._id}`)
+      .then((res) => res.json())
+      .then((data) => this.setState({
+        button: data.button.replace(/\\/g, ''),
+      }));
+  }
+
+  onSubmitClick = () => {
+    const form = this.submitRef.current.getElementsByTagName('form')[0];
+    if (form) {
+      form.submit();
+    }
+  }
+
+  render() {
+    const { project } = this.props;
+    const { button } = this.state;
+    return (
+      <div style={styles.wrapper} className="card">
+        <img src={project.image || placeholderData.imagePlaceholder} alt="placeholder" style={styles.image} />
+        <div style={styles.infoWrapper}>
+          <h3 style={styles.projectTitle}>
+            {project.name}
+          </h3>
+          <p style={styles.description}>
+            {project.description}
+          </p>
+          {!project.completed && (
+            <div>
+              <span style={styles.fundedText}>
+                {`Вже зібрали: ${project.amountFunded} грн (з ${project.amount} грн)`}
+              </span>
+              <ProgressBar
+                amount={project.amount}
+                funded={project.amountFunded}
+              />
+            </div>
+          )}
+          {!project.completed && (
+            <div style={styles.buttonWrapper} ref={this.submitRef}>
+              <button
+                style={styles.button}
+                type="button"
+                onClick={this.onSubmitClick}
+                onKeyPress={() => {}}
+              >
+                Підтримати
+              </button>
+              <div
+                dangerouslySetInnerHTML={{ __html: button }}
+                className="liqpay-form"
+              />
+            </div>
+          )}
+          {/* <div style={styles.publishedAt}> */}
+          {/*   {`опубліковано ${new Date(project.creationTime).toLocaleDateString("ua-UA")}`} */}
+          {/* </div> */}
+        </div>
+        <style jsx>
+          {
+            `.card:hover{
+              transform: translateY(-4px);
+              box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15) !important;
+            }
+            .card:hover h3{
+              color: ${colors.green};
+            }
+            
+            .liqpay-form {
+              display: none;
+            }
+            
+            @media screen and (max-width: 1240px){
+              .card{
+                margin: 0 15px 40px !important;
+                width: calc(100%/2 - 30px) !important;
+              }
+            }   
+            
+            @media screen and (max-width: 768px){
+              .card{
+                margin: 0 0 30px !important;
+                width: 100% !important;
+              }
+            }
+            
+            @media screen and (max-width: 460px){
+    
+            }`
+          }
+        </style>
+      </div>
+    );
+  }
+}
 
 export default ProjectCard;
