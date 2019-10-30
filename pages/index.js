@@ -64,7 +64,9 @@ const HomePage = (props) => {
 };
 
 HomePage.getInitialProps = async function getInitialProps() {
-  const res = await fetch(' https://back.donate.2.shpp.me/api/v1/projects/list');
+  const prefix = process.browser ? 'https://cors-anywhere.herokuapp.com/' : ''; // TODO: Remove when CORS will be fixed
+
+  const res = await fetch(`${prefix}https://back.donate.2.shpp.me/api/v1/projects/list`);
   const data = await res.json();
 
   return {
