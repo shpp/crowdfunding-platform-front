@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
+import fetch from 'isomorphic-unfetch';
 import Page from '../layout/Page';
 import ProjectCard from '../components/ProjectCard';
-import projectsMock from '../mock/projects';
 
 const styles = {
   container: {
@@ -13,7 +13,7 @@ const styles = {
   },
 };
 
-function HomePage() {
+const HomePage = (props) => {
   const getSortedProjects = (projects) => {
     const router = useRouter();
     const { filter } = router.query;
@@ -29,10 +29,11 @@ function HomePage() {
       ];
   };
 
+  const { projects } = props;
   return (
     <Page>
       <div style={styles.container} className="homepage">
-        {getSortedProjects(projectsMock).map((project) => (
+        {getSortedProjects(projects).map((project) => (
           <ProjectCard
             project={project}
             key={project.id}
@@ -60,7 +61,15 @@ function HomePage() {
       </style>
     </Page>
   );
-}
+};
 
+HomePage.getInitialProps = async function getInitialProps() {
+  const res = await fetch(' https://back.donate.2.shpp.me/api/v1/projects/list');
+  const data = await res.json();
+
+  return {
+    projects: data.projects,
+  };
+};
 
 export default HomePage;
