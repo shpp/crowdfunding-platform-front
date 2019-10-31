@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import React from 'react';
+import Link from 'next/link';
 import ProgressBar from './ProgressBar';
 import placeholderData from '../mock/placeholderData';
 import colors from '../theme/colors';
@@ -25,34 +26,9 @@ const styles = {
     textAlign: 'right',
     opacity: '0.6',
   },
-  image: {
-    height: '150px',
-    objectFit: 'cover',
-    margin: '0 0 10px',
-  },
-  projectTitle: {
-    margin: '5px 0',
-  },
   description: {
     margin: '10px 0 15px',
     flexGrow: 1,
-  },
-  fundedText: {
-    marginBottom: '5px',
-    display: 'inline-block',
-  },
-  buttonWrapper: {
-    padding: '25px 0 15px',
-    textAlign: 'center',
-  },
-  button: {
-    backgroundColor: colors.green,
-    color: colors.white,
-    border: 'none',
-    padding: '10px 25px',
-    fontSize: '20px',
-    display: 'inline-block',
-    cursor: 'pointer',
   },
 };
 
@@ -78,6 +54,7 @@ class ProjectCard extends React.Component {
   onSubmitClick = () => {
     const form = this.submitRef.current.getElementsByTagName('form')[0];
     if (form) {
+      form.setAttribute('target', '_blank');
       form.submit();
     }
   }
@@ -87,17 +64,25 @@ class ProjectCard extends React.Component {
     const { button } = this.state;
     return (
       <div style={styles.wrapper} className="card">
-        <img src={project.image || placeholderData.imagePlaceholder} alt="placeholder" style={styles.image} />
+        <Link href="/projects/[id]" as={`/projects/${project._id}`}>
+          <img
+            src={project.image || placeholderData.imagePlaceholder}
+            alt="placeholder"
+            className="project-image"
+          />
+        </Link>
         <div style={styles.infoWrapper}>
-          <h3 style={styles.projectTitle}>
-            {project.name}
-          </h3>
+          <Link href="/projects/[id]" as={`/projects/${project._id}`}>
+            <h3 className="project-title">
+              {project.name}
+            </h3>
+          </Link>
           <p style={styles.description}>
             {project.description}
           </p>
           {!project.completed && (
             <div>
-              <span style={styles.fundedText}>
+              <span className="funded-text">
                 {`Вже зібрали: ${project.amountFunded} грн (з ${project.amount} грн)`}
               </span>
               <ProgressBar
@@ -107,9 +92,9 @@ class ProjectCard extends React.Component {
             </div>
           )}
           {!project.completed && (
-            <div style={styles.buttonWrapper} ref={this.submitRef}>
+            <div className="button-wrapper" ref={this.submitRef}>
               <button
-                style={styles.button}
+                className="submit-button"
                 type="button"
                 onClick={this.onSubmitClick}
                 onKeyPress={() => {}}
@@ -136,10 +121,44 @@ class ProjectCard extends React.Component {
               color: ${colors.green};
             }
             
+            /* TODO: need to test display:none form submit in old browsers */
             .liqpay-form {
               display: none;
             }
             
+            .project-image {
+              height: 150px;
+              object-fit: cover;
+              margin: 0 0 10px;
+              width: 100%;
+              cursor: pointer;
+            }
+            
+            .project-title {
+              margin: 5px 0;
+              cursor: pointer;
+            }
+            
+            .button-wrapper {
+              padding: 25px 0 15px;
+              text-align: center;
+            }
+            
+            .funded-text {
+              margin-bottom: 5px;
+              display: inline-block;
+            }
+            
+            .submit-button {
+              background-color: ${colors.green};
+              color: ${colors.white};
+              border: none;
+              padding: 10px 25px;
+              font-size: 20px;
+              display: inline-block;
+              cursor: pointer;
+            }
+          
             @media screen and (max-width: 1240px){
               .card{
                 margin: 0 15px 40px !important;
