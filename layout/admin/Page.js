@@ -1,3 +1,4 @@
+
 import Head from 'next/head';
 import Header from './Header';
 
@@ -27,6 +28,7 @@ const Layout = ({ children }) => (
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossOrigin="anonymous"
       />
+      <link rel="stylesheet" href="//cdn.quilljs.com/1.2.6/quill.snow.css" />
     </Head>
     <Header />
     {children}

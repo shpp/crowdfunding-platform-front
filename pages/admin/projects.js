@@ -23,44 +23,45 @@ const AdminListPage = (props) => {
     const notCompletedProjects = projects.filter((project) => !project.completed);
 
 
-    return filter === 'completed'
-      ? [...(completedProjects.sort((a, b) => (a.creationTime < b.creationTime ? 1 : -1)))]
-      : [
+    return filter === 'completed' ?
+      [...(completedProjects.sort((a, b) => (a.creationTime < b.creationTime ? 1 : -1)))] :
+      [
         ...(notCompletedProjects.sort((a, b) => (a.creationTime < b.creationTime ? 1 : -1))),
         ...(completedProjects.sort((a, b) => (a.creationTime < b.creationTime ? 1 : -1))),
       ];
   };
 
   const { projects } = props;
+
   return (
     <Page>
       <div style={styles.container} className="homepage">
         <Table striped bordered hover size="sm">
           <thead>
-            <tr>
-              <th>#</th>
-              <th>Назва</th>
-              <th>Планові витрати</th>
-              <th>Сума</th>
-              <th>Зібрано</th>
-              <th>Опубліковано</th>
-              <th>Завершено</th>
-            </tr>
+          <tr>
+            <th>#</th>
+            <th>Назва</th>
+            <th>Планові витрати</th>
+            <th>Сума</th>
+            <th>Зібрано</th>
+            <th>Опубліковано</th>
+            <th>Завершено</th>
+          </tr>
           </thead>
           <tbody>
-            {getSortedProjects(projects).map((project, index) => (
-              <Link href="/admin/project/view/[id]" as={`/admin/project/view/${project._id}`}>
-                <tr className="project-table-row">
-                  <td>{index + 1}</td>
-                  <td>{project.name}</td>
-                  <td>{project.plannedSpendings}</td>
-                  <td>{project.amount}</td>
-                  <td>{project.amountFunded}</td>
-                  <td>{project.published.toString()}</td>
-                  <td>{project.completed.toString()}</td>
-                </tr>
-              </Link>
-            ))}
+          {getSortedProjects(projects).map((project, index) => (
+            <Link href="/admin/project/view/[id]" as={`/admin/project/view/${project._id}`}>
+              <tr className="project-table-row">
+                <td>{index + 1}</td>
+                <td>{project.name}</td>
+                <td>{project.plannedSpendings}</td>
+                <td>{project.amount}</td>
+                <td>{project.amountFunded}</td>
+                <td>{project.published.toString()}</td>
+                <td>{project.completed.toString()}</td>
+              </tr>
+            </Link>
+          ))}
           </tbody>
         </Table>
       </div>
@@ -72,18 +73,17 @@ const AdminListPage = (props) => {
               width: 100% !important;
               padding: 30px 30px 0 !important;
             }
-          }
-
-          @media screen and (max-width: 768px){
-            .homepage {
-              padding: 20px 20px 0!important;
-              justify-content: center;
             }
-          }
-          
-          .project-table-row {
-            cursor: pointer;
-          }
+            @media screen and (max-width: 768px){
+              .homepage {
+                padding: 20px 20px 0!important;
+                justify-content: center;
+              }
+            }
+            
+            .project-table-row {
+              cursor: pointer;
+            }
           `
         }
       </style>
@@ -92,6 +92,7 @@ const AdminListPage = (props) => {
 };
 
 AdminListPage.getInitialProps = async function getInitialProps() {
+
   const prefix = process.browser ? 'https://cors-anywhere.herokuapp.com/' : ''; // TODO: Remove when CORS will be fixed
 
   const res = await fetch(`${prefix}https://back.donate.2.shpp.me/api/v1/projects/list`);
