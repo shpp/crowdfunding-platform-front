@@ -3,7 +3,7 @@ import { Form, Row, Col, Container, Button, Tabs, Tab } from 'react-bootstrap';
 import InputBlock from './InputBlock';
 import Page from '../../../../layout/admin/Page';
 import Editor from './editor';
-import colors from '../../../../theme/colors';
+import { update } from '../../update';
 
 const AdminProjectEdit = (defaultProject) => {
   const [project, setProjectData] = useState(defaultProject);
@@ -23,8 +23,8 @@ const AdminProjectEdit = (defaultProject) => {
     {
       name: "creationTime",
       label: "Дата створення",
-      type: "date",
-      value: [project.creationTime]
+      type: "datetime-local",
+      value: [project.creationTime.split('.')[0]]
     },
     {
       name: "amount",
@@ -54,14 +54,27 @@ const AdminProjectEdit = (defaultProject) => {
     setProjectData({...project, [event.target.name]: event.target.value});
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    update({
+        id: project._id,
+        name: project.name,
+        planned_spendings: project.plannedSpendings,
+        description: project.description,
+        amount: project.amount,
+        currency: project.currency,
+        actual_spendings: project.actualSpendings,
+    });
+  };
+
   console.log(project);
   return (
     <Page>
       <Container className="mt-4">
-        <h1 className="form-header">
+        <h1 className="form-header text-center">
           Редагувати дані проекту
         </h1>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Row className="flex-column flex-md-row">
             <Col>
               <Row>
@@ -117,7 +130,12 @@ const AdminProjectEdit = (defaultProject) => {
             </Col>
           </Row>
           <Row className="justify-content-center mt-3">
-            <Button variant="primary" type="submit">Зберегти зміни</Button>
+            <Button
+              variant="primary"
+              type="submit"
+            >
+              Зберегти зміни
+            </Button>
           </Row>
         </Form>
       </Container>
@@ -129,5 +147,4 @@ AdminProjectEdit.getInitialProps = async function getInitialProps(props) {
     const { query } = props;
     return query;
 };
-    //here fetch data by id, and pass to props, than edit it and by click send new data to backend
 export default AdminProjectEdit;
