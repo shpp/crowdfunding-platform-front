@@ -2,6 +2,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Page from '../../layout/admin/Page';
 import colors from '../../theme/colors';
+import update from './update';
 
 const styles = {
   form: {
@@ -10,7 +11,7 @@ const styles = {
 };
 
 const AdminAddProjectPage = () => {
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
     const form = event.target;
     const name = form.elements.projectName.value;
@@ -26,8 +27,21 @@ const AdminAddProjectPage = () => {
       actual_spendings: '',
     };
 
-    // call project create request (only name needed)
-    // then call update project request using just created project from response to add all other data
+    const prefix = process.browser ? 'https://cors-anywhere.herokuapp.com/' : ''; // TODO: Remove when CORS will be fixed
+    const createURL = `${prefix}https://back.donate.2.shpp.me/api/v1/projects/create`;
+
+    const request = await fetch(createURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Basic ${process.env.AUTH_TOKEN}`
+      },
+      body: encodeURI(`name=${name}`),
+    });
+
+    const response = await request.json();
+    newProject.id = response.project_id;
+    update(newProject);
   };
 
   return (
