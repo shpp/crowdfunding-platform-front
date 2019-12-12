@@ -5,3 +5,4 @@ dist
 .next
 _next
 docker-compose.yml
+.env

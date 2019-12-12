@@ -8,6 +8,9 @@ module.exports = {
       return `${new Date().getTime()}`;
     }
   },
+  env: {
+    AUTH_TOKEN: 'YWRtaW46MDk3OTdkNTBhYTRiZmYwMjhhZTY1YWQ2NDQ2YjhjYzU5YzlhMDg5OTk1NmRmNjNkOWVkZTgxYmJhOTZkOGJmZA==',
+  },
   serverRuntimeConfig: {},
   publicRuntimeConfig: {
     DEPLOY_ENV: process.env.DEPLOY_ENV,
