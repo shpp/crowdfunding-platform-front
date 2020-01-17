@@ -10,6 +10,7 @@ module.exports = {
   },
   env: {
     AUTH_TOKEN: 'YWRtaW46MDk3OTdkNTBhYTRiZmYwMjhhZTY1YWQ2NDQ2YjhjYzU5YzlhMDg5OTk1NmRmNjNkOWVkZTgxYmJhOTZkOGJmZA==',
+    HASH_SALT: 'HXVS64VFFJ'
   },
   serverRuntimeConfig: {},
   publicRuntimeConfig: {

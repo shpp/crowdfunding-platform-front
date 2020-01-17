@@ -2,7 +2,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Page from '../../layout/admin/Page';
 import colors from '../../theme/colors';
-import update from './update';
+import { fetchDataPost } from '../../utils/fetchData';
+import withAuth from '../../layout/admin/HOC/withAuth';
+import { CREATE_PROJECT, UPDATE_PROJECT } from '../../utils/api_urls';
 
 const styles = {
   form: {
@@ -16,7 +18,6 @@ const AdminAddProjectPage = () => {
     const form = event.target;
     const name = form.elements.projectName.value;
 
-    // eslint-disable-next-line
     const newProject = {
       id: '',
       name,
@@ -26,22 +27,11 @@ const AdminAddProjectPage = () => {
       currency: 'UAH',
       actual_spendings: '',
     };
-
-    const prefix = process.browser ? 'https://cors-anywhere.herokuapp.com/' : ''; // TODO: Remove when CORS will be fixed
-    const createURL = `${prefix}https://back.donate.2.shpp.me/api/v1/projects/create`;
-
-    const request = await fetch(createURL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Basic ${process.env.AUTH_TOKEN}`
-      },
-      body: encodeURI(`name=${name}`),
-    });
-
-    const response = await request.json();
-    newProject.id = response.project_id;
-    update(newProject);
+    // send request to createURL with just name of new project and receive back it's id
+    const getNewProjectId = await fetchDataPost(encodeURI(`name=${name}`), CREATE_PROJECT);
+    newProject.id = await getNewProjectId.project_id;
+    // send request to updateURL with new project data
+    await fetchDataPost(new URLSearchParams(newProject).toString(), UPDATE_PROJECT);
   };
 
   return (
@@ -99,4 +89,4 @@ const AdminAddProjectPage = () => {
   );
 };
 
-export default AdminAddProjectPage;
+export default withAuth(AdminAddProjectPage);
