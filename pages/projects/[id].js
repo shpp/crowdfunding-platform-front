@@ -16,7 +16,7 @@ class ProjectPage extends React.Component {
       form.setAttribute('target', '_blank');
       form.submit();
     }
-  }
+  };
 
   render() {
     const { project, button } = this.props;

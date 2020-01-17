@@ -57,7 +57,7 @@ class ProjectCard extends React.Component {
       form.setAttribute('target', '_blank');
       form.submit();
     }
-  }
+  };
 
   render() {
     const { project } = this.props;

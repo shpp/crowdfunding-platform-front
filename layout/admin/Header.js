@@ -67,7 +67,7 @@ class Header extends React.Component {
     this.setState((prevState) => {
       return { isMenuExpanded: !prevState.isMenuExpanded };
     });
-  }
+  };
 
   render() {
     const { isMenuExpanded } = this.state;

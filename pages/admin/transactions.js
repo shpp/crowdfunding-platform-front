@@ -1,56 +1,51 @@
-import { Table, Button, Accordion, Card, Container } from 'react-bootstrap';
+import Page from '../../layout/admin/Page';
+import { PROJECTS_LIST, TRANSACTIONS_LIST } from '../../utils/api_urls';
+import { fetchDataGet } from '../../utils/fetchData';
+import TableTransactions from '../../components/TableTransactions';
+import mockTransactions from '../../mock/transactions'; // TODO: replace with 'transaction' after api got fixed
+import withAuth from '../../layout/admin/HOC/withAuth';
 
-const ProjectTransactions = (props) => {
-  const { transactions } = props;
-
+/* eslint-disable no-console */
+const transactions = ({ namedTransactions }) => {
+  console.log(namedTransactions);
   return (
-      <Container>
-        <Accordion>
-          <Card>
-            <Card.Header className="justify-content-center d-flex">
-              <Accordion.Toggle
-                as={Button}
-                variant="secondary"
-                eventKey="0"
-              >
-              Транзакції проекта
-              </Accordion.Toggle>
-            </Card.Header>
-            <Accordion.Collapse eventKey="0">
-              <Card.Body>
-                <Table
-                  striped
-                  bordered
-                  hover
-                  size="sm"
-                >
-                  <thead>
-                  <tr className="text-center">
-                    <th>#</th>
-                    <th>Імя</th>
-                    <th>Телефон</th>
-                    <th>Сума</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  { transactions &&
-                    transactions.map((transaction, index) => (
-                    <tr key={transaction._id} className="project-table-row">
-                      <td>{ index + 1 }</td>
-                      <td>{transaction.donatorName}</td>
-                      <td>{transaction.donatorPhone}</td>
-                      <td>{transaction.amount}</td>
-                    </tr>
-                  ))
-                  }
-                  </tbody>
-                </Table>
-              </Card.Body>
-            </Accordion.Collapse>
-          </Card>
-        </Accordion>
-      </Container>
+    <Page>
+      <h1 className="text-center">Транзакції</h1>
+      <TableTransactions
+        transactions={mockTransactions}
+        fullTable
+      />
+    </Page>
   );
 };
 
-export default ProjectTransactions;
+transactions.getInitialProps = async () => {
+  // get all projects
+  const res = await fetchDataGet(`${PROJECTS_LIST}`);
+  const { projects } = res;
+  // send request by each project id ti get transactions of each project
+  const requests = projects.map(async (project) => fetchDataGet(`${TRANSACTIONS_LIST}${project._id}`));
+  // collect all promises
+  const responses = await Promise.all(
+    requests.map(
+      async (request) => request,
+    ),
+  );
+  // bundle all transactions to array
+  const transactionsArray = responses.reduce(
+    (result, response) => [...result, ...response.transactions],
+    [],
+  );
+  // get projects names
+  const names = projects.map((project) => {
+    return { [project._id]: project.name };
+  });
+  // add project name property to each transaction
+  const namedTransactions = transactionsArray.map((transaction) => {
+    return { ...transaction, name: names[transaction.projectId] };
+  });
+
+  return { namedTransactions };
+};
+
+export default withAuth(transactions);

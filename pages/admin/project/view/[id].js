@@ -1,9 +1,14 @@
-import { Card } from 'react-bootstrap';
+
 import Link from 'next/link';
+import { Card, Container, Row } from 'react-bootstrap';
 import Page from '../../../../layout/admin/Page';
 import colors from '../../../../theme/colors';
 import ProgressBar from '../../../../components/ProgressBar';
-import ProjectTransactions from '../../transactions';
+import ProjectTransactions from '../../../../components/ProjectTransactions';
+import withAuth from '../../../../layout/admin/HOC/withAuth';
+import { PROJECTS_LIST, TRANSACTIONS_LIST } from '../../../../utils/api_urls';
+import { fetchDataGet } from '../../../../utils/fetchData';
+
 
 const AdminViewProjectPage = (props) => {
   const { project, transactions } = props;
@@ -15,10 +20,16 @@ const AdminViewProjectPage = (props) => {
 
   return (
     <Page>
-      <div className="container-fluid my-5">
+      <Container className="container-fluid my-5">
         <Card className="text-center">
-          <Card.Header>
+          <Card.Header className="d-flex justify-content-between">
             <h1 className="form-title">{project.name}</h1>
+            <Link
+              href={{ pathname: '/admin/project/edit/[id]', query: project }}
+              as={`/admin/project/edit/${project._id}`}
+            >
+              <a>Редагувати</a>
+            </Link>
           </Card.Header>
           <Card.Body>
             <div className="d-flex align-content-start justify-content-between">
@@ -28,49 +39,41 @@ const AdminViewProjectPage = (props) => {
                 </span>
                 <span className="text-green">{project.amountFunded}</span>
                 <span className="text-muted">
-                  <span>/</span>{project.amount}
+                  <span>/</span>
+                  {project.amount}
                 </span>
               </h5>
               <h5>
                 <span className="text-success">{project.published ? 'Опубліковано' : 'Приховано' }</span>
               </h5>
             </div>
-            <div className="col-md-10 mb-3 mx-auto">
+            <div className="col-md-10 my-3 mx-auto">
               <ProgressBar amount={project.amount} funded={project.amountFunded} />
             </div>
             <Card.Title>{project.plannedSpendings}</Card.Title>
             <Card.Text>{project.description}</Card.Text>
-            <Link
-              href={{ pathname: '/admin/project/edit/[id]', query: project }}
-              as={`/admin/project/edit/${project._id}`}
-            >
-              <a className="btn btn-secondary">Редагувати</a>
-            </Link>
+            <ProjectTransactions
+              transactions={transactions}
+              project_id={project._id}
+            />
           </Card.Body>
-          <Card.Footer className="text-muted d-flex justify-content-between">
-            <span>
-              <span>id:</span>{ project._id }
-            </span>
-            <span>
-              <span>Створено:</span>{ creationDate() }
-            </span>
+          <Card.Footer>
+            <Row className="text-muted d-flex justify-content-between">
+              <span>
+                <span>id:</span>
+                { project._id }
+              </span>
+              <span>
+                <span>Створено:</span>
+                { creationDate() }
+              </span>
+            </Row>
           </Card.Footer>
         </Card>
-      </div>
-      <ProjectTransactions transactions={transactions}/>
+      </Container>
       <style jsx>
         {
-          `
-          .container {
-            max-width: 85%;
-            width: 900px;
-            display: flex;
-            flex-wrap: wrap;
-            margin: 30px auto;
-            background-color: ${colors.white};
-            padding: 30px;
-          }
-        
+          `                
           .form-title {
              margin-bottom: 30px;
           }
@@ -89,24 +92,16 @@ const AdminViewProjectPage = (props) => {
 AdminViewProjectPage.getInitialProps = async function getInitialProps(props) {
   const { query } = props;
 
-  const prefix = process.browser ? 'https://cors-anywhere.herokuapp.com/' : ''; // TODO: Remove when CORS will be fixed
+  const projectRes = await fetchDataGet(`${PROJECTS_LIST}`);
+  const project = projectRes.projects.find((item) => item._id === query.id);
 
-  const projectRes = await fetch(`${prefix}https://back.donate.2.shpp.me/api/v1/projects/list`);
-  const projectData = await projectRes.json();
-  const project = projectData.projects.find((item) => item._id === query.id);
-
-  const transactionsURL = `${prefix}https://back.donate.2.shpp.me/api/v1/transactions/list?project_id=${query.id}`; // TODO: Remove when CORS will be fixed
-  const transactionsRes = await fetch(transactionsURL, {
-    headers: {
-      'Authorization': `Basic ${process.env.AUTH_TOKEN}`
-    },
-  });
-  const data = await transactionsRes.json();
+  const transactionsURL = `${TRANSACTIONS_LIST}${query.id}`;
+  const transactionsRes = await fetchDataGet(transactionsURL);
 
   return {
     project,
-    transactions: data.transactions,
+    transactions: transactionsRes.transactions,
   };
 };
 
-export default AdminViewProjectPage;
+export default withAuth(AdminViewProjectPage);
