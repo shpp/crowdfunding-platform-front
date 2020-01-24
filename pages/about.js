@@ -4,7 +4,7 @@ import colors from '../theme/colors';
 const styles = {
   container: {
     maxWidth: '85%',
-    margin: '30px auto 0',
+    margin: '50px auto',
     padding: '5px 20px',
     backgroundColor: colors.white,
   },

@@ -20,7 +20,6 @@ class ProjectPage extends React.Component {
 
   render() {
     const { project, button } = this.props;
-
     return (
       <Page>
         <div className="project-container">

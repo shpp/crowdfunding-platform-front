@@ -36,7 +36,7 @@ const HomePage = (props) => {
         {getSortedProjects(projects).map((project) => (
           <ProjectCard
             project={project}
-            key={project.id}
+            key={project._id}
           />
         ))}
       </div>
