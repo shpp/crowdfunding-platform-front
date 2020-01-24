@@ -41,7 +41,7 @@ class ProjectCard extends React.Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { project } = this.props;
     const prefix = 'https://cors-anywhere.herokuapp.com/'; // TODO: Remove when CORS will be fixed
     fetch(`${prefix}https://back.donate.2.shpp.me/api/v1/projects/button?id=${project._id}`)
