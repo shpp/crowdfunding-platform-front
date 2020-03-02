@@ -1,3 +1,5 @@
+## Ш++. Краудфандінг портал (спільнокошт) frontend
+
 To start project: 
 
 Clone project:

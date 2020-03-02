@@ -3,7 +3,7 @@ import React from 'react';
 
 const CustomBlock = ({ inputLabels, handleChange }) => {
   return (
-    <>
+    <div>
       {
         inputLabels.map((input) => (
           <Form.Group key={input.name}>
@@ -17,7 +17,7 @@ const CustomBlock = ({ inputLabels, handleChange }) => {
           </Form.Group>
         ))
       }
-    </>
+    </div>
   );
 };
 

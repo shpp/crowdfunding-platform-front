@@ -1,5 +1,6 @@
-import { useRouter } from 'next/router';
-import fetch from 'isomorphic-unfetch';
+import React, { Component } from 'react';
+import { withRouter } from 'next/router';
+import api from '../api';
 import Page from '../layout/Page';
 import ProjectCard from '../components/ProjectCard';
 
@@ -13,65 +14,77 @@ const styles = {
   },
 };
 
-const HomePage = (props) => {
-  const getSortedProjects = (projects) => {
-    const router = useRouter();
-    const { filter } = router.query;
+class HomePage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      // initial state
+      projects: []
+    };
+  }
+
+  static async getInitialProps() {
+    return {};
+  }
+
+  async componentDidMount() {
+    const { projects } = await api.get('projects');
+    this.setState({ projects });
+  }
+
+  getSortedProjects(projects = []) {
+    const { filter } = this.props.router.query;
     const completedProjects = projects.filter((project) => project.completed);
     const notCompletedProjects = projects.filter((project) => !project.completed);
 
+    return (filter === 'completed'
+      ? completedProjects
+      : [...notCompletedProjects, ...completedProjects])
+      .sort((a, b) => a.createdAtTS - b.createdAtTS);
+  }
 
-    return filter === 'completed'
-      ? [...(completedProjects.sort((a, b) => (a.creationTime < b.creationTime ? 1 : -1)))]
-      : [
-        ...(notCompletedProjects.sort((a, b) => (a.creationTime < b.creationTime ? 1 : -1))),
-        ...(completedProjects.sort((a, b) => (a.creationTime < b.creationTime ? 1 : -1))),
-      ];
-  };
+  render() {
+    const projects = this.getSortedProjects(this.state.projects);
 
-  const { projects } = props;
-  return (
-    <Page>
-      <div style={styles.container} className="homepage">
-        {getSortedProjects(projects).map((project) => (
-          <ProjectCard
-            project={project}
-            key={project._id}
-          />
-        ))}
-      </div>
-      <style jsx>
-        {
-        `@media screen and (max-width: 1240px){
+    return (
+      <Page>
+        <div style={styles.container} className="homepage">
+          {projects.length
+            ? projects
+              .sort((a, b) => b.createdAtTS - a.createdAtTS)
+              // .sort((a, b) => a.completed - b.completed)
+              .map((project) => (
+                <ProjectCard
+                  project={project}
+                  key={project._id}
+                />
+              ))
+            : 'Тут поки що нічого немає :('}
+        </div>
+        <style jsx>
+          {`
+          main {
+            min-height: 400px;
+          }
+          @media screen and (max-width: 1240px){
             .homepage {
               max-width: initial !important;
               width: 100% !important;
               padding: 30px 30px 0 !important;
             }
           }
-          
+            
           @media screen and (max-width: 768px){
             .homepage {
               padding: 20px 20px 0!important;
               justify-content: center;
             }
           }
-      `
+        `}
+        </style>
+      </Page>
+    );
+  }
 }
-      </style>
-    </Page>
-  );
-};
 
-HomePage.getInitialProps = async function getInitialProps() {
-  const prefix = process.browser ? 'https://cors-anywhere.herokuapp.com/' : ''; // TODO: Remove when CORS will be fixed
-
-  const res = await fetch(`${prefix}https://back.donate.2.shpp.me/api/v1/projects/list`);
-  const data = await res.json();
-
-  return {
-    projects: data.projects,
-  };
-};
-
-export default HomePage;
+export default withRouter(HomePage);

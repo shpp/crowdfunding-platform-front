@@ -1,8 +1,7 @@
-import fetch from 'isomorphic-unfetch';
 import React from 'react';
 import Link from 'next/link';
+import api from '../api';
 import ProgressBar from './ProgressBar';
-import placeholderData from '../mock/placeholderData';
 import colors from '../theme/colors';
 
 const styles = {
@@ -15,6 +14,8 @@ const styles = {
     backgroundColor: colors.white,
     transition: '0.3s',
     boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
+    overflow: 'hidden',
+    position: 'relative'
   },
   infoWrapper: {
     padding: '10px',
@@ -27,8 +28,9 @@ const styles = {
     opacity: '0.6',
   },
   description: {
-    margin: '10px 0 15px',
-    flexGrow: 1,
+    // TODO: don't forget about this
+    // margin: '10px 0 15px',
+    // flexGrow: 1,
   },
 };
 
@@ -41,14 +43,12 @@ class ProjectCard extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { project } = this.props;
-    const prefix = 'https://cors-anywhere.herokuapp.com/'; // TODO: Remove when CORS will be fixed
-    fetch(`${prefix}https://back.donate.2.shpp.me/api/v1/projects/button?id=${project._id}`)
-      .then((res) => res.json())
-      .then((data) => this.setState({
-        button: data.button.replace(/\\/g, ''),
-      }));
+    const { button } = await api.get('button', { id: project._id }) || '';
+    this.setState({
+      button: button.replace(/\\/g, ''),
+    });
   }
 
   onSubmitClick = () => {
@@ -64,32 +64,50 @@ class ProjectCard extends React.Component {
     const { button } = this.state;
     return (
       <div style={styles.wrapper} className="card">
-        <Link href="/projects/[id]" as={`/projects/${project._id}`}>
+        {project.completed && <div className="project-completed" /> }
+        <Link href="/project/[id]" as={`/project/${project._id}`}>
           <img
-            src={project.image || placeholderData.imagePlaceholder}
+            src={project.image}
             alt="placeholder"
             className="project-image"
           />
         </Link>
         <div style={styles.infoWrapper}>
-          <Link href="/projects/[id]" as={`/projects/${project._id}`}>
+          <Link href="/project/[id]" as={`/project/${project._id}`}>
             <h3 className="project-title">
               {project.name}
             </h3>
           </Link>
-          <p style={styles.description}>
-            {project.description}
-          </p>
+          <div
+            style={styles.description}
+            dangerouslySetInnerHTML={{ __html: project.description }}
+          />
           {!project.completed && (
-            <div>
-              <span className="funded-text">
-                {`Вже зібрали: ${project.amountFunded} грн (з ${project.amount} грн)`}
-              </span>
-              <ProgressBar
-                amount={project.amount}
-                funded={project.amountFunded}
+            <section>
+              <p><strong>Заплановані витрати:</strong></p>
+              <div
+                style={styles.description}
+                dangerouslySetInnerHTML={{ __html: project.plannedSpendings }}
               />
-            </div>
+            </section>
+          )}
+          <div className="funded-text">
+            <strong>Зібрали: </strong>
+            <span className="text-green">{project.amountFunded}</span>
+            <span>/{project.amount} грн</span>
+          </div>
+          <ProgressBar
+            amount={project.amount}
+            funded={project.amountFunded}
+          />
+          {project.completed && project.actualSpendings && (
+            <section>
+              <p><strong>Гроші витрачені на:</strong></p>
+              <div
+                style={styles.description}
+                dangerouslySetInnerHTML={{ __html: project.actualSpendings }}
+              />
+            </section>
           )}
           {!project.completed && (
             <div className="button-wrapper" ref={this.submitRef}>
@@ -108,7 +126,7 @@ class ProjectCard extends React.Component {
             </div>
           )}
           {/* <div style={styles.publishedAt}> */}
-          {/*   {`опубліковано ${new Date(project.creationTime).toLocaleDateString("ua-UA")}`} */}
+          {/*   {`опубліковано ${new Date(project.createdAtTS).toLocaleDateString("ua-UA")}`} */}
           {/* </div> */}
         </div>
         <style jsx>
@@ -126,12 +144,31 @@ class ProjectCard extends React.Component {
               display: none;
             }
             
+            .project-completed:before {
+              letter-spacing: 1px;
+              position: absolute;
+              content: 'профінансовано';
+              width: 150px;
+              top: 19px;
+              left: -29px;
+              transform: rotate(-31deg);
+              height: 20px;
+              line-height: 20px;
+              background: #23ff29b3;
+              color: #ffffff;
+              font-size: 10px;
+              text-align: center;
+              }
+            
             .project-image {
               height: 150px;
               object-fit: cover;
               margin: 0 0 10px;
               width: 100%;
               cursor: pointer;
+            }
+            .text-green {
+              color: ${colors.green}
             }
             
             .project-title {
@@ -159,22 +196,24 @@ class ProjectCard extends React.Component {
               cursor: pointer;
             }
           
-            @media screen and (max-width: 1240px){
-              .card{
+            @media screen and (max-width: 1240px) {
+              .card {
                 margin: 0 15px 40px !important;
                 width: calc(100%/2 - 30px) !important;
               }
             }   
             
-            @media screen and (max-width: 768px){
-              .card{
+            @media screen and (max-width: 768px) {
+              .card {
                 margin: 0 0 30px !important;
                 width: 100% !important;
               }
             }
             
-            @media screen and (max-width: 460px){
-    
+            @media screen and (max-width: 460px) {
+              .card {
+                margin: 0;
+              }
             }`
           }
         </style>

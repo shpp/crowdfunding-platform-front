@@ -1,41 +1,56 @@
-/* eslint-disable no-console */
-import { useState } from 'react';
-import {
-  Button, Col, Container, Form, Row,
-} from 'react-bootstrap';
+import { Component } from 'react';
+import { withRouter } from 'next/router';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+// import createAndSetToken from '../../utils/createToken';
+import api from '../../api';
 import Page from '../../layout/admin/Page';
-import createToken from '../../utils/createToken';
 
-const Login = () => {
-  const [pass, setPass] = useState('');
-  const handleChange = ({ target }) => {
-    setPass(target.value);
-  };
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pass: ''
+    };
+  }
 
-  const handleSubmit = (e) => {
+  async componentDidMount() {
+    if (sessionStorage.getItem('token')) {
+      await this.props.router.push('/admin/projects');
+    }
+  }
+
+  handleChange({ target }) {
+    this.setState({ pass: target.value });
+  }
+
+  async handleSubmit(e) {
     e.preventDefault();
-    createToken(pass);
-    console.log(localStorage.getItem('token'));
-  };
-  return (
-    <Page>
-      <Container className="mt-5 col-md-6 ">
-        <Row>
-          <Col className="col-6 mx-auto text-center">
-            <h1>Вхід</h1>
-            <Form
-              onSubmit={handleSubmit}
-            >
-              <Form.Group>
-                <Form.Control name="password" type="password" placeholder="пароль..." onChange={handleChange} />
-              </Form.Group>
-              <Button className="btn-success" type="submit">Увійти</Button>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
-    </Page>
-  );
-};
+    sessionStorage.setItem('token', this.state.pass);
+    await api.get('admin_projects');
+    await this.props.router.push('/admin/projects');
+  }
 
-export default Login;
+  render() {
+    return (
+      <Page>
+        <Container className="mt-5 col-md-6 ">
+          <Row>
+            <Col className="col-6 mx-auto text-center">
+              <h1>Вхід</h1>
+              <Form
+                onSubmit={this.handleSubmit.bind(this)}
+              >
+                <Form.Group>
+                  <Form.Control name="password" type="password" placeholder="пароль..." onChange={this.handleChange.bind(this)} />
+                </Form.Group>
+                <Button className="btn-success" type="submit">Увійти</Button>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+      </Page>
+    );
+  }
+}
+
+export default withRouter(Login);
