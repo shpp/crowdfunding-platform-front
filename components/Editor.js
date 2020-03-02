@@ -1,18 +1,31 @@
-import ReactQuill from 'react-quill';
-import { useState } from 'react';
+import React, { Component } from 'react';
 
 const style = {
   height: '200px',
 };
-const Editor = ({ defaultContent }) => {
-  const [content, setContent] = useState(defaultContent);
-  return (
-    <ReactQuill
-      value={content}
-      onChange={(value) => setContent(value)}
-      style={style}
-    />
-  );
-};
+class Editor extends Component {
+  constructor(props) {
+    super(props);
+    if (typeof window !== 'undefined') {
+      // eslint-disable-next-line global-require
+      this.quill = require('react-quill');
+    }
+  }
+
+  render() {
+    const { content, onChange } = this.props;
+    const Quill = this.quill;
+    if (Quill) {
+      return (
+        <Quill
+          value={content}
+          onChange={(e) => onChange(e)}
+          style={style}
+        />
+      );
+    }
+    return null;
+  }
+}
 
 export default Editor;

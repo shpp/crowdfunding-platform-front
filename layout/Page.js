@@ -1,4 +1,6 @@
 import Head from 'next/head';
+import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -18,6 +20,9 @@ const Layout = ({ children }) => (
         box-sizing: border-box;
         height: 100%
       }
+      main {
+        padding: 50px;
+      }
       * {
         box-sizing: inherit;
       }
@@ -28,12 +33,20 @@ const Layout = ({ children }) => (
     `}
     </style>
     <Head>
-      <title>Ш++ Crowdfunding portal</title>
+      <title>Ш++ спільнокошт</title>
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     </Head>
-    <Header />
-    {children}
+    <Header links={[
+      { href: '/about', text: 'Про нас' },
+      { href: '/', text: 'Проекти' },
+      { href: { pathname: '/', query: { filter: 'completed' } }, text: 'Вже зібрали' },
+      { href: '#contacts', text: 'Контакти' },
+    ]}
+    />
+    <main>{children}</main>
     <Footer />
+    <ToastContainer />
   </div>
 );
 

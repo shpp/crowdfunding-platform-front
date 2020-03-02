@@ -1,31 +1,24 @@
-import theme from '../theme/colors';
-
-
 const SocialIcon = ({ children, link }) => {
   return (
     <a href={link}>
-      <div>
-        {children}
-      </div>
+      <i>{children}</i>
       <style jsx>
-        {
-          `
-          div {
-            width: 50px;
-            height: 50px;
-            border-radius: 15%;
+        {`
+          i {
+            width: 20px;
+            height: 20px;
             display: flex;
             justify-content: center;
             align-items: center;        
           }
           a {
             cursor: pointer;
+            padding: 5px;
           }
-          div:hover {
-            border: 1px solid ${theme.green};
+          a:hover {
+            background-color: rgba(0, 0, 0, 0.05);
           }
-          `
-        }
+        `}
       </style>
     </a>
   );

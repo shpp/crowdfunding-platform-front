@@ -12,131 +12,139 @@ import theme from '../theme/colors';
 
 
 const style = {
-  iconSmall: {
-    width: '20px',
-    height: '20px',
-  },
-  iconMid: {
-    width: '30px',
-    height: '30px',
-  },
-  iconBig: {
-    width: '80px',
-    height: '40px',
-    paddingRight: '10px',
+  footer: {
+    navigation: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    notices: {
+      display: 'flex',
+      marginTop: '40px',
+      justifyContent: 'space-between',
+      fontSize: '80%',
+      borderTop: '1px solid grey'
+    },
+    socialIcons: {
+      container: {
+        display: 'flex',
+        width: '100px',
+        justifyContent: 'space-between',
+      },
+      icon: {
+        width: '20px',
+        height: '20px',
+      },
+    },
   },
 };
-const instagram = 'https://www.instagram.com/shpp.kr/?igshid=1cuwl3vm5907d';
-const facebook = 'https://www.facebook.com/pg/shpp.kr/posts/';
+const instagram = 'https://instagram.com/shpp.kr';
+const facebook = 'https://facebook.com/shpp.kr';
 const telegram = 'https://t.me/shppkr';
 
 const Footer = () => {
   return (
-    <div className="footer">
+    <footer>
       <div className="container">
-        <div className="webpage">
-          <a href="https://programming.kr.ua/">https://programming.kr.ua/</a>
-          <div className="social">
+        <div style={style.footer.navigation}>
+          <section id="contacts">
+            <article>
+              <i>
+                <Address style={style.footer.socialIcons.icon} />
+              </i>
+              <div>
+                <a href="https://g.page/shpp-kr?share">
+                  Україна, м. Кропивницький
+                  пров. Василівський, 10
+                </a>
+              </div>
+            </article>
+            <article>
+              <i>
+                <Phone style={style.footer.socialIcons.icon} />
+              </i>
+              <div>
+                <a href="tel:0502011180">050 20 111 80</a>
+              </div>
+            </article>
+            <article>
+              <i>
+                <Email style={style.footer.socialIcons.icon} />
+              </i>
+              <div>
+                <a href="mailto:info@programming.kr.ua">info@programming.kr.ua</a>
+              </div>
+            </article>
+          </section>
+          <section>
+            <Link href="/agreement">
+              <a>Публічна оферта</a>
+            </Link>
+            <div>
+              <MasterCard style={style.iconBig} />
+              <Visa style={style.iconBig} />
+            </div>
+          </section>
+        </div>
+        <div style={style.footer.notices}>
+          <p>&copy; {new Date().getFullYear()} <a href="https://programming.kr.ua">Ш++</a>. Всі права захищено. Icons made by&nbsp;<a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>&nbsp;from&nbsp;<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+          <p style={style.footer.socialIcons.container}>
             <SocialIcon link={instagram}>
-              <Instagram style={style.iconMid} />
+              <Instagram style={style.footer.socialIcons.icon} />
             </SocialIcon>
             <SocialIcon link={telegram}>
-              <Telegram style={style.iconMid} />
+              <Telegram style={style.footer.socialIcons.icon} />
             </SocialIcon>
             <SocialIcon link={facebook}>
-              <Facebook style={style.iconMid} />
+              <Facebook style={style.footer.socialIcons.icon} />
             </SocialIcon>
-          </div>
-          <div className="flaticon_link">
-Icons made by&nbsp;
-            <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>
-          &nbsp;from&nbsp;
-            <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
-          </div>
+          </p>
         </div>
-        <section>
-          <article>
-            <i>
-              <Address style={style.iconSmall} />
-            </i>
-            <div>
-            Україна, м. Кропивницький
-            пров. Василівський, 10
-            </div>
-          </article>
-          <article>
-            <i>
-              <Phone style={style.iconSmall} />
-            </i>
-            <div>
-            050 20 111 80
-            </div>
-          </article>
-          <article>
-            <i>
-              <Email style={style.iconSmall} />
-            </i>
-            <div>
-            info@programming.kr.ua
-            </div>
-          </article>
-        </section>
-        <section>
-          <Link href="/agreement">
-            <a>Публічна оферта</a>
-          </Link>
-          <div>
-            <MasterCard style={style.iconBig} />
-            <Visa style={style.iconBig} />
-          </div>
-        </section>
       </div>
       <style jsx>
         {
          `
-         .footer {
+         footer {
            display: flex;
+           height: 400px;
+           background-color: white;
          }
-         .container {
-           border-top: 1px solid ${theme.green};
+         footer .container {
            padding: 10px;
            width: 80%;
            margin: auto;
-           display: flex;
-           justify-content: space-between;
          }    
-         section {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;   
-          padding: 0 10px;
+         footer section {
+           display: flex;
+           flex-direction: column;
+           justify-content: space-between;   
+           padding: 0 10px;
          }     
          article {
-          display: flex;
+           display: flex;
          }
          a {
-          text-decoration: underline;
-          color: ${theme.text};
-          font-size: 16px;
+           text-decoration: none;
+           color: ${theme.text};
+           /*font-size: 16px;*/
          }
          a:hover {
-          color: ${theme.green};
-          text-decoration: none;
+           color: ${theme.green};
+           text-decoration: none;
          }
          .flaticon_link, .flaticon_link a {
-          font-size: 10px;                 
+           font-size: 10px;                 
          }
          i { 
-          margin-right: 10px;
+           margin-right: 10px;
          }
          .social {          
-            display: flex;
-            justify-content: space-between;
+           display: flex;
+           justify-content: space-between;
          }                 
          `
        }
       </style>
-    </div>
+    </footer>
   );
 };
 

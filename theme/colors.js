@@ -7,6 +7,7 @@ export default {
   insta: '#3f729b',
   facebook: '#3B5998',
   telegram: '#64A9DC',
+  red: '#FF0000',
   progressGradientStart: '#4e53bd',
   progressGradientMiddle: '#17aeb6',
   progressGradientEnd: '#27ae60',

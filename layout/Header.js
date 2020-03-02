@@ -1,5 +1,4 @@
 import React from 'react';
-import { SliderReverse } from 'react-burgers';
 import Link from 'next/link';
 import colors from '../theme/colors';
 
@@ -8,22 +7,21 @@ const styles = {
     padding: '5px 20px',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-between',
     borderBottom: `5px solid ${colors.green}`,
     backgroundColor: colors.white,
   },
-  logo: {
+  title: {
     fontFamily: 'arial',
     fontSize: '330%',
     fontWeight: '700',
     lineHeight: '80px',
-    textDecoration: 'none',
     display: 'flex',
+    cursor: 'pointer'
   },
-  sh: {
-    color: colors.black,
-  },
-  plus: {
+  logo: {
     color: colors.green,
+    textDecoration: 'none',
   },
   slash: {
     fontSize: '70%',
@@ -34,21 +32,14 @@ const styles = {
     fontSize: '40%',
     color: colors.text,
   },
-  nav: {
-  },
-  navList: {
-    display: 'flex',
-    listStyle: 'none',
-  },
   listItem: {
-    padding: '5px 10px',
+    padding: '12px 15px',
+    margin: '0 5px',
     color: colors.text,
+    textDecoration: 'none',
     whiteSpace: 'nowrap',
   },
-  listItemMiddle: {
-    borderLeft: '2px solid #2c3e50',
-    borderRight: '2px solid #2c3e50',
-  },
+
   burgerWrapper: {
     display: 'none',
   },
@@ -66,82 +57,51 @@ class Header extends React.Component {
     this.setState((prevState) => {
       return { isMenuExpanded: !prevState.isMenuExpanded };
     });
-  }
+  };
 
   render() {
     const { isMenuExpanded } = this.state;
+    const { links } = this.props;
     return (
       <header style={styles.container} className="site-header">
         {!isMenuExpanded
-          && (
+        && (
           <Link href="/">
-            <a style={styles.logo} className="logo">
-              <span style={styles.sh}>Ш</span>
-              <span style={styles.plus}>++</span>
-              <span style={styles.slash} className="logo__slash">/</span>
-              <span style={styles.crowdfunding}>crowdfunding platform</span>
-            </a>
+            <div style={styles.title} className="title">
+              <span style={styles.crowdfunding} className="logo">Підтримай<span style={{ color: 'green' }}>++</span></span>
+            </div>
           </Link>
-          )}
+        )}
         <nav>
-          <ul style={styles.navList} className="nav-list">
-            <li>
-              <Link href="/about">
-                <a style={styles.listItem} className="list-item">про нас</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/">
-                <a style={{ ...styles.listItem, ...styles.listItemMiddle }} className="list-item">
-                  проекти
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href={{ pathname: '/', query: { filter: 'completed' } }}>
-                <a style={styles.listItem} className="list-item">вже зібрали</a>
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        <div
-          onClick={this.toggleMenu}
-          onKeyPress={() => {}}
-          style={styles.burgerWrapper}
-          className="burger-wrapper"
-          role="button"
-          tabIndex="0"
-        >
-          <SliderReverse
-            active={isMenuExpanded}
-            padding="12px 10px"
-            lineHeight={3}
-            width={30}
-          />
-        </div>
-        <style jsx>
           {
-          `@media screen and (max-width: 1240px){
-            .logo{
+            links.map((l) => (
+              <Link href={l.href} key={l.href}>
+                <a className="list-item" style={styles.listItem}>{l.text}</a>
+              </Link>
+            ))
+          }
+        </nav>
+        <style jsx>
+          {`
+          .logo::first-letter {
+            color: ${colors.black};
+          }
+          
+          .list-item:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+          }
+          @media screen and (max-width: 1240px){
+            .title{
               line-height: 50px !important;
               font-size: 40px !important;
             }
           }
           
           @media screen and (max-width: 768px){
-            .nav-list{
-              display: ${isMenuExpanded ? 'flex' : 'none'} !important;
-              padding-left: 0;
-              margin: 0;
-            }
             
             .site-header{
               justify-content: space-between !important;
               padding: 5px 10px !important;
-            }
-            
-            .burger-wrapper{
-              display: block !important;
             }
           }
           
@@ -150,17 +110,18 @@ class Header extends React.Component {
               margin 0 5px !important;
             }
             
-            .logo{
+            .title{
               line-height: 40px !important;
               font-size: 30px !important;
             }
             
             .list-item{
               padding: 5px !important;
+              font-size: 14px;
+              margin: 0!important;
             }
           }
-      `
-}
+      `}
         </style>
       </header>
     );

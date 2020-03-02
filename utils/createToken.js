@@ -1,11 +1,10 @@
-import sha256 from 'js-sha256';
+import crypto from 'crypto';
 
-const createToken = (password) => {
-  const sha = sha256(`${process.env.HASH_SALT}:${password}`);
+const createAndSetToken = (password) => {
+  const hash = crypto.createHash('sha256');
+  const token = Buffer.from(`admin:${hash.update(`${process.env.HASH_SALT}:${password}`).digest('hex')}`).toString('base64');
 
-  const utoa = (str) => window.btoa(unescape(encodeURIComponent(`admin: ${str}`)));
-
-  localStorage.setItem('token', utoa(sha));
+  sessionStorage.setItem('token', token);
 };
 
-export default createToken;
+export default createAndSetToken;

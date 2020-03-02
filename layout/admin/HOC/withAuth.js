@@ -1,33 +1,29 @@
-import Router from 'next/router';
+import { withRouter } from 'next/router';
+import React, { Component } from 'react';
 
 /**
  * HOC to wrap admin pages with auth component
  */
-/* eslint-disable react/jsx-props-no-spreading */
 export default function WithAuth(WrappedComponent) {
-  const ProtectedComponent = (props) => {
-    return <WrappedComponent {...props} />;
-  };
-
-  ProtectedComponent.getInitialProps = async (ctx) => {
-    const componentProps = WrappedComponent.getInitialProps && (await WrappedComponent.getInitialProps(ctx));
-    const logged = true; // TODO: check localstorage if user loggedIn
-
-    const redirect = () => {
-      if (process.browser) {
-        Router.push('/admin/login');
-      } else {
-        ctx.res.writeHead(302, { Location: '/admin/login' });
-        ctx.res.end();
-      }
-    };
-
-    if (!logged) {
-      redirect();
+  class ProtectedComponent extends Component {
+    static async getInitialProps(ctx) {
+      return (WrappedComponent.getInitialProps && await WrappedComponent.getInitialProps(ctx)) || {};
     }
 
-    return { ...componentProps };
-  };
+    async componentDidMount() {
+      const logged = sessionStorage.getItem('token');
+      const { pathname, push } = this.props.router;
+      if (!logged) {
+        await push('/admin/login');
+      } else if (pathname === '/admin') {
+        await push('/admin/projects');
+      }
+    }
 
-  return ProtectedComponent;
+    render() {
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      return <WrappedComponent {...this.props} />;
+    }
+  }
+  return withRouter(ProtectedComponent);
 }

@@ -1,5 +1,8 @@
 import Head from 'next/head';
-import Header from './Header';
+import React from 'react';
+import { ToastContainer } from 'react-toastify';
+import Header from '../Header';
+import Footer from '../Footer';
 
 const Layout = ({ children }) => (
   <div>
@@ -13,13 +16,16 @@ const Layout = ({ children }) => (
         background-color: #f5f5f5;
         box-sizing: border-box;
       }
+      main {
+        padding: 50px;
+      }
       * {
         box-sizing: inherit;
       }
     `}
     </style>
     <Head>
-      <title>Crowdfunding admin Ш++ </title>
+      <title>Ш++ спільнокошт | Адміністрування </title>
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       <link
         rel="stylesheet"
@@ -28,9 +34,17 @@ const Layout = ({ children }) => (
         crossOrigin="anonymous"
       />
       <link rel="stylesheet" href="//cdn.quilljs.com/1.2.6/quill.snow.css" />
+      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     </Head>
-    <Header />
-    {children}
+    <Header links={[
+      { href: '/admin/project/add', text: 'Додати' },
+      { href: '/admin/projects', text: 'Проекти' },
+      { href: '/admin/transactions', text: 'Транзакції' },
+    ]}
+    />
+    <main>{children}</main>
+    <Footer />
+    <ToastContainer />
   </div>
 );
 
