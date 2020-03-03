@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import Header from './Header';
@@ -32,11 +31,6 @@ const Layout = ({ children }) => (
       }
     `}
     </style>
-    <Head>
-      <title>Ш++ спільнокошт</title>
-      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    </Head>
     <Header links={[
       { href: '/about', text: 'Про нас' },
       { href: '/', text: 'Проекти' },

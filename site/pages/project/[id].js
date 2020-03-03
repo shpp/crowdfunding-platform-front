@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'next/router';
+import Head from 'next/dist/next-server/lib/head';
 import api from '../../api';
 import Page from '../../layout/Page';
 import colors from '../../theme/colors';
@@ -8,10 +9,10 @@ import ProgressBar from '../../components/ProgressBar';
 const styles = {
   container: {
     position: 'relative',
-    'max-width': '85%',
+    maxWidth: '85%',
     margin: '30px auto',
     padding: '5px 20px',
-    'background-color': colors.white,
+    backgroundColor: colors.white,
   }
 };
 
@@ -20,23 +21,21 @@ class ProjectPage extends React.Component {
     super(props);
     this.submitRef = React.createRef();
     this.state = {
-      project: {},
       button: ''
     };
   }
 
   async componentDidMount() {
-    // TODO: remove such an awful hack
-    // eslint-disable-next-line no-restricted-globals
-    const id = location.pathname.split('/').pop();
-    const { projects } = await api.get('projects');
+    const id = this.props.project._id;
     const { button } = await api.get('button', { id });
-    const project = projects.find((item) => item._id === id);
+    this.setState({ button });
+  }
 
-    this.setState({
-      project,
-      button,
-    });
+  static async getInitialProps({ query: { id } }) {
+    const { projects = [] } = await api.get('projects');
+    return {
+      project: projects.find((item) => item._id === id)
+    };
   }
 
   onSubmitClick = () => {
@@ -48,15 +47,27 @@ class ProjectPage extends React.Component {
   };
 
   render() {
-    const { project, button } = this.state;
+    const { button } = this.state;
+    const { project = {}, router } = this.props;
+    const projectURL = process.env.APP_URL + router.asPath;
+
     return (
       <Page>
+        <Head>
+          <title>{project.name} | Ш++ збір коштів</title>
+          <meta property="og:title" content={`"${project.name}" | Збір коштів`} />
+          <meta property="og:url" content={projectURL} />
+          <meta property="fb:app_id" content="1566470086989294" />
+          <meta property="og:image" content={project.image} />
+          <meta property="og:site_name" content="Підтримай++ - спільнокошт" />
+          <meta property="og:description" content={project.description} />
+        </Head>
         <div className="project-image-wrapper" />
         <div style={styles.container}>
           <div>
             <h2>{project.name}&nbsp;</h2>
             <span className="text-green">{project.completed ? '(профінансовано)' : ''}</span>
-            <span className="creation-date">{new Date(+project.createdAtTS).toLocaleDateString()}</span>
+            <span className="creation-date">{new Date(+project.createdAtTS).toLocaleDateString('uk')}</span>
           </div>
           <section>
             <div dangerouslySetInnerHTML={{ __html: project.description }} />
@@ -137,10 +148,7 @@ class ProjectPage extends React.Component {
             display: inline-block;
             cursor: pointer;
           }
-          .text-green {
-            color: ${colors.green}
-          }
-          
+         
           /* TODO: need to test display:none form submit in old browsers */
           .liqpay-form {
             display: none;

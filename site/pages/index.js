@@ -23,10 +23,6 @@ class HomePage extends Component {
     };
   }
 
-  static async getInitialProps() {
-    return {};
-  }
-
   async componentDidMount() {
     const { projects } = await api.get('projects');
     this.setState({ projects });

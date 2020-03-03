@@ -25,8 +25,7 @@ const Layout = ({ children }) => (
     `}
     </style>
     <Head>
-      <title>Ш++ спільнокошт | Адміністрування </title>
-      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <title>Ш++ збір коштів | Адміністрування </title>
       <link
         rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -34,7 +33,6 @@ const Layout = ({ children }) => (
         crossOrigin="anonymous"
       />
       <link rel="stylesheet" href="//cdn.quilljs.com/1.2.6/quill.snow.css" />
-      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     </Head>
     <Header links={[
       { href: '/admin/project/add', text: 'Додати' },

@@ -3,7 +3,6 @@ import { Button, Card, Col, Container, Row, Form } from 'react-bootstrap';
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
 import Page from '../../../../layout/admin/Page';
-import colors from '../../../../theme/colors';
 import ProjectTransactions from '../../../../components/ProjectTransactions';
 import withAuth from '../../../../layout/admin/HOC/withAuth';
 import api from '../../../../api';
@@ -173,13 +172,6 @@ class AdminViewProjectPage extends Component {
           }
           h2 {
             display: inline-block;
-          }
-        
-          .text-green {
-            color: ${colors.green}
-          }
-          .text-danger {
-            color: ${colors.red}
           }
          `}
         </style>

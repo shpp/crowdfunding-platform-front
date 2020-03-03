@@ -5,6 +5,7 @@ import Router from 'next/router';
 import 'axios-progress-bar/dist/nprogress.css';
 import 'react-toastify/dist/ReactToastify.css';
 
+const isClientSide = () => typeof window !== 'undefined';
 
 export const Instance = (config) => {
   const instance = axios.create({
@@ -12,16 +13,24 @@ export const Instance = (config) => {
     withCredentials: true,
   });
 
-  loadProgressBar(null, instance);
+  if (isClientSide()) {
+    loadProgressBar(null, instance);
+  }
 
-  instance.interceptors.request.use((conf) => ({
-    ...conf,
-    headers: {
-      ...conf.headers,
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${sessionStorage.getItem('token')}`,
-    },
-  }));
+  instance.interceptors.request.use((conf) => {
+    const authorization = {};
+    if (isClientSide()) {
+      authorization.Authorization = `Basic ${sessionStorage.getItem('token')}`;
+    }
+    return {
+      ...conf,
+      headers: {
+        ...conf.headers,
+        ...authorization,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    };
+  });
 
   instance.interceptors.response.use(
     (response) => {
@@ -31,7 +40,9 @@ export const Instance = (config) => {
       return (response || {}).data;
     },
     async (error) => {
-      toast.error(`${error.response.status} ${JSON.stringify(error.response.data)}`);
+      if (isClientSide()) {
+        toast.error(`${error.response.status} ${JSON.stringify(error.response.data)}`);
+      }
       if ([401, 500].includes(error.response.status)) {
         sessionStorage.removeItem('token');
         await Router.push('/admin/login');

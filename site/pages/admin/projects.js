@@ -54,7 +54,7 @@ class AdminListPage extends Component {
                           <td>{project.amountFunded}</td>
                           <td>{project.state}</td>
                           <td>{project.completed.toString()}</td>
-                          <td>{new Date(+project.createdAtTS || 0).toLocaleDateString()}</td>
+                          <td>{new Date(+project.createdAtTS || 0).toLocaleDateString('uk')}</td>
                         </tr>
                       </Link>
                     ))}

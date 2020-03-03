@@ -167,9 +167,6 @@ class ProjectCard extends React.Component {
               width: 100%;
               cursor: pointer;
             }
-            .text-green {
-              color: ${colors.green}
-            }
             
             .project-title {
               margin: 5px 0;
