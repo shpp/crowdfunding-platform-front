@@ -1,7 +1,7 @@
 const withCSS = require('@zeit/next-css');
 
 module.exports = withCSS({
-  distDir: '_next',
+  distDir: 'build',
   pageExtensions: ['jsx', 'js'],
   generateBuildId: async () => {
     if (process.env.BUILD_ID) {

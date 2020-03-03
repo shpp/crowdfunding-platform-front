@@ -1,8 +1,7 @@
+nginx -g 'daemon off;' &
 
-nginx -g 'daemon off;' & 
+cd /project/site
 
-cd /project/server
-
-npm run start 2>&1 | tee -a /storage/logs.txt 
+npm run start 2>&1 | tee -a /storage/logs.txt
 
 #do-default
