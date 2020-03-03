@@ -2,5 +2,6 @@
 .DS_Store
 site/node_modules
 site/build
+site/next.config.js
 .next
 .env
