@@ -2,8 +2,6 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { loadProgressBar } from 'axios-progress-bar';
 import Router from 'next/router';
-import 'axios-progress-bar/dist/nprogress.css';
-import 'react-toastify/dist/ReactToastify.css';
 
 const isClientSide = () => typeof window !== 'undefined';
 

@@ -1,9 +1,12 @@
-import '../assets/empty.css';
 import Router from 'next/router';
 import React from 'react';
 import withGA from 'next-ga';
 import Head from 'next/head';
+
 import colors from '../theme/colors';
+import '../assets/empty.css';
+import 'axios-progress-bar/dist/nprogress.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MyApp = ({ Component, pageProps }) => (
   <div>
