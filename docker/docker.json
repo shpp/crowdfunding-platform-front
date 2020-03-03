@@ -1,5 +1,5 @@
 {
-  "from": "fi-fo-nginx-node",
+  "from": "fi-fo-nginx-vue",
   "volumes": [
      "storage:/storage:rw"
   ],
