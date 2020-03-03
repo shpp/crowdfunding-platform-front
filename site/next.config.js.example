@@ -11,8 +11,8 @@ module.exports = withCSS({
     }
   },
   env: {
-    API_URL: "API_URL",
-    APP_URL: "APP_URL"
+    API_URL: "%API_URL%",
+    APP_URL: "%APP_URL%"
   },
   serverRuntimeConfig: {},
   publicRuntimeConfig: {
