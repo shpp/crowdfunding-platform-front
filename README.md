@@ -1,15 +1,33 @@
-## Ш++. Краудфандінг портал (спільнокошт) frontend
+## Підримай++. Краудфандінг портал (спільнокошт) для Ш++ [frontend]
 
-To start project: 
+### Development: 
 
 Clone project:
-`git clone https://github.com/Onix-Systems/donate.shpp.com-frontend/tree/next_next`
 
-Install packages:
+```
+git clone git@github.com:shpp/crowdfunding-platform-front.git
+```
 
-`npm install`
- 
-Run project
-`npm run dev`
+1. Go to working directory:
+    
+    `cd crowdfunding-portal-front/site`
 
-In your browser go to localhost:3000
+2. Install packages:
+
+    `npm install`
+    
+3. Add configuration:
+
+    Fill in the configuration in `/site/next.config.js`:
+    
+    ```
+    env: {
+        API_URL: "https://backend.example.com"
+    }
+    ```
+     
+4. Run project:
+
+    `npm run dev`
+
+In your browser go to http://localhost:3000

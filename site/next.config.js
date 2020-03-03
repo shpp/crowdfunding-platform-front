@@ -11,9 +11,7 @@ module.exports = withCSS({
     }
   },
   env: {
-    // AUTH_TOKEN: 'YWRtaW46MDk3OTdkNTBhYTRiZmYwMjhhZTY1YWQ2NDQ2YjhjYzU5YzlhMDg5OTk1NmRmNjNkOWVkZTgxYmJhOTZkOGJmZA==',
-    HASH_SALT: 'HXVS64VFFJ',
-    API_URL: 'https://back.donate.2.shpp.me'
+    API_URL: "API_URL"
   },
   serverRuntimeConfig: {},
   publicRuntimeConfig: {

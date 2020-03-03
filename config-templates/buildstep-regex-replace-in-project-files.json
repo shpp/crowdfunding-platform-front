@@ -1,0 +1,12 @@
+{
+  "in": [
+    {
+      "files": [
+        "/project/site/next.config.js"
+      ],
+      "replace": {
+        "API_URL": "<<API_URL>>"
+      }
+    }
+  ]
+}
