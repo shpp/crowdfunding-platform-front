@@ -1,3 +1,7 @@
+* {
+    outline-color: rgb(39, 174, 96);
+}
+
 .ql-container {
     height: calc(100% - 45px);
 }
@@ -56,7 +60,6 @@ body {
 
 .navbar-light .navbar-toggler {
     color: rgba(0, 0, 0, .5);
-    outline-color: rgb(39, 174, 96);
     border-color: rgba(0, 0, 0, .1);
 }
 
