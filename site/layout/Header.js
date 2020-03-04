@@ -58,7 +58,7 @@ const Header = ({ links }) => (
       </Navbar.Brand>
     </Link>
     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-    <Navbar.Collapse id="responsive-navbar-nav" style={{ flexGrow: 0, width: '100%' }}>
+    <Navbar.Collapse id="responsive-navbar-nav" style={{ flexGrow: 0, width: '100%', justifyContent: 'flex-end' }}>
       {
         links.map((l) => (
           <Link href={l.href} key={l.href}>
