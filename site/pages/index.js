@@ -3,6 +3,7 @@ import { withRouter } from 'next/router';
 import api from '../api';
 import Page from '../layout/Page';
 import ProjectCard from '../components/ProjectCard';
+import colors from '../theme/colors';
 
 const styles = {
   container: {
@@ -11,6 +12,17 @@ const styles = {
     flexWrap: 'wrap',
     margin: '0 auto',
     padding: '30px 0 0 0',
+  },
+  cardWrapper: {
+    margin: '0 15px 50px',
+    width: 'calc(100%/3 - 30px)',
+    maxWidth: '540px',
+    display: 'flex',
+    backgroundColor: colors.white,
+    transition: '0.3s',
+    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
+    overflow: 'hidden',
+    position: 'relative'
   },
 };
 
@@ -50,10 +62,13 @@ class HomePage extends Component {
               .sort((a, b) => b.createdAtTS - a.createdAtTS)
               // .sort((a, b) => a.completed - b.completed)
               .map((project) => (
-                <ProjectCard
-                  project={project}
+                <div
                   key={project._id}
-                />
+                  style={styles.cardWrapper}
+                  className="card"
+                >
+                  <ProjectCard project={project} />
+                </div>
               ))
             : 'Тут поки що нічого немає :('}
         </div>
@@ -62,11 +77,25 @@ class HomePage extends Component {
           main {
             min-height: 400px;
           }
+          .card:hover{
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15) !important;
+          }
+          
+          @media screen and (max-width: 460px) {
+            .card {
+              margin: 0;
+            }
+          }
           @media screen and (max-width: 1240px){
             .homepage {
               max-width: initial !important;
               width: 100% !important;
               padding: 30px 30px 0 !important;
+            }
+            .card {
+              margin: 0 15px 40px !important;
+              width: calc(100%/2 - 30px) !important;
             }
           }
             
@@ -74,6 +103,10 @@ class HomePage extends Component {
             .homepage {
               padding: 20px 20px 0!important;
               justify-content: center;
+            }
+            .card {
+              margin: 0 0 30px !important;
+              width: 100% !important;
             }
           }
         `}

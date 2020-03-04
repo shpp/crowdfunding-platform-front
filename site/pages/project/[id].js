@@ -6,16 +6,6 @@ import Page from '../../layout/Page';
 import colors from '../../theme/colors';
 import ProgressBar from '../../components/ProgressBar';
 
-const styles = {
-  container: {
-    position: 'relative',
-    maxWidth: '85%',
-    margin: '30px auto',
-    padding: '5px 20px',
-    backgroundColor: colors.white,
-  }
-};
-
 class ProjectPage extends React.Component {
   constructor(props) {
     super(props);
@@ -63,12 +53,13 @@ class ProjectPage extends React.Component {
           <meta property="og:description" content={project.description} />
         </Head>
         <div className="project-image-wrapper" />
-        <div style={styles.container}>
+        <div className="container">
           <div>
             <h2>{project.name}&nbsp;</h2>
             <span className="text-green">{project.completed ? '(профінансовано)' : ''}</span>
             <span className="creation-date">{new Date(+project.createdAtTS).toLocaleDateString('uk')}</span>
           </div>
+
           <section>
             <div dangerouslySetInnerHTML={{ __html: project.description }} />
           </section>
@@ -76,11 +67,6 @@ class ProjectPage extends React.Component {
             <p><strong>Заплановані витрати:</strong></p>
             <div dangerouslySetInnerHTML={{ __html: project.plannedSpendings }} />
           </section>
-          <div>
-            <strong>Зібрали: </strong>
-            <span className="text-green">{project.amountFunded}</span>
-            <span>/{project.amount} грн</span>
-          </div>
           <ProgressBar
             amount={project.amount}
             funded={project.amountFunded}
@@ -113,15 +99,12 @@ class ProjectPage extends React.Component {
         </div>
         <style jsx>
           {`
-          h2 {
-            display: inline-block;
-          }
           .creation-date {
             color: grey;
-            font-size: 14px;
+            font-size: 12px;
             position: absolute;
-            right: 15px;
-            top: 15px;
+            right: 20px;
+            top: 20px;
           }
           .project-image-wrapper {
             width: 100vw;
@@ -148,11 +131,7 @@ class ProjectPage extends React.Component {
             display: inline-block;
             cursor: pointer;
           }
-         
-          /* TODO: need to test display:none form submit in old browsers */
-          .liqpay-form {
-            display: none;
-          }
+
           @media screen and (max-width: 464px) {
             .project-image-wrapper {
               margin: -20px;

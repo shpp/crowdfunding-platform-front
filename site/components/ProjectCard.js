@@ -6,31 +6,22 @@ import colors from '../theme/colors';
 
 const styles = {
   wrapper: {
-    margin: '0 15px 50px',
-    width: 'calc(100%/3 - 30px)',
-    maxWidth: '540px',
-    display: 'flex',
     flexDirection: 'column',
-    backgroundColor: colors.white,
-    transition: '0.3s',
-    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
-    overflow: 'hidden',
-    position: 'relative'
+    flexGrow: 1,
+    display: 'flex'
   },
   infoWrapper: {
-    padding: '10px',
+    padding: '20px',
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-  },
-  publishedAt: {
-    textAlign: 'right',
-    opacity: '0.6',
+    fontSize: '14px',
+    color: '#646464',
   },
   description: {
     // TODO: don't forget about this
     // margin: '10px 0 15px',
-    // flexGrow: 1,
+    flexGrow: 1,
   },
 };
 
@@ -63,7 +54,7 @@ class ProjectCard extends React.Component {
     const { project } = this.props;
     const { button } = this.state;
     return (
-      <div style={styles.wrapper} className="card">
+      <div style={styles.wrapper}>
         {project.completed && <div className="project-completed" /> }
         <Link href="/project/[id]" as={`/project/${project._id}`}>
           <img
@@ -83,33 +74,6 @@ class ProjectCard extends React.Component {
             dangerouslySetInnerHTML={{ __html: project.description }}
           />
           {!project.completed && (
-            <section>
-              <p><strong>Заплановані витрати:</strong></p>
-              <div
-                style={styles.description}
-                dangerouslySetInnerHTML={{ __html: project.plannedSpendings }}
-              />
-            </section>
-          )}
-          <div className="funded-text">
-            <strong>Зібрали: </strong>
-            <span className="text-green">{project.amountFunded}</span>
-            <span>/{project.amount} грн</span>
-          </div>
-          <ProgressBar
-            amount={project.amount}
-            funded={project.amountFunded}
-          />
-          {project.completed && project.actualSpendings && (
-            <section>
-              <p><strong>Гроші витрачені на:</strong></p>
-              <div
-                style={styles.description}
-                dangerouslySetInnerHTML={{ __html: project.actualSpendings }}
-              />
-            </section>
-          )}
-          {!project.completed && (
             <div className="button-wrapper" ref={this.submitRef}>
               <button
                 className="submit-button"
@@ -125,25 +89,19 @@ class ProjectCard extends React.Component {
               />
             </div>
           )}
-          {/* <div style={styles.publishedAt}> */}
-          {/*   {`опубліковано ${new Date(project.createdAtTS).toLocaleDateString("ua-UA")}`} */}
-          {/* </div> */}
+
+          <ProgressBar
+            amount={project.amount}
+            funded={project.amountFunded}
+          />
+
+          <div className="text-small">
+            {new Date(+project.createdAtTS || 0).toLocaleDateString('uk')}
+          </div>
         </div>
         <style jsx>
           {
-            `.card:hover{
-              transform: translateY(-4px);
-              box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15) !important;
-            }
-            .card:hover h3{
-              color: ${colors.green};
-            }
-            
-            /* TODO: need to test display:none form submit in old browsers */
-            .liqpay-form {
-              display: none;
-            }
-            
+            `
             .project-completed:before {
               letter-spacing: 1px;
               position: absolute;
@@ -163,55 +121,37 @@ class ProjectCard extends React.Component {
             .project-image {
               height: 150px;
               object-fit: cover;
-              margin: 0 0 10px;
+              margin: 0;
               width: 100%;
               cursor: pointer;
             }
             
             .project-title {
               margin: 5px 0;
+              font-size: 16px;
               cursor: pointer;
+              color: #282828;
             }
             
             .button-wrapper {
-              padding: 25px 0 15px;
               text-align: center;
             }
-            
-            .funded-text {
-              margin-bottom: 5px;
-              display: inline-block;
-            }
-            
             .submit-button {
               background-color: ${colors.green};
               color: ${colors.white};
               border: none;
-              padding: 10px 25px;
-              font-size: 20px;
+              padding: 10px 15px;
+              font-size: 14px;
               display: inline-block;
               cursor: pointer;
             }
-          
-            @media screen and (max-width: 1240px) {
-              .card {
-                margin: 0 15px 40px !important;
-                width: calc(100%/2 - 30px) !important;
-              }
-            }   
-            
-            @media screen and (max-width: 768px) {
-              .card {
-                margin: 0 0 30px !important;
-                width: 100% !important;
-              }
+            h3:hover{
+              color: ${colors.green};
             }
-            
-            @media screen and (max-width: 460px) {
-              .card {
-                margin: 0;
-              }
-            }`
+            p {
+              margin: 0.5rem 0;
+            }
+            `
           }
         </style>
       </div>

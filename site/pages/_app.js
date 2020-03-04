@@ -25,7 +25,33 @@ const MyApp = ({ Component, pageProps }) => (
       .text-danger {
         color: ${colors.red}
       }
+      .liqpay-form {
+        display: none;
+      }
+      .text-small {
+        color: #646464;
+        font-size: 12px;
+      }
+      h2 {
+        display: inline-block;
+        font-size: 18px;
+      }
+      h3 {
+        font-size: 16px;
+      }
+      body {
+        font-size: 14px;
+      }
+      .container {
+        max-width: 750px;
+        margin: 50px auto;
+        background-color: white;
+        padding: 5px 20px;
+        line-height: 1.75;
+        position: relative;
+       }
       `}
+
     </style>
   </div>
 );
