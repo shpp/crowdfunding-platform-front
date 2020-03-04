@@ -81,12 +81,7 @@ class HomePage extends Component {
             transform: translateY(-4px);
             box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15) !important;
           }
-          
-          @media screen and (max-width: 460px) {
-            .card {
-              margin: 0;
-            }
-          }
+
           @media screen and (max-width: 1240px){
             .homepage {
               max-width: initial !important;
@@ -107,6 +102,14 @@ class HomePage extends Component {
             .card {
               margin: 0 0 30px !important;
               width: 100% !important;
+            }
+          }
+          @media screen and (max-width: 460px) {
+            .homepage {
+              padding: 0!important;
+            }
+            .card {
+              margin: 0;
             }
           }
         `}

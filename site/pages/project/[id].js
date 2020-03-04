@@ -135,6 +135,7 @@ class ProjectPage extends React.Component {
           @media screen and (max-width: 464px) {
             .project-image-wrapper {
               margin: -20px;
+              height: 150px;
             }
           }
         `}

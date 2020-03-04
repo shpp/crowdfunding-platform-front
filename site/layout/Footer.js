@@ -15,7 +15,7 @@ const style = {
   footer: {
     navigation: {
       display: 'flex',
-      justifyContent: 'space-between',
+      justifyContent: 'space-between'
     },
     notices: {
       display: 'flex',
@@ -32,8 +32,12 @@ const style = {
       },
       icon: {
         width: '20px',
-        height: '20px',
+        height: '20px'
       },
+      iconBig: {
+        marginRight: '15px',
+        marginTop: '15px'
+      }
     },
   },
 };
@@ -45,7 +49,7 @@ const Footer = () => {
   return (
     <footer>
       <div className="container">
-        <div style={style.footer.navigation}>
+        <div style={style.footer.navigation} className="row">
           <section id="contacts">
             <article>
               <i>
@@ -80,12 +84,12 @@ const Footer = () => {
               <a>Публічна оферта</a>
             </Link>
             <div>
-              <MasterCard style={style.iconBig} />
-              <Visa style={style.iconBig} />
+              <MasterCard style={style.footer.socialIcons.iconBig} />
+              <Visa style={style.footer.socialIcons.iconBig} />
             </div>
           </section>
         </div>
-        <div style={style.footer.notices}>
+        <div style={style.footer.notices} className="row">
           <p>&copy; {new Date().getFullYear()} <a href="https://programming.kr.ua">Ш++</a>. Всі права захищено. Icons made by&nbsp;<a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>&nbsp;from&nbsp;<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
           <p style={style.footer.socialIcons.container}>
             <SocialIcon link={instagram}>
@@ -105,7 +109,7 @@ const Footer = () => {
          `
          footer {
            display: flex;
-           height: 400px;
+           min-height: 400px;
            background-color: white;
          }
          footer .container {
@@ -140,7 +144,18 @@ const Footer = () => {
          .social {          
            display: flex;
            justify-content: space-between;
-         }                 
+         }
+         @media screen and (max-width: 460px) {
+           .row {
+             flex-direction: column; 
+           }
+           .row section {
+             margin: 15px 0;
+           }
+           article:not(:last-child) {
+             margin-bottom: 15px;
+           }
+         }            
          `
        }
       </style>
