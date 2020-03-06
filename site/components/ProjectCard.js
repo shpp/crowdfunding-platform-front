@@ -3,6 +3,7 @@ import Link from 'next/link';
 import api from '../api';
 import ProgressBar from './ProgressBar';
 import colors from '../theme/colors';
+import Check from '../assets/icon/check.svg';
 
 const styles = {
   wrapper: {
@@ -55,7 +56,7 @@ class ProjectCard extends React.Component {
     const { button } = this.state;
     return (
       <div style={styles.wrapper}>
-        {project.completed && <div className="project-completed" /> }
+        {project.completed && <div className="project-completed"><Check style={{ verticalAlign: 'bottom' }} /> &nbsp;завершено</div> }
         <Link href="/project/[id]" as={`/project/${project._id}`}>
           <img
             src={project.image}
@@ -102,19 +103,20 @@ class ProjectCard extends React.Component {
         <style jsx>
           {
             `
-            .project-completed:before {
+            .project-completed {
               letter-spacing: 1px;
               position: absolute;
-              content: 'профінансовано';
-              width: 150px;
-              top: 19px;
-              left: -29px;
-              transform: rotate(-31deg);
-              height: 20px;
+              
+              padding: 7px 15px;
+              text-transform: uppercase;
+              top: 10px;
+              left: 10px;
+              
               line-height: 20px;
-              background: #23ff29b3;
-              color: #ffffff;
+              background: rgb(229, 247, 233);
+              color: ${colors.green};
               font-size: 10px;
+              font-weight: bold;
               text-align: center;
               }
             
