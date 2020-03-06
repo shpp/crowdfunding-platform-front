@@ -23,7 +23,7 @@ const styles = {
     // TODO: don't forget about this
     // margin: '10px 0 15px',
     flexGrow: 1,
-  },
+  }
 };
 
 class ProjectCard extends React.Component {
@@ -70,10 +70,10 @@ class ProjectCard extends React.Component {
               {project.name}
             </h3>
           </Link>
-          <div
-            style={styles.description}
-            dangerouslySetInnerHTML={{ __html: project.description }}
-          />
+          <div style={styles.description}>
+            <p>{project.shortDescription}</p>
+            <p><Link href="/project/[id]" as={`/project/${project._id}`}><a>читати далі</a></Link></p>
+          </div>
           {!project.completed && (
             <div className="button-wrapper" ref={this.submitRef}>
               <button
