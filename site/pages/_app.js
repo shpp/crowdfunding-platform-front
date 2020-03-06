@@ -2,6 +2,7 @@ import Router from 'next/router';
 import React from 'react';
 import withGA from 'next-ga';
 import Head from 'next/head';
+import { DefaultSeo } from 'next-seo';
 
 import colors from '../theme/colors';
 import '../assets/empty.css';
@@ -10,16 +11,25 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const MyApp = ({ Component, pageProps }) => (
   <div>
+    <DefaultSeo
+      openGraph={{
+        type: 'website',
+        locale: 'uk',
+        url: process.env.APP_URL,
+        site_name: 'Ш++ збір коштів',
+        description: 'Підтримай Ш++ - незалежний соціально-культурний проект у Кропивницькому',
+        image: '/cover-image.png'
+      }}
+      twitter={{
+        handle: '@shplusplus',
+        site: '@shplusplus',
+        cardType: 'summary_large_image',
+      }}
+    />
     <Head>
       <title>Ш++ збір коштів</title>
       <link rel="shortcut icon" href="/favicon.ico" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      <meta property="og:title" content="Ш++ - збір коштів" />
-      <meta property="og:url" content={process.env.APP_URL} />
-      <meta property="fb:app_id" content="1566470086989294" />
-      <meta property="og:image" content="/cover-image.png" />
-      <meta property="og:site_name" content="Підтримай++ - спільнокошт" />
-      <meta property="og:description" content="Підтримай Ш++ - незалежний соціально-культурний проект у Кропивницькому." />
     </Head>
     {/* eslint-disable-next-line react/jsx-props-no-spreading */}
     <Component {...pageProps} />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'next/router';
 import Head from 'next/dist/next-server/lib/head';
+import { NextSeo } from 'next-seo';
 import api from '../../api';
 import Page from '../../layout/Page';
 import colors from '../../theme/colors';
@@ -43,14 +44,22 @@ class ProjectPage extends React.Component {
 
     return (
       <Page>
+        <NextSeo
+          title={`"${project.name}" | Збір коштів`}
+          description={project.shortDescription}
+          canonical={projectURL}
+          openGraph={{
+            url: projectURL,
+            title: `"${project.name}" | Збір коштів`,
+            description: project.shortDescription,
+            images: [
+              { url: project.image }
+            ],
+            site_name: 'Підтримай++ - спільнокошт',
+          }}
+        />
         <Head>
           <title>{project.name} | Ш++ збір коштів</title>
-          <meta property="og:title" content={`"${project.name}" | Збір коштів`} />
-          <meta property="og:url" content={projectURL} />
-          <meta property="fb:app_id" content="1566470086989294" />
-          <meta property="og:image" content={project.image} />
-          <meta property="og:site_name" content="Підтримай++ - спільнокошт" />
-          <meta property="og:description" content={project.shortDescription} />
         </Head>
         <div className="project-image-wrapper" />
         <div className="container">
