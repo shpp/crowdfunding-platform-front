@@ -45,15 +45,15 @@ class ProjectPage extends React.Component {
     return (
       <Page>
         <NextSeo
-          title={`"${project.name}" | Збір коштів`}
+          title={`${project.name} | Збір коштів`}
           description={project.shortDescription}
           canonical={projectURL}
           openGraph={{
             url: projectURL,
-            title: `"${project.name}" | Збір коштів`,
+            title: `${project.name} | Збір коштів`,
             description: project.shortDescription,
             images: [
-              { url: project.image }
+              { url: `${process.env.APP_URL}/api/getImage?url=${encodeURI(project.image)}` }
             ],
             site_name: 'Підтримай++ - спільнокошт',
           }}
