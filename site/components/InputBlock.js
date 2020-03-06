@@ -8,6 +8,7 @@ const CustomBlock = ({ inputLabels, handleChange }) => {
         inputLabels.map((input) => (
           <Form.Group key={input.name}>
             <Form.Label>{input.label}</Form.Label>
+            <div><i>{input.description}</i></div>
             <Form.Control
               name={input.name}
               type={input.type}

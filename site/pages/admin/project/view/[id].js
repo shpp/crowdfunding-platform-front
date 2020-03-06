@@ -122,6 +122,14 @@ class AdminViewProjectPage extends Component {
               <Row>
                 <Col>
                   <section style={styles.section}>
+                    <p><strong>Короткий опис:</strong></p>
+                    <div>{project.shortDescription}</div>
+                  </section>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <section style={styles.section}>
                     <p><strong>Опис:</strong></p>
                     <div dangerouslySetInnerHTML={{ __html: project.description }} />
                   </section>

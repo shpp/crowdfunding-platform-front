@@ -42,8 +42,7 @@ class AdminProjectEdit extends Component {
         archived: project.state === 'archived',
         creationDate: new Date((+project.createdAtTS + 2 * 60 * 60 * 1000) || Date.now())
           .toISOString()
-          .split('.')[0]
-          .replace('T', ' ')
+          .split('T')[0]
       }
     });
   }
@@ -91,8 +90,9 @@ class AdminProjectEdit extends Component {
     const labels = [
       { name: 'name', label: "Ім'я проекту", type: 'text', value: [project.name] },
       { name: 'creationDate', label: 'Дата створення', type: 'text', value: [project.creationDate] },
-      { name: 'amount', label: 'Необхідно зібрати', type: 'number', value: [project.amount] },
+      { name: 'amount', label: 'Сума, яку необхідно зібрати', type: 'number', value: [project.amount] },
       { name: 'image', label: 'Картинка-обкладинка (URL)', type: 'text', value: [project.image] },
+      { name: 'shortDescription', label: 'Короткий опис', type: 'text', value: [project.shortDescription], description: '1-2 речення, які коротко описують весь проект' },
     ];
 
     return (
@@ -133,16 +133,7 @@ class AdminProjectEdit extends Component {
                 </Form.Group>
               </Col>
               <Col>
-                <Tabs defaultActiveKey="purpose">
-                  <Tab eventKey="purpose" title="Мета кампанії">
-                    <Editor
-                      content={project.plannedSpendings}
-                      onChange={(value) => this.handleChange({
-                        value,
-                        name: 'plannedSpendings'
-                      })}
-                    />
-                  </Tab>
+                <Tabs defaultActiveKey="description">
                   <Tab eventKey="description" title="Опис проекту">
                     <Editor
                       content={project.description}
@@ -152,7 +143,16 @@ class AdminProjectEdit extends Component {
                       })}
                     />
                   </Tab>
-                  <Tab eventKey="actualSpending" title="Куди витрачено?">
+                  <Tab eventKey="purpose" title="Запланований кошторис">
+                    <Editor
+                      content={project.plannedSpendings}
+                      onChange={(value) => this.handleChange({
+                        value,
+                        name: 'plannedSpendings'
+                      })}
+                    />
+                  </Tab>
+                  <Tab eventKey="actualSpending" title="Куди по факту витрачено кошти">
                     <Editor
                       content={project.actualSpendings}
                       onChange={(value) => this.handleChange({

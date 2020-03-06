@@ -50,7 +50,7 @@ class ProjectPage extends React.Component {
           <meta property="fb:app_id" content="1566470086989294" />
           <meta property="og:image" content={project.image} />
           <meta property="og:site_name" content="Підтримай++ - спільнокошт" />
-          <meta property="og:description" content={project.description} />
+          <meta property="og:description" content={project.shortDescription} />
         </Head>
         <div className="project-image-wrapper" />
         <div className="container">
