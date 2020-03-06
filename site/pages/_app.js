@@ -29,7 +29,10 @@ const MyApp = ({ Component, pageProps }) => (
         color: ${colors.green};
       }
       .text-danger {
-        color: ${colors.red}
+        color: ${colors.red};
+      }
+      a {
+        color: ${colors.green};
       }
       `}
 

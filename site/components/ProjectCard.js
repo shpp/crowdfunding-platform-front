@@ -4,6 +4,7 @@ import api from '../api';
 import ProgressBar from './ProgressBar';
 import colors from '../theme/colors';
 import Check from '../assets/icon/check.svg';
+import { formatDate } from '../utils';
 
 const styles = {
   wrapper: {
@@ -97,7 +98,7 @@ class ProjectCard extends React.Component {
           />
 
           <div className="text-small">
-            {new Date(+project.createdAtTS || 0).toLocaleDateString('uk')}
+            Створено {formatDate(+project.createdAtTS)}
           </div>
         </div>
         <style jsx>
@@ -137,6 +138,7 @@ class ProjectCard extends React.Component {
             
             .button-wrapper {
               text-align: center;
+              margin: 20px 0;
             }
             .submit-button {
               background-color: ${colors.green};
@@ -144,6 +146,7 @@ class ProjectCard extends React.Component {
               border: none;
               padding: 10px 15px;
               font-size: 14px;
+              width: 100%;
               display: inline-block;
               cursor: pointer;
             }

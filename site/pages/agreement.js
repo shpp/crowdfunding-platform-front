@@ -119,9 +119,6 @@ const Agreement = () => (
     <style jsx>
       {
         `
-         a {
-          color: green;
-         }
          section {
           margin: 20px 0;
          }
