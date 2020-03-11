@@ -74,9 +74,6 @@ class HomePage extends Component {
         </div>
         <style jsx>
           {`
-          main {
-            min-height: 400px;
-          }
           .card:hover{
             transform: translateY(-4px);
             box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15) !important;
