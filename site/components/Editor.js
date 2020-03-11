@@ -4,12 +4,11 @@ const style = {
   height: '200px',
 };
 class Editor extends Component {
-  constructor(props) {
-    super(props);
-    if (typeof window !== 'undefined') {
-      // eslint-disable-next-line global-require
-      this.quill = require('react-quill');
-    }
+  quill = null;
+
+  componentDidMount() {
+    // eslint-disable-next-line global-require
+    this.quill = require('react-quill');
   }
 
   render() {
