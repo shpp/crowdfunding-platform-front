@@ -91,7 +91,7 @@ class AdminProjectEdit extends Component {
       { name: 'name', label: "Ім'я проекту", type: 'text', value: [project.name] },
       { name: 'creationDate', label: 'Дата створення', type: 'text', value: [project.creationDate] },
       { name: 'amount', label: 'Сума, яку необхідно зібрати', type: 'number', value: [project.amount] },
-      { name: 'image', label: 'Картинка-обкладинка (URL)', type: 'text', value: [project.image] },
+      { name: 'image', label: 'Картинка-обкладинка (URL)', type: 'text', value: [project.image], description: 'Краще за все видно картинки зі співвідношенням 16:9' },
       { name: 'shortDescription', label: 'Короткий опис', type: 'text', value: [project.shortDescription], description: '1-2 речення, які коротко описують весь проект' },
     ];
 
