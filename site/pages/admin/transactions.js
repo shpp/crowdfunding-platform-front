@@ -37,7 +37,7 @@ class Transactions extends Component {
       <Page>
         <h1 className="text-center">Транзакції</h1>
         <TableTransactions
-          transactions={this.state.namedTransactions}
+          transactions={this.state.namedTransactions.filter((t) => t.status !== 'revoked')}
           fullTable
         />
       </Page>

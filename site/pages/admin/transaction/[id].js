@@ -22,6 +22,10 @@ class TransactionView extends Component {
   }
 
   async componentDidMount() {
+    await this.getTransaction();
+  }
+
+  async getTransaction() {
     const { transactions } = await api.get('transactions');
     this.setState({
       transaction: transactions.filter((t) => t._id === this.props.router.query.id).pop()
@@ -30,10 +34,12 @@ class TransactionView extends Component {
 
   async revoke() {
     await api.post('revoke_transaction', { id: this.props.router.query.id });
+    await this.getTransaction();
   }
 
   async reaffirm() {
     await api.post('reaffirm_transaction', { id: this.props.router.query.id });
+    await this.getTransaction();
   }
 
   render() {
