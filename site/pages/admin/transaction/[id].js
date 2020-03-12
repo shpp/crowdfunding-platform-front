@@ -29,11 +29,11 @@ class TransactionView extends Component {
   }
 
   async revoke() {
-    await api.post('revoke_transaction', { id: this.state.transaction.id });
+    await api.post('revoke_transaction', { id: this.props.router.query.id });
   }
 
   async reaffirm() {
-    await api.post('reaffirm_transaction', { id: this.state.transaction.id });
+    await api.post('reaffirm_transaction', { id: this.props.router.query.id });
   }
 
   render() {
