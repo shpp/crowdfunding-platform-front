@@ -37,9 +37,9 @@ class TransactionView extends Component {
   }
 
   render() {
-    const revokeButton = <Button className="btn-danger" onClick={this.revoke}>Скасувати транзакцію</Button>;
+    const revokeButton = <Button className="btn-danger" onClick={this.revoke.bind(this)}>Приховати транзакцію</Button>;
 
-    const reaffirmButton = <Button className="btn-success" onClick={this.reaffirm}>Провести транзакцію</Button>;
+    const reaffirmButton = <Button className="btn-success" onClick={this.reaffirm.bind(this)}>Зарахувати транзакцію</Button>;
 
     const { transaction } = this.state;
 
