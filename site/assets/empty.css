@@ -110,6 +110,9 @@ main {
 .list-item:hover {
     background-color: rgba(0, 0, 0, 0.05);
 }
+.react-loading-skeleton {
+    vertical-align: top;
+}
 
 @media (min-width: 768px) {
     .navbar-expand-md {
@@ -148,5 +151,4 @@ main {
     .navbar-collapse.show .list-item {
         display: block;
     }
-
 }

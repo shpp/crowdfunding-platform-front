@@ -3,6 +3,7 @@ import { withRouter } from 'next/router';
 import api from '../api';
 import Page from '../layout/Page';
 import ProjectCard from '../components/ProjectCard';
+import SkeletonCard from '../components/SkeletonCard';
 import colors from '../theme/colors';
 
 const styles = {
@@ -31,13 +32,14 @@ class HomePage extends Component {
     super(props);
     this.state = {
       // initial state
-      projects: []
+      projects: [],
+      loading: true
     };
   }
 
   async componentDidMount() {
     const { projects } = await api.get('projects');
-    this.setState({ projects });
+    this.setState({ projects, loading: false });
   }
 
   getSortedProjects(projects = []) {
@@ -53,7 +55,7 @@ class HomePage extends Component {
 
   render() {
     const projects = this.getSortedProjects(this.state.projects);
-
+    const { loading } = this.state;
     return (
       <Page>
         <div style={styles.container} className="homepage">
@@ -70,7 +72,17 @@ class HomePage extends Component {
                   <ProjectCard project={project} />
                 </div>
               ))
-            : 'Тут поки що нічого немає :('}
+            : loading
+              ? [1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  style={styles.cardWrapper}
+                  className="card"
+                >
+                  <SkeletonCard />
+                </div>
+              ))
+              : 'Тут поки що нічого немає :('}
         </div>
         <style jsx>
           {`
