@@ -7,7 +7,7 @@ import colors from '../theme/colors';
 
 const styles = {
   container: {
-    maxWidth: '85%',
+    maxWidth: '1000px',
     display: 'flex',
     flexWrap: 'wrap',
     margin: '0 auto',
