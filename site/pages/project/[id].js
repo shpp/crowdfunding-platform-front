@@ -4,24 +4,10 @@ import Head from 'next/dist/next-server/lib/head';
 import { NextSeo } from 'next-seo';
 import api from '../../api';
 import Page from '../../layout/Page';
-import colors from '../../theme/colors';
 import ProgressBar from '../../components/ProgressBar';
+import ButtonDonate from '../../components/ButtonDonate';
 
 class ProjectPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.submitRef = React.createRef();
-    this.state = {
-      button: ''
-    };
-  }
-
-  async componentDidMount() {
-    const id = this.props.project._id;
-    const { button } = await api.get('button', { id });
-    this.setState({ button });
-  }
-
   static async getInitialProps({ query: { id } }) {
     const { projects = [] } = await api.get('projects');
     return {
@@ -29,16 +15,7 @@ class ProjectPage extends React.Component {
     };
   }
 
-  onSubmitClick = () => {
-    const form = this.submitRef.current.getElementsByTagName('form')[0];
-    if (form) {
-      form.setAttribute('target', '_blank');
-      form.submit();
-    }
-  };
-
   render() {
-    const { button } = this.state;
     const { project = {}, router } = this.props;
     const projectURL = process.env.APP_URL + router.asPath;
 
@@ -86,25 +63,7 @@ class ProjectPage extends React.Component {
               <div dangerouslySetInnerHTML={{ __html: project.actualSpendings }} />
             </section>
           )}
-          {!project.completed && (
-            <div
-              className="button-wrapper"
-              ref={this.submitRef}
-            >
-              <button
-                type="button"
-                className="submit-button"
-                onClick={this.onSubmitClick}
-                onKeyPress={() => {}}
-              >
-                Підтримати
-              </button>
-              <div
-                dangerouslySetInnerHTML={{ __html: button }}
-                className="liqpay-form"
-              />
-            </div>
-          )}
+          {!project.completed && (<ButtonDonate projectId={project._id} />)}
         </div>
         <style jsx>
           {`
@@ -125,23 +84,8 @@ class ProjectPage extends React.Component {
             background-position: center center;
             background-image: url(${project.image});
           }
-          
-          .button-wrapper {
-            padding: 25px 0 15px;
-            text-align: center;
-          }
-          
-          .submit-button {
-            background-color: ${colors.green};
-            color: ${colors.white};
-            border: none;
-            padding: 10px 25px;
-            font-size: 20px;
-            display: inline-block;
-            cursor: pointer;
-          }
 
-          @media screen and (max-width: 464px) {
+          @media screen and (max-width: 460px) {
             .project-image-wrapper {
               margin: -20px;
               height: 150px;

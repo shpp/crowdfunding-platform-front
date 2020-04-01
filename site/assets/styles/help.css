@@ -1,0 +1,78 @@
+.help-container {
+    max-width: 1024px;
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px 0 0 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+.help-text-block {
+    background-color: white;
+    width: calc(100% - 300px - 60px);
+    padding: 20px 40px;
+}
+.help-chart-wrapper {
+    width: 100%;
+    overflow: visible;
+}
+.help-chart-container {
+    height: 350px;
+    font-size: 14px;
+}
+.help-chart-tooltip {
+    background-color: white;
+    border: 1px solid lightgrey;
+    max-width: 200px;
+    padding: 20px;
+}
+.help-intro img {
+    width: 160px;
+    border-radius: 50%;
+    margin-right: 30px;
+}
+
+aside {
+    width: 330px;
+    height: 530px;
+    position: sticky;
+    top: 5%;
+}
+
+.recharts-rectangle.recharts-tooltip-cursor{
+    fill: rgb(247,247,247)!important;
+}
+@media screen and (max-width: 768px) {
+    .help-container {
+        flex-direction: column;
+        width: 100%;
+    }
+    .help-text-block {
+        width: 100%;
+        padding: 20px;
+    }
+    aside {
+        margin: 10px auto;
+    }
+    .help-intro {
+        flex-direction: column-reverse!important;
+    }
+    .help-intro img {
+        margin: 0 auto;
+    }
+    .help-chart-container {
+        height: 250px;
+    }
+    .help-chart-wrapper {
+        overflow-x: scroll;
+    }
+}
+
+@media screen and (max-width: 460px) {
+    .help-chart-container {
+        width: 460px;
+        font-size: 12px;
+    }
+    .help-text-block {
+        padding: 20px 10px;
+    }
+}
