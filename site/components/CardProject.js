@@ -1,16 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
-import api from '../api';
 import ProgressBar from './ProgressBar';
 import colors from '../theme/colors';
 import Check from '../assets/icon/check.svg';
 import { formatDate } from '../utils';
+import ButtonDonate from './ButtonDonate';
+import { flex, column } from '../theme/utils';
 
 const styles = {
   wrapper: {
-    flexDirection: 'column',
     flexGrow: 1,
-    display: 'flex'
   },
   infoWrapper: {
     padding: '20px',
@@ -27,36 +26,11 @@ const styles = {
   }
 };
 
-class ProjectCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.submitRef = React.createRef();
-    this.state = {
-      button: '',
-    };
-  }
-
-  async componentDidMount() {
-    const { project } = this.props;
-    const { button } = await api.get('button', { id: project._id }) || '';
-    this.setState({
-      button: button.replace(/\\/g, ''),
-    });
-  }
-
-  onSubmitClick = () => {
-    const form = this.submitRef.current.getElementsByTagName('form')[0];
-    if (form) {
-      form.setAttribute('target', '_blank');
-      form.submit();
-    }
-  };
-
+class CardProject extends React.Component {
   render() {
     const { project } = this.props;
-    const { button } = this.state;
     return (
-      <div style={styles.wrapper}>
+      <div style={{ ...flex, ...column, ...styles.wrapper }}>
         {project.completed && <div className="project-completed"><Check style={{ verticalAlign: 'bottom' }} /> &nbsp;завершено</div> }
         <Link href="/project/[id]" as={`/project/${project._id}`}>
           <img
@@ -73,24 +47,9 @@ class ProjectCard extends React.Component {
           </Link>
           <div style={styles.description}>
             <p>{project.shortDescription}</p>
-            <p><Link href="/project/[id]" as={`/project/${project._id}`}><a>читати далі</a></Link></p>
+            <p><Link href="/project/[id]" as={`/project/${project._id}`}><a>детальніше</a></Link></p>
           </div>
-          {!project.completed && (
-            <div className="button-wrapper" ref={this.submitRef}>
-              <button
-                className="submit-button"
-                type="button"
-                onClick={this.onSubmitClick}
-                onKeyPress={() => {}}
-              >
-                Підтримати
-              </button>
-              <div
-                dangerouslySetInnerHTML={{ __html: button }}
-                className="liqpay-form"
-              />
-            </div>
-          )}
+          {!project.completed && (<ButtonDonate projectId={project._id} />)}
 
           <ProgressBar
             amount={project.amount}
@@ -135,21 +94,7 @@ class ProjectCard extends React.Component {
               cursor: pointer;
               color: #282828;
             }
-            
-            .button-wrapper {
-              text-align: center;
-              margin: 20px 0;
-            }
-            .submit-button {
-              background-color: ${colors.green};
-              color: ${colors.white};
-              border: none;
-              padding: 10px 15px;
-              font-size: 14px;
-              width: 100%;
-              display: inline-block;
-              cursor: pointer;
-            }
+
             h3:hover{
               color: ${colors.green};
             }
@@ -164,4 +109,4 @@ class ProjectCard extends React.Component {
   }
 }
 
-export default ProjectCard;
+export default CardProject;

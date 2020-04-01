@@ -1,5 +1,6 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
+import { p } from '../theme/utils';
 
 const styles = {
   wrapper: {
@@ -28,7 +29,7 @@ const styles = {
   }
 };
 
-export default function SkeletonCard() {
+export default function CardSkeleton() {
   return (
     <div style={styles.wrapper}>
       <Skeleton height={150} />
@@ -37,7 +38,7 @@ export default function SkeletonCard() {
           <Skeleton count={1} />
         </h3>
         <div style={styles.description}>
-          <p style={styles.p}><Skeleton count={3} /></p>
+          <p style={p}><Skeleton count={3} /></p>
           <Skeleton width={100} />
         </div>
         <div style={styles.buttonWrapper}>
