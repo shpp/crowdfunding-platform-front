@@ -6,7 +6,7 @@ import Footer from './Footer';
 const Layout = ({ children }) => (
   <div className="wrapper">
     <Header links={[
-      { href: '/about', text: 'Про нас' },
+      { href: '/help', text: 'Про нас' },
       { href: '/', text: 'Проекти' },
       { href: { pathname: '/', query: { filter: 'completed' } }, text: 'Вже зібрали' },
       { href: '#contacts', text: 'Контакти' },
