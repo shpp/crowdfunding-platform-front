@@ -1,30 +1,20 @@
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
+import Link from 'next/link';
 import api from '../api';
 import Page from '../layout/Page';
-import ProjectCard from '../components/ProjectCard';
-import SkeletonCard from '../components/SkeletonCard';
-import colors from '../theme/colors';
+import CardProject from '../components/CardProject';
+import CardSkeleton from '../components/CardSkeleton';
+import { grow, p } from '../theme/utils';
 
 const styles = {
   container: {
-    maxWidth: '1000px',
+    maxWidth: '1024px',
     display: 'flex',
     flexWrap: 'wrap',
     margin: '0 auto',
     padding: '30px 0 0 0',
-  },
-  cardWrapper: {
-    margin: '0 15px 50px',
-    width: 'calc(100%/3 - 30px)',
-    maxWidth: '540px',
-    display: 'flex',
-    backgroundColor: colors.white,
-    transition: '0.3s',
-    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
-    overflow: 'hidden',
-    position: 'relative'
-  },
+  }
 };
 
 class HomePage extends Component {
@@ -59,70 +49,46 @@ class HomePage extends Component {
     return (
       <Page>
         <div style={styles.container} className="homepage">
+          <div className="item">
+            <div className="card" style={{ padding: '20px' }}>
+              <h3>Підтримати Ш++/KOWO</h3>
+              <p style={p}>
+                Ш++ та КОВО &mdash; незалежні, некомерційні проекти, які щомісяця потребують коштів на утримання: оренда
+                та комунальні платежі, зарплати адміністраторів, дрібний ремонт, чай, печиво, техніка.
+              </p>
+              <p style={p}>Зі щомісячних витрат у <strong>80 000 гривень</strong> половина вже
+                покривається внесками людей/компаній, які повірили в нас.
+              </p>
+              <p style={p}>Допоможіть нам пришвидшити ріст &mdash; підпишіться на невеликі донати щомісяця!</p>
+              <div style={grow} />
+              <div className="button-wrapper">
+                <Link href="/help">
+                  <a>
+                    <button className="submit-button" type="button">
+                      Підтримати
+                    </button>
+                  </a>
+                </Link>
+              </div>
+            </div>
+          </div>
+          {/* eslint-disable-next-line no-nested-ternary */}
           {projects.length
             ? projects
               .sort((a, b) => b.createdAtTS - a.createdAtTS)
-              // .sort((a, b) => a.completed - b.completed)
               .map((project) => (
-                <div
-                  key={project._id}
-                  style={styles.cardWrapper}
-                  className="card"
-                >
-                  <ProjectCard project={project} />
+                <div key={project._id} className="card item">
+                  <CardProject project={project} />
                 </div>
               ))
             : loading
-              ? [1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  style={styles.cardWrapper}
-                  className="card"
-                >
-                  <SkeletonCard />
+              ? [1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="card item">
+                  <CardSkeleton />
                 </div>
               ))
               : 'Тут поки що нічого немає :('}
         </div>
-        <style jsx>
-          {`
-          .card:hover{
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15) !important;
-          }
-
-          @media screen and (max-width: 1240px){
-            .homepage {
-              max-width: initial !important;
-              width: 100% !important;
-              padding: 30px 30px 0 !important;
-            }
-            .card {
-              margin: 0 15px 40px !important;
-              width: calc(100%/2 - 30px) !important;
-            }
-          }
-            
-          @media screen and (max-width: 768px){
-            .homepage {
-              padding: 20px 20px 0!important;
-              justify-content: center;
-            }
-            .card {
-              margin: 0 0 30px !important;
-              width: 100% !important;
-            }
-          }
-          @media screen and (max-width: 460px) {
-            .homepage {
-              padding: 0!important;
-            }
-            .card {
-              margin: 0;
-            }
-          }
-        `}
-        </style>
       </Page>
     );
   }

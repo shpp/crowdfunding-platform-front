@@ -14,6 +14,7 @@ export const api = Instance({
     admin_projects: 'projects/admin-list',
     projects: 'projects/list',
     button: 'projects/button',
+    pay: 'donate'
   },
 });
 
