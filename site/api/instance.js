@@ -32,7 +32,8 @@ export const Instance = (config) => {
 
   instance.interceptors.response.use(
     (response) => {
-      if (response.config.method === 'post') {
+      // eslint-disable-next-line no-underscore-dangle
+      if (response.config.method === 'post' && new URLSearchParams(response.config.data).get('_notify') !== 'false') {
         toast.success('Збережено!');
       }
       return (response || {}).data;
