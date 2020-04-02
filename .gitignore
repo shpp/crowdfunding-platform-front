@@ -3,5 +3,6 @@
 site/node_modules
 site/build
 site/next.config.js
+site/public/report.csv
 .next
 .env
