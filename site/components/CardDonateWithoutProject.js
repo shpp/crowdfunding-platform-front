@@ -43,7 +43,7 @@ class CardDonateWithoutProject extends Component {
     if (this.state.newsletter
       && !(
         this.state.email
-        && this.state.email.match(/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)
+        && this.state.email.match(/^([a-zA-Z0-9_\-+.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)
       )
     ) {
       toast.error('Щоб підписатись на розсилку, вкажіть свій email');
