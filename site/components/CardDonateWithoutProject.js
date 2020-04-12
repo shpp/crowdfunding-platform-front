@@ -66,6 +66,14 @@ class CardDonateWithoutProject extends Component {
     LiqPayCheckout.init({ data, signature, language: i18n.language, mode: 'popup' })
       .on('liqpay.callback', async (d) => {
         if (['subscribed', 'success'].includes(d.status)) {
+          await api.post('paid', {
+            ...personalInfo,
+            subscribe: this.state.subscribe,
+            amount: this.state.amount,
+            currency: this.state.currency,
+            language: i18n.language,
+            order_id: d.order_id,
+            _notify: false
           });
           const Toast = () => (
             <div>
