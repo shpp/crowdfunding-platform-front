@@ -1,5 +1,6 @@
 import React from 'react';
 import colors from '../theme/colors';
+import { withTranslation } from '../utils/translations';
 
 const styles = {
   wrapper: {
@@ -28,7 +29,7 @@ const styles = {
   }
 };
 
-const ProgressBar = ({ amount, funded }) => {
+const ProgressBar = ({ amount, funded, t }) => {
   // eslint-disable-next-line no-bitwise
   const fundedPercentage = ~~((100 * funded) / amount);
   const notFundedPercentage = Math.max(0, 100 - fundedPercentage);
@@ -37,7 +38,7 @@ const ProgressBar = ({ amount, funded }) => {
       <div style={styles.text}>
         <span>
           <strong className="text-green">{funded}&nbsp;</strong>
-          <span className="text-small">UAH зібрали</span>
+          <span className="text-small">UAH {t('completed').toLowerCase()}</span>
         </span>
         <strong className="text-small">
           {fundedPercentage}%
@@ -53,4 +54,4 @@ const ProgressBar = ({ amount, funded }) => {
   );
 };
 
-export default ProgressBar;
+export default withTranslation('common')(ProgressBar);
