@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import colors from '../theme/colors';
 import api from '../api';
 import { flex, grow, p, column } from '../theme/utils';
+import { i18n, withTranslation } from '../utils/translations';
 
 const styles = {
   wrapper: {
@@ -35,8 +36,23 @@ class CardDonateWithoutProject extends Component {
       name: '',
       surname: '',
       email: '',
-      newsletter: false
+      newsletter: false,
+      currency: 'UAH',
+      fastAmounts: {
+        UAH: [100, 200, 500, 1000],
+        USD: [5, 25, 50, 100],
+        EUR: [5, 25, 50, 100]
+      },
+      currencies: ['UAH', 'USD', 'EUR']
     };
+  }
+
+  componentDidMount() {
+    i18n.on('languageChanged', () => {
+      if (i18n.language === 'uk' && ['USD', 'EUR'].includes(this.state.currency)) {
+        this.setState({ currency: 'UAH', amount: 500 });
+      }
+    });
   }
 
   async pay() {
@@ -46,7 +62,7 @@ class CardDonateWithoutProject extends Component {
         && this.state.email.match(/^([a-zA-Z0-9_\-+.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)
       )
     ) {
-      toast.error('Щоб підписатись на розсилку, вкажіть свій email');
+      toast.error(this.props.t('errors.emptyEmail'));
       return;
     }
     const personalInfo = this.state.anonymous ? {} : {
@@ -59,9 +75,10 @@ class CardDonateWithoutProject extends Component {
       ...personalInfo,
       subscribe: this.state.subscribe,
       amount: this.state.amount,
+      currency: this.state.currency,
+      lang: i18n.language,
       _notify: false
     });
-    let toastShowed = false;
     // eslint-disable-next-line no-undef
     LiqPayCheckout.init({ data, signature, language: i18n.language, mode: 'popup' })
       .on('liqpay.callback', async (d) => {
@@ -91,10 +108,11 @@ class CardDonateWithoutProject extends Component {
   }
 
   render() {
-    const { amount, anonymous, newsletter } = this.state;
+    const { amount, anonymous, newsletter, currency, fastAmounts } = this.state;
+    const { t } = this.props;
     return (
       <div style={{ ...flex, ...column, ...grow }}>
-        <h2>Підтримайте нашу діяльність</h2>
+        <h2>{t('form.title')}</h2>
 
         <div className="card" style={{ padding: '20px', marginTop: '37px' }}>
           <div style={styles.subscriptionType}>
@@ -103,72 +121,86 @@ class CardDonateWithoutProject extends Component {
               className={`radio ${this.state.subscribe === true ? 'checked' : ''}`}
               onClick={() => this.setState({ subscribe: true })}
             >
-              Щомісяця
+              {t('form.regular')}
             </button>
             <button
               type="button"
               className={`radio ${this.state.subscribe === false ? 'checked' : ''}`}
               onClick={() => this.setState({ subscribe: false })}
             >
-              Одноразово
+              {t('form.oneTime')}
             </button>
           </div>
           <p style={p}>
-            <span>Сума внеску:&nbsp;</span>
+            <span>{t('form.amount')}:&nbsp;</span>
             <span>
               <input
                 type="number"
                 min={100}
                 value={amount}
                 onChange={(e) => this.setState({ amount: +e.target.value })}
-                onBlur={() => this.setState({ amount: Math.max(amount, 100) })}
+                onBlur={() => this.setState({ amount: Math.max(amount, fastAmounts[currency][0]) })}
               />
             </span>
-            <span>грн</span>
+            <span>
+              {i18n.language === 'uk'
+                ? 'грн'
+                : (
+                  <select
+                    onChange={(e) => this.setState({
+                      currency: e.target.value,
+                      amount: fastAmounts[e.target.value][2]
+                    })}
+                    value={currency}
+                  >
+                    { this.state.currencies.map((c) => (<option key={c} value={c}>{t(`form.currency.${c}`)}</option>))}
+                  </select>
+                )}
+            </span>
           </p>
           <div style={{ ...p, ...flex }}>
             {
-            [100, 200, 500, 1000].map((sum) => (
+            fastAmounts[currency].map((sum) => (
               <button
                 type="button"
                 key={sum}
                 className={`sum ${this.state.amount === sum ? 'selected' : ''}`}
                 onClick={() => this.setState({ amount: sum })}
               >
-                {sum} грн
+                {sum} {t(`form.currency.${currency}`)}
               </button>
             ))
           }
           </div>
           <h3 style={flex}>
-            <span>Розкажіть про себе</span>
-            <label><input type="checkbox" checked={anonymous} onChange={() => this.setState({ anonymous: !anonymous })} /> анонімно</label>
+            <span>{t('form.aboutYou.title')}</span>
+            <label><input type="checkbox" checked={anonymous} onChange={() => this.setState({ anonymous: !anonymous })} /> {t('form.aboutYou.anonymous')}</label>
           </h3>
           <div style={styles.flex} className={`${anonymous ? 'white-overlay' : ''}`}>
             <label style={{ width: 'calc(100% / 2 - 10px)' }}>
-              Ім&apos;я <br />
+              {t('form.aboutYou.name.label')} <br />
               <input
                 type="text"
-                placeholder="Леся"
+                placeholder={t('form.aboutYou.name.placeholder')}
                 value={this.state.name}
                 onChange={(e) => this.setState({ name: e.target.value })}
               />
             </label>
             <label style={{ width: 'calc(100% / 2 - 10px)' }}>
-              Прізвище <br />
+              {t('form.aboutYou.surname.label')} <br />
               <input
                 type="text"
-                placeholder="Українка"
+                placeholder={t('form.aboutYou.surname.placeholder')}
                 value={this.state.surname}
                 onChange={(e) => this.setState({ surname: e.target.value })}
               />
             </label>
             <label style={{ width: '100%' }}>
-              Електронна пошта <br />
+              {t('form.aboutYou.email.label')}<br />
               <input
                 type="text"
                 value={this.state.email}
-                placeholder="pryvit@poshta.com"
+                placeholder={t('form.aboutYou.email.placeholder')}
                 onChange={(e) => this.setState({ email: e.target.value })}
               />
             </label>
@@ -178,7 +210,7 @@ class CardDonateWithoutProject extends Component {
                 checked={newsletter}
                 onChange={() => this.setState({ newsletter: !newsletter })}
               />
-              Хочу отримувати регулярну розсилку зі звітами та інсайтами
+              {t('form.aboutYou.newsletter')}
             </label>
           </div>
           <div className="button-wrapper">
@@ -187,7 +219,16 @@ class CardDonateWithoutProject extends Component {
               type="button"
               onClick={() => this.pay()}
             >
-              {this.state.subscribe ? <span>Підписатись на {this.state.amount} грн <strong>щомісяця</strong></span> : 'Підтримати одноразово'}
+              {
+                this.state.subscribe
+                  ? (
+                    <span>
+                      {t('form.button.regular', { amount, curr: t(`form.currency.${currency}`) })}
+                      &nbsp;<strong>{t('form.regular').toLowerCase()}</strong>
+                    </span>
+                  )
+                  : t('form.button.oneTime')
+              }
             </button>
             <div id="formContainer" className="hidden" />
           </div>
@@ -278,4 +319,4 @@ class CardDonateWithoutProject extends Component {
     );
   }
 }
-export default CardDonateWithoutProject;
+export default withTranslation('help')(CardDonateWithoutProject);
