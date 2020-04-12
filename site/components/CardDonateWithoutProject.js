@@ -63,39 +63,23 @@ class CardDonateWithoutProject extends Component {
     });
     let toastShowed = false;
     // eslint-disable-next-line no-undef
-    LiqPayCheckout.init({
-      data,
-      signature,
-      language: 'uk',
-      mode: 'popup' // embed || popup
-    }).on('liqpay.callback', (d) => {
-      if (['subscribed', 'success'].includes(d.status)) {
-        const Toast = () => (
-          <div>
-            <p>Оплата пройшла успішно, дякуємо за підтримку! ♥</p>
-            {d.status === 'subscribed' && this.state.email.length === 0 ? (
-              <div>
-                <p>Збережіть ID своєї підписки: <strong>{d.order_id}</strong></p>
-                <p>Для того щоб скасувати підписку надішліть свій ID на <a href="mailto:donate@kowo.me">donate@kowo.me</a>.</p>
-              </div>
-            ) : null }
-          </div>
-        );
-        // eslint-disable-next-line no-undef
-        if (!toastShowed) {
-          toast(Toast, {
-            autoClose: false,
-            position: 'top-center',
-            closeOnClick: false,
-            draggable: false
+    LiqPayCheckout.init({ data, signature, language: i18n.language, mode: 'popup' })
+      .on('liqpay.callback', async (d) => {
+        if (['subscribed', 'success'].includes(d.status)) {
           });
-          toastShowed = true;
+          const Toast = () => (
+            <div>
+              <p>{this.props.t('notification.success.general')}</p>
+              {
+                d.status === 'subscribed' && this.state.email.length === 0
+                  ? <div dangerouslySetInnerHTML={{ __html: this.props.t('notification.success.orderId', { orderId: d.order_id }) }} />
+                  : null
+              }
+            </div>
+          );
+          toast(Toast, { autoClose: false, position: 'top-center', closeOnClick: false, draggable: false });
         }
-      }
-    });
-    // const formContainer = document.getElementById('formContainer');
-    // formContainer.innerHTML = button;
-    // formContainer.children[0].submit();
+      });
   }
 
   render() {
