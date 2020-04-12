@@ -1,0 +1,16 @@
+{
+  "support": "Donate",
+  "createdAt": "Created on",
+  "completed": "Funded",
+  "funded": "funded",
+  "details": "show more",
+  "supportCard": {
+    "title": "Support our activity",
+    "p": [
+      "School++ and KOWO are independent, non-profit projects, and every month they need a livelihood: rent and utilities, salaries of administrators, repair, tea, cookies, equipment.",
+      "From monthly expenses of <strong>~3 000 USD</strong> the half is already covered by donations of people/companies, who believe in us.",
+      "Help us to grow even faster &mdash; subscribe to a small monthly donation!"
+    ]
+  },
+  "noresults": "There is nothing here yet :("
+}
