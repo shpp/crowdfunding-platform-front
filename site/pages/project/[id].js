@@ -5,13 +5,11 @@ import { NextSeo } from 'next-seo';
 
 import api from '../../api';
 
-import Page from '../../layout/Page';
+import Page from '../../components/layout/Page';
 import ProgressBar from '../../components/ProgressBar';
 import ButtonDonate from '../../components/ButtonDonate';
 
 import { withTranslation, i18n } from '../../utils/translations';
-
-import '../../assets/styles/project.css';
 
 class ProjectPage extends React.Component {
   static async getInitialProps({ query: { id } }) {

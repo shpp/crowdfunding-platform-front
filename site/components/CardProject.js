@@ -4,7 +4,7 @@ import ProgressBar from './ProgressBar';
 import Check from '../assets/icon/check.svg';
 import { formatDate } from '../utils';
 import ButtonDonate from './ButtonDonate';
-import { flex, column, p, grow } from '../theme/utils';
+import { flex, column, p, grow } from '../utils/theme';
 import { withTranslation, i18n, Link } from '../utils/translations';
 
 class CardProject extends React.Component {

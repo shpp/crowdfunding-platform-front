@@ -3,8 +3,8 @@ import { withRouter } from 'next/router';
 import {
   Button, Col, Container, Form, Row,
 } from 'react-bootstrap';
-import Page from '../../../layout/admin/Page';
-import withAuth from '../../../layout/admin/HOC/withAuth';
+import Page from '../../../components/layout/admin/Page';
+import withAuth from '../../../components/layout/admin/HOC/withAuth';
 import api from '../../../api';
 
 const style = {

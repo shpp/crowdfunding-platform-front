@@ -5,15 +5,12 @@ import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Bar, LabelList,
 } from 'recharts';
 
-import Page from '../layout/Page';
+import Page from '../components/layout/Page';
 import CardDonateWithoutProject from '../components/CardDonateWithoutProject';
 
-import { flex, p, row, section } from '../theme/utils';
+import { flex, p, row, section } from '../utils/theme';
 import { formatMoney, isLastThreeMonths, getAverageStats, isMobile, isTablet } from '../utils';
 import { withTranslation, i18n } from '../utils/translations';
-
-import '../assets/styles/help.css';
-import '../assets/styles/card.css';
 
 const colors = [
   '#fe4a49', '#2ab7ca ', '#fed766',

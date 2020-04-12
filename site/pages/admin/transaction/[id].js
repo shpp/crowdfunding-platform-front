@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Col, Button } from 'react-bootstrap';
 import Link from 'next/link';
-import Page from '../../../layout/admin/Page';
-import withAuth from '../../../layout/admin/HOC/withAuth';
+import Page from '../../../components/layout/admin/Page';
+import withAuth from '../../../components/layout/admin/HOC/withAuth';
 import api from '../../../api';
 
 const styles = {

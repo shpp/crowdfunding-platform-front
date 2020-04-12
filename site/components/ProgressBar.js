@@ -1,5 +1,5 @@
 import React from 'react';
-import colors from '../theme/colors';
+import { colors } from '../utils/theme';
 import { withTranslation } from '../utils/translations';
 
 const styles = {

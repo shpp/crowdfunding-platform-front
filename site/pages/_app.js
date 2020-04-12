@@ -5,10 +5,16 @@ import Head from 'next/head';
 import { DefaultSeo } from 'next-seo';
 
 import { appWithTranslation } from '../utils/translations';
-import colors from '../theme/colors';
-import '../assets/styles/main.css';
+import { colors } from '../utils/theme';
+
+// add stylesheets with this awful way because of awful next.js
 import 'axios-progress-bar/dist/nprogress.css';
 import 'react-toastify/dist/ReactToastify.css';
+import '../assets/styles/main.css';
+import '../assets/styles/card.css';
+import '../assets/styles/project.css';
+import '../assets/styles/help.css';
+import '../assets/styles/footer.css';
 
 const MyApp = ({ Component, pageProps }) => (
   <div>

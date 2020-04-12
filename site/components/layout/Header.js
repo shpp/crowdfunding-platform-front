@@ -1,8 +1,8 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 // import Link from 'next/link';
-import { i18n, withTranslation, Link } from '../utils/translations';
-import colors from '../theme/colors';
+import { i18n, withTranslation, Link } from '../../utils/translations';
+import { colors } from '../../utils/theme';
 
 const styles = {
   container: {

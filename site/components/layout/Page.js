@@ -2,7 +2,7 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import Header from './Header';
 import Footer from './Footer';
-import { withTranslation } from '../utils/translations';
+import { withTranslation } from '../../utils/translations';
 
 const Layout = ({ children, t }) => (
   <div className="wrapper">

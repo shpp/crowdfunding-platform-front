@@ -1,4 +1,4 @@
-import Page from '../layout/Page';
+import Page from '../components/layout/Page';
 
 const AboutPage = () => (
   <Page>

@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { Card, Container, Table } from 'react-bootstrap';
 import React, { Component } from 'react';
-import Page from '../../layout/admin/Page';
-import withAuth from '../../layout/admin/HOC/withAuth';
+import Page from '../../components/layout/admin/Page';
+import withAuth from '../../components/layout/admin/HOC/withAuth';
 import api from '../../api';
 
 class AdminListPage extends Component {

@@ -3,7 +3,7 @@ import { withRouter } from 'next/router';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import createAndSetToken from '../../utils/createToken';
 import api from '../../api';
-import Page from '../../layout/admin/Page';
+import Page from '../../components/layout/admin/Page';
 
 class Login extends Component {
   constructor(props) {

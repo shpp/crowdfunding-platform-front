@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
-import colors from '../theme/colors';
 import api from '../api';
-import { flex, grow, p, column } from '../theme/utils';
+import { flex, grow, p, column, colors } from '../utils/theme';
 import { i18n, withTranslation } from '../utils/translations';
 
 const styles = {

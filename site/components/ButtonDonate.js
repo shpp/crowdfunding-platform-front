@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import api from '../api';
-import colors from '../theme/colors';
+import { colors } from '../utils/theme';
 import { i18n, withTranslation } from '../utils/translations';
 
 const styles = {

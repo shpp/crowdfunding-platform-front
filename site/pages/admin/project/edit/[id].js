@@ -3,10 +3,10 @@ import {
 } from 'react-bootstrap';
 import { withRouter } from 'next/router';
 import React, { Component } from 'react';
-import InputBlock from '../../../../components/InputBlock';
-import Page from '../../../../layout/admin/Page';
-import Editor from '../../../../components/Editor';
-import withAuth from '../../../../layout/admin/HOC/withAuth';
+import InputBlock from '../../../../components/admin/InputBlock';
+import Page from '../../../../components/layout/admin/Page';
+import Editor from '../../../../components/admin/Editor';
+import withAuth from '../../../../components/layout/admin/HOC/withAuth';
 import api from '../../../../api';
 
 const style = {

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Page from '../../layout/admin/Page';
+import Page from '../../components/layout/admin/Page';
 import api from '../../api';
-import TableTransactions from '../../components/TableTransactions';
-import withAuth from '../../layout/admin/HOC/withAuth';
+import TableTransactions from '../../components/admin/TableTransactions';
+import withAuth from '../../components/layout/admin/HOC/withAuth';
 
 /* eslint-disable no-console */
 class Transactions extends Component {

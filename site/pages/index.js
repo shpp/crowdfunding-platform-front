@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'next/router';
 // import Link from 'next/link';
 import api from '../api';
-import Page from '../layout/Page';
+import Page from '../components/layout/Page';
 import CardProject from '../components/CardProject';
 import CardSkeleton from '../components/CardSkeleton';
-import { grow, p } from '../theme/utils';
-import '../assets/styles/card.css';
+import { grow, p } from '../utils/theme';
 import { withTranslation, Link } from '../utils/translations';
 
 class HomePage extends Component {
