@@ -1,33 +1,47 @@
 import React from 'react';
-import Link from 'next/link';
+// import Link from 'next/link';
 import ProgressBar from './ProgressBar';
 import Check from '../assets/icon/check.svg';
 import { formatDate } from '../utils';
 import ButtonDonate from './ButtonDonate';
 import { flex, column, p, grow } from '../theme/utils';
+import { withTranslation, i18n, Link } from '../utils/translations';
 
 class CardProject extends React.Component {
   render() {
-    const { project } = this.props;
+    const { project, t } = this.props;
     return (
-        {project.completed && <div className="project-completed"><Check style={{ verticalAlign: 'bottom' }} /> &nbsp;завершено</div> }
-        <Link href="/project/[id]" as={`/project/${project._id}`}>
       <div style={{ ...flex, ...column, ...grow }}>
+        {project.completed && <div className="project-completed"><Check style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('completed')}</div> }
+        <Link
+          href={`${i18n.language === 'uk' ? '' : `/${i18n.language}`}/project/[id]`}
+          as={`/project/${project._id}`}
+        >
           <img
             src={project.image}
             alt="placeholder"
             className="project-image"
           />
         </Link>
-          <Link href="/project/[id]" as={`/project/${project._id}`}>
         <div className="project-info">
+          <Link
+            href={`${i18n.language === 'uk' ? '' : `/${i18n.language}`}/project/[id]`}
+            as={`/project/${project._id}`}
+          >
             <h3 className="project-title">
-              {project.name}
+              <a>{project.name}</a>
             </h3>
           </Link>
-            <p>{project.shortDescription}</p>
-            <p><Link href="/project/[id]" as={`/project/${project._id}`}><a>детальніше</a></Link></p>
           <div style={grow}>
+            <p style={p}>{project.shortDescription}</p>
+            <p style={p}>
+              <Link
+                href={`${i18n.language === 'uk' ? '' : `/${i18n.language}`}/project/[id]`}
+                as={`/project/${project._id}`}
+              >
+                <a>{t('details')}</a>
+              </Link>
+            </p>
           </div>
           {!project.completed && (<ButtonDonate projectId={project._id} />)}
 
@@ -37,7 +51,7 @@ class CardProject extends React.Component {
           />
 
           <div className="text-small">
-            Створено {formatDate(+project.createdAtTS)}
+            {t('createdAt')} {formatDate(+project.createdAtTS, i18n.language)}
           </div>
         </div>
       </div>
@@ -45,4 +59,4 @@ class CardProject extends React.Component {
   }
 }
 
-export default CardProject;
+export default withTranslation('common')(CardProject);
