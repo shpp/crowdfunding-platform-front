@@ -1,4 +1,4 @@
-import Link from 'next/link';
+// import Link from 'next/link';
 import Address from '../assets/icon/001-pin.svg';
 import Phone from '../assets/icon/002-electronics.svg';
 import Email from '../assets/icon/003-email.svg';
@@ -9,7 +9,7 @@ import MasterCard from '../assets/mcsc.svg';
 import Visa from '../assets/vbv.svg';
 import SocialIcon from '../components/SocialIcon';
 import theme from '../theme/colors';
-
+import { withTranslation, Link } from '../utils/translations';
 
 const style = {
   footer: {
@@ -45,7 +45,7 @@ const instagram = 'https://instagram.com/shpp.kr';
 const facebook = 'https://facebook.com/shpp.kr';
 const telegram = 'https://t.me/shppkr';
 
-const Footer = () => {
+const Footer = ({ t }) => {
   return (
     <footer>
       <div className="container">
@@ -57,8 +57,7 @@ const Footer = () => {
               </i>
               <div>
                 <a href="https://g.page/shpp-kr?share">
-                  Україна, м. Кропивницький,&nbsp;
-                  пров. Василівський, 10
+                  {t('location')}
                 </a>
               </div>
             </article>
@@ -81,7 +80,7 @@ const Footer = () => {
           </section>
           <section>
             <Link href="/agreement">
-              <a>Публічна оферта</a>
+              <a>{t('agreement')}</a>
             </Link>
             <div>
               <MasterCard style={style.footer.socialIcons.iconBig} />
@@ -90,7 +89,7 @@ const Footer = () => {
           </section>
         </div>
         <div style={style.footer.notices} className="row">
-          <p>&copy; {new Date().getFullYear()} <a href="https://programming.kr.ua">Ш++</a>. Всі права захищено. Icons made by&nbsp;<a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>&nbsp;from&nbsp;<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+          <p>&copy; {new Date().getFullYear()} <a href="https://programming.kr.ua">Ш++</a>. {t('copyright')} Icons made by&nbsp;<a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>&nbsp;from&nbsp;<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
           <p style={style.footer.socialIcons.container}>
             <SocialIcon link={instagram}>
               <Instagram style={style.footer.socialIcons.icon} />
@@ -163,4 +162,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default withTranslation('footer')(Footer);
