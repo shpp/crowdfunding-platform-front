@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 // import Link from 'next/link';
 import { i18n, withTranslation, Link } from '../../utils/translations';
-import { colors } from '../../utils/theme';
+import { colors, column, flex } from '../../utils/theme';
 
 const styles = {
   container: {
@@ -14,30 +14,6 @@ const styles = {
     borderBottom: `5px solid ${colors.green}`,
     backgroundColor: colors.white,
   },
-  title: {
-    fontFamily: 'arial',
-    fontSize: '56px',
-    fontWeight: '700',
-    lineHeight: '56px',
-    display: 'flex',
-    cursor: 'pointer'
-  },
-  logo: {
-    color: colors.green,
-    textDecoration: 'none',
-  },
-  slash: {
-    fontSize: '70%',
-    margin: '0 25px',
-    color: colors.text,
-  },
-  crowdfunding: {
-    fontSize: '40%',
-    color: colors.text,
-  },
-  burgerWrapper: {
-    display: 'none',
-  },
 };
 
 const Header = ({ links, t }) => {
@@ -45,9 +21,9 @@ const Header = ({ links, t }) => {
     <Navbar collapseOnSelect expand="md" style={styles.container}>
       <Link href="/">
         <Navbar.Brand>
-          <span style={styles.title} className="title">
-            <span style={styles.crowdfunding} className="logo">{t('logo')}<span className="text-green">++</span></span>
-          </span>
+          <h1 className="title">
+            {t('logo')}<span className="text-green">++</span>
+          </h1>
         </Navbar.Brand>
       </Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -59,17 +35,17 @@ const Header = ({ links, t }) => {
             </Link>
           ))
         }
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ ...flex, ...column, justifyContent: 'center' }}>
           <button
             type="button"
-            className="translate-button"
+            className={`translate-button ${i18n.language === 'en' && 'active'}`}
             onClick={() => i18n.changeLanguage('en')}
           >
             EN
           </button>
           <button
             type="button"
-            className="translate-button"
+            className={`translate-button ${i18n.language === 'uk' && 'active'}`}
             onClick={() => i18n.changeLanguage('uk')}
           >
             UA
