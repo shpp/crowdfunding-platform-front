@@ -10,6 +10,7 @@ import CardDonateWithoutProject from '../components/CardDonateWithoutProject';
 
 import { flex, p, row, section } from '../theme/utils';
 import { formatMoney, isLastThreeMonths, getAverageStats, isMobile, isTablet } from '../utils';
+import { withTranslation, i18n } from '../utils/translations';
 
 import '../assets/styles/help.css';
 import '../assets/styles/card.css';
@@ -22,34 +23,13 @@ const colors = [
   '#0392cf', '#f6abb6', '#03396c',
 ];
 
-const expense = {
-  оренда: {
-    title: 'Оренда',
-    description: 'Приміщення площею 360м2 у центрі міста',
-  },
-  комунальні: {
-    title: 'Комунальні платежі',
-    description: 'Опалення, електроенергія, водопостачання, інтернет тощо.',
-  },
-  побут: {
-    title: 'Побутові витрати',
-    description: 'Чай, печиво, поліграфія, ремонт, оренда серверів, тощо.',
-  },
-  зарплати: {
-    title: 'Зарплати',
-    description: 'Оплата праці 2 адміністраторів та 1 менеджера + податки',
-  },
-};
+class Help extends Component {
+  static getInitialProps() {
+    return {
+      namespacesRequired: ['help'],
+    };
+  }
 
-const getTooltipContent = ({ label }) => (
-  <div className="help-chart-tooltip">
-    <p><strong>{(expense[label] || {}).title}</strong></p>
-    <p>{(expense[label] || {}).description}</p>
-    {/* <p><Link href="/reports"><a>фін. звіт</a></Link></p> */}
-  </div>
-);
-
-export default class Help extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -79,6 +59,16 @@ export default class Help extends Component {
 
   render() {
     const { income, expenses } = this.state;
+    const { t } = this.props;
+
+    const getTooltipContent = ({ label }) => (
+      <div className="help-chart-tooltip">
+        <p><strong>{t(`expense.${label}.title`)}</strong></p>
+        <p>{t(`expense.${label}.description`)}</p>
+        {/* <p><Link href="/reports"><a>фін. звіт</a></Link></p> */}
+      </div>
+    );
+
     if (income && expenses) {
       const coloredCell = (_, index) => <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
       return (
@@ -87,34 +77,23 @@ export default class Help extends Component {
             <div className="help-text-block">
               <section style={{ ...flex, ...row, alignItems: 'start' }} className="help-intro">
                 <div>
-                  <h2>Привіт!</h2>
-                  <p>Мене звати Рома, я програміст.</p>
-                  <p>
-                    Я заснував <a href="https://programming.kr.ua" rel="noopener noreferrer" target="_blank">Ш++</a>
-                    &nbsp;та <a href="https://kowo.me" rel="noopener noreferrer" target="_blank">KOWO</a>
-                    &nbsp;щоб розвивати ІТ-спільноту та волонтерство у Кропивницькому.
-                  </p>
+                  <h2>{t('text.title')}</h2>
+                  {t('text.p1', { returnObjects: true }).map((par) => (
+                    <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
+                  ))}
                 </div>
                 <img src="/roma.jpg" alt="Roman Shmelev" />
               </section>
               <section>
-                <p>
-                  Вже 5 років ми з друзями навчаємо програмуванню усіх бажаючих і
-                  надаємо майданчик для соціальних ініціатив міста. Безкоштовно.
-                </p>
-                <p>
-                  Ми будуємо казку, показуючи людям, як можна допомагати
-                  іншим, не думаючи про матеріальну вигоду.
-                </p>
-                <p>
-                  За кулісами магії немає &mdash; Ш++ та КОВО існують завдяки людям, для
-                  яких ці проекти є особливими. Ще половину бюджету я наповнюю власноруч, зі своєї зарплатні (це важко).
-                </p>
+                {t('text.p2', { returnObjects: true }).map((par) => (
+                  <p key={par}>{par}</p>
+                ))}
                 <div className="help-chart-wrapper">
                   <div className="help-chart-container">
                     <ResponsiveContainer>
-                      <PieChart>
+                      <PieChart key={i18n.language}>
                         <Pie
+                          key={i18n.language}
                           data={income}
                           dataKey="amount"
                           nameKey="category"
@@ -125,31 +104,23 @@ export default class Help extends Component {
                           animationBegin={0}
                           animationDuration={700}
                           label={
-                            ({ category, percent }) => `${category} — ${(percent * 100).toFixed(1)}%`
+                            ({ category, percent }) => `${t(`income.${category}`)} — ${(percent * 100).toFixed(1)}%`
                           }
                         >
                           {income.map(coloredCell)}
                         </Pie>
-                        <Tooltip formatter={(value) => formatMoney(value)} />
+                        <Tooltip formatter={(value, name) => [formatMoney(value, i18n.language), t(`income.${name}`)]} />
                       </PieChart>
                     </ResponsiveContainer>
                   </div>
                 </div>
-                <p><small><em>(середні щомісячні надходження Ш++ та КОВО)</em></small></p>
-                <p>
-                  Ця сторінка існує щоб змінити поточний стан речей &mdash;&nbsp;
-                  <strong>Ш++ та КОВО потребують стабільності та зросту</strong>. Це
-                  стане можливим лише якщо
-                  невеликими щомісячними внесками нас підтримуватиме велика кількість людей.
-                </p>
-                <p>
-                  Наша поточна фінансова ціль &mdash; <strong>вийти на самоокуповність</strong>. Це
-                  означає щомісяця не перейматись  про покриття наших базових витрат.
-                </p>
+                {t('text.p3', { returnObjects: true }).map((par) => (
+                  <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
+                ))}
                 <div className="help-chart-wrapper">
                   <div className="help-chart-container">
                     <ResponsiveContainer>
-                      <BarChart data={expenses}>
+                      <BarChart data={expenses} key={i18n.language}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="category" />
                         <YAxis domain={[0, 40000]} />
@@ -160,22 +131,16 @@ export default class Help extends Component {
                           wrapperStyle={{ pointerEvents: 'all', zIndex: 1 }}
                         />
                         <Bar dataKey="amount">
-                          <LabelList content={({ value }) => formatMoney(value)} position="top" />
+                          <LabelList content={({ value }) => formatMoney(value, i18n.language)} position="top" />
                           {expenses.map(coloredCell)}
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
                 </div>
-                <p><small><em>(середні щомісячні витрати Ш++ та КОВО)</em></small></p>
-                <p>
-                  Коли ми досягнемо самоокупованості, замість постійного пошуку грошей ми зможемо присвячувати
-                  більше душі та свого часу для розвитку Ш++ та КОВО, вдосконалювати
-                  навчальні процеси, реалізовувати більше соціальних проектів для міста.
-                </p>
-                <p>
-                  <em>Якщо вам потрібна додаткова інформація про Ш++, КОВО, нашу діяльність, звертайтесь до <a href="https://fb.me/rshmelev">мене</a>.</em>
-                </p>
+                {t('text.p4', { returnObjects: true }).map((par) => (
+                  <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
+                ))}
               </section>
             </div>
             <aside>
@@ -188,3 +153,5 @@ export default class Help extends Component {
     return <div />;
   }
 }
+
+export default withTranslation('help')(Help);
