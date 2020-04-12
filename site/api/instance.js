@@ -25,7 +25,7 @@ export const Instance = (config) => {
       headers: {
         ...conf.headers,
         ...authorization,
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
     };
   });
@@ -33,7 +33,7 @@ export const Instance = (config) => {
   instance.interceptors.response.use(
     (response) => {
       // eslint-disable-next-line no-underscore-dangle
-      if (response.config.method === 'post' && new URLSearchParams(response.config.data).get('_notify') !== 'false') {
+      if (response.config.method === 'post' && JSON.parse(response.config.data)._notify !== false) {
         toast.success('Збережено!');
       }
       return (response || {}).data;
@@ -43,8 +43,10 @@ export const Instance = (config) => {
         toast.error(`${error.response.status} ${JSON.stringify(error.response.data)}`);
       }
       if ([401, 500].includes(error.response.status)) {
-        sessionStorage.removeItem('token');
-        await Router.push('/admin/login');
+        if (isClientSide()) {
+          sessionStorage.removeItem('token');
+          await Router.push('/admin/login');
+        }
       }
       return Promise.reject(error.response);
     }
@@ -55,7 +57,7 @@ export const Instance = (config) => {
       return instance.get(config.endpoints[what], { params });
     },
     post(what, params) {
-      return instance.post(config.endpoints[what], new URLSearchParams(params).toString());
+      return instance.post(config.endpoints[what], params);
     },
   };
 };
