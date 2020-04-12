@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
-import Link from 'next/link';
+// import Link from 'next/link';
 import api from '../api';
 import Page from '../layout/Page';
 import CardProject from '../components/CardProject';
 import CardSkeleton from '../components/CardSkeleton';
 import { grow, p } from '../theme/utils';
 import '../assets/styles/card.css';
+import { withTranslation, Link } from '../utils/translations';
 
 class HomePage extends Component {
   constructor(props) {
@@ -15,6 +16,12 @@ class HomePage extends Component {
       // initial state
       projects: [],
       loading: true
+    };
+  }
+
+  static getInitialProps() {
+    return {
+      namespacesRequired: ['help', 'common', 'header', 'footer'],
     };
   }
 
@@ -37,26 +44,27 @@ class HomePage extends Component {
   render() {
     const projects = this.getSortedProjects(this.state.projects);
     const { loading } = this.state;
+    const { t } = this.props;
     return (
       <Page>
         <div className="homepage">
           <div className="item">
             <div className="card" style={{ padding: '20px' }}>
-              <h3>Підтримати Ш++/KOWO</h3>
-              <p style={p}>
-                Ш++ та КОВО &mdash; незалежні, некомерційні проекти, які щомісяця потребують коштів на утримання: оренда
-                та комунальні платежі, зарплати адміністраторів, дрібний ремонт, чай, печиво, техніка.
-              </p>
-              <p style={p}>Зі щомісячних витрат у <strong>80 000 гривень</strong> половина вже
-                покривається внесками людей/компаній, які повірили в нас.
-              </p>
-              <p style={p}>Допоможіть нам пришвидшити ріст &mdash; підпишіться на невеликі донати щомісяця!</p>
+              <Link href="/help">
+                <h3 className="project-title">
+                  <a>{t('supportCard.title')}</a>
+                </h3>
+              </Link>
+              {t('supportCard.p', { returnObjects: true }).map((par) => (
+                <p dangerouslySetInnerHTML={{ __html: par }} key={par} style={p} />
+              ))}
+              <p style={p}><Link href="/help"><a>{t('details')}</a></Link></p>
               <div style={grow} />
               <div className="button-wrapper">
                 <Link href="/help">
                   <a>
                     <button className="submit-button" type="button">
-                      Підтримати
+                      {t('support')}
                     </button>
                   </a>
                 </Link>
@@ -78,11 +86,11 @@ class HomePage extends Component {
                   <CardSkeleton />
                 </div>
               ))
-              : 'Тут поки що нічого немає :('}
+              : t('noresults')}
         </div>
       </Page>
     );
   }
 }
 
-export default withRouter(HomePage);
+export default withRouter(withTranslation('common')(HomePage));
