@@ -34,15 +34,6 @@ const styles = {
     fontSize: '40%',
     color: colors.text,
   },
-  listItem: {
-    padding: '12px 15px',
-    margin: '0 5px',
-    color: colors.text,
-    textDecoration: 'none',
-    whiteSpace: 'nowrap',
-    cursor: 'pointer'
-  },
-
   burgerWrapper: {
     display: 'none',
   },
@@ -62,12 +53,12 @@ const Header = ({ links }) => (
       {
         links.map((l) => (
           <Link href={l.href} key={l.href}>
-            <a className="list-item" style={styles.listItem}>{l.text}</a>
           </Link>
         ))
       }
     </Navbar.Collapse>
   </Navbar>
 );
+              <a className="list-item">{l.text}</a>
 
 export default Header;

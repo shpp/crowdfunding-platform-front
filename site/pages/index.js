@@ -6,16 +6,7 @@ import Page from '../layout/Page';
 import CardProject from '../components/CardProject';
 import CardSkeleton from '../components/CardSkeleton';
 import { grow, p } from '../theme/utils';
-
-const styles = {
-  container: {
-    maxWidth: '1024px',
-    display: 'flex',
-    flexWrap: 'wrap',
-    margin: '0 auto',
-    padding: '30px 0 0 0',
-  }
-};
+import '../assets/styles/card.css';
 
 class HomePage extends Component {
   constructor(props) {
@@ -48,7 +39,7 @@ class HomePage extends Component {
     const { loading } = this.state;
     return (
       <Page>
-        <div style={styles.container} className="homepage">
+        <div className="homepage">
           <div className="item">
             <div className="card" style={{ padding: '20px' }}>
               <h3>Підтримати Ш++/KOWO</h3>
