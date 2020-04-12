@@ -12,5 +12,13 @@
       "Help us to grow even faster &mdash; subscribe to a small monthly donation!"
     ]
   },
-  "noresults": "There is nothing here yet :("
+  "noresults": "There is nothing here yet :(",
+  "expenses": {
+    "actual": {
+      "title": "We spent received donations at"
+    },
+    "planned": {
+      "title": "We plan to spend these money at"
+    }
+  }
 }
