@@ -4,6 +4,7 @@ import withGA from 'next-ga';
 import Head from 'next/head';
 import { DefaultSeo } from 'next-seo';
 
+import { appWithTranslation } from '../utils/translations';
 import colors from '../theme/colors';
 import '../assets/styles/main.css';
 import 'axios-progress-bar/dist/nprogress.css';
@@ -60,9 +61,19 @@ const MyApp = ({ Component, pageProps }) => (
         cursor: pointer;
       }
       `}
-
     </style>
   </div>
 );
 
-export default withGA('UA-159546538-1', Router)(MyApp);
+MyApp.getInitialProps = async ({ Component, ctx }) => {
+  let pageProps = {};
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+  return {
+    pageProps,
+    namespacesRequired: ['common', 'header', 'help', 'footer']
+  };
+};
+
+export default withGA('UA-159546538-1', Router)(appWithTranslation(MyApp));
