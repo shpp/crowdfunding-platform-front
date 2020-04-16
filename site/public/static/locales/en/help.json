@@ -2,7 +2,7 @@
   "notification": {
     "success": {
       "general": "Payment was successful, thank you! ♥",
-      "orderId": "<p>Save your order ID: <strong>{orderId}</strong></p> <p>In order to cancel your subscription, please send your order ID to <a href=\"mailto:donate@kowo.me\">donate@kowo.me</a>.</p>"
+      "orderId": "<p>Save your order ID:<strong>{{orderId}}</strong></p> <p>In order to cancel your subscription, please send your order ID to <a href=\"mailto:donate@kowo.me\">donate@kowo.me</a>.</p>"
     },
     "errors": {
       "emptyEmail": "In order to subscribe to the newsletter, please provide valid email address."

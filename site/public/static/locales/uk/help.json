@@ -2,7 +2,7 @@
   "notification": {
     "success": {
       "general": "Оплата пройшла успішно, дякуємо за підтримку! ♥",
-      "orderId": "<p>Збережіть ID своєї підписки: <strong>{orderId}</strong></p> <p>Для того щоб скасувати підписку надішліть свій ID на <a href=\"mailto:donate@kowo.me\">donate@kowo.me</a>.</p>"
+      "orderId": "<p>Збережіть ID своєї підписки: <strong>{{orderId}}</strong></p> <p>Для того щоб скасувати підписку надішліть свій ID на <a href=\"mailto:donate@kowo.me\">donate@kowo.me</a>.</p>"
     },
     "errors": {
       "emptyEmail": "Щоб підписатись на розсилку, вкажіть будь ласка коректний email."
