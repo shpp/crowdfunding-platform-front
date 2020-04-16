@@ -75,20 +75,16 @@ class CardDonateWithoutProject extends Component {
       subscribe: this.state.subscribe,
       amount: this.state.amount,
       currency: this.state.currency,
-      lang: i18n.language,
+      language: i18n.language,
       _notify: false
     });
+
     // eslint-disable-next-line no-undef
     LiqPayCheckout.init({ data, signature, language: i18n.language, mode: 'popup' })
       .on('liqpay.callback', async (d) => {
         if (['subscribed', 'success'].includes(d.status)) {
           await api.post('paid', {
-            ...personalInfo,
-            subscribe: this.state.subscribe,
-            amount: this.state.amount,
-            currency: this.state.currency,
-            language: i18n.language,
-            order_id: d.order_id,
+            _id: d.order_id,
             _notify: false
           });
           const Toast = () => (
