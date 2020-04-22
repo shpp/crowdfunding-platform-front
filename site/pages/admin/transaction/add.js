@@ -26,7 +26,10 @@ class AddTransaction extends Component {
   }
 
   async createTransaction() {
-    await api.post('create_transaction', this.state.transaction);
+    await api.post('create_transaction', {
+      ...this.state.transaction,
+      amount: +this.state.transaction.amount
+    });
   }
 
   handleChange({ target }) {
