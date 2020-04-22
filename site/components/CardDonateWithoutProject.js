@@ -52,6 +52,28 @@ class CardDonateWithoutProject extends Component {
         this.setState({ currency: 'UAH', amount: 500 });
       }
     });
+    // eslint-disable-next-line no-undef
+    LiqPayCheckout.on('liqpay.callback', async (d) => {
+      if (['subscribed', 'success'].includes(d.status)) {
+        await api.post('paid', {
+          id: d.order_id,
+          UAH_amount: d.amount_debit,
+          _notify: false
+        });
+        const Toast = () => (
+          <div>
+            <p>{this.props.t('notification.success.general')}</p>
+            {
+              d.status === 'subscribed' && this.state.email.length === 0
+                ? <div dangerouslySetInnerHTML={{ __html: this.props.t('notification.success.orderId', { orderId: d.order_id }) }} />
+                : null
+            }
+            {this.state.email.length > 0 && <p>{this.props.t('notification.success.email')}</p>}
+          </div>
+        );
+        toast(Toast, { autoClose: false, position: 'top-center', closeOnClick: false, draggable: false });
+      }
+    });
   }
 
   async pay() {
@@ -80,33 +102,14 @@ class CardDonateWithoutProject extends Component {
     });
 
     // eslint-disable-next-line no-undef
-    LiqPayCheckout.init({ data, signature, language: i18n.language, mode: 'popup' })
-      .on('liqpay.callback', async (d) => {
-        if (['subscribed', 'success'].includes(d.status)) {
-          await api.post('paid', {
-            _id: d.order_id,
-            _notify: false
-          });
-          const Toast = () => (
-            <div>
-              <p>{this.props.t('notification.success.general')}</p>
-              {
-                d.status === 'subscribed' && this.state.email.length === 0
-                  ? <div dangerouslySetInnerHTML={{ __html: this.props.t('notification.success.orderId', { orderId: d.order_id }) }} />
-                  : null
-              }
-            </div>
-          );
-          toast(Toast, { autoClose: false, position: 'top-center', closeOnClick: false, draggable: false });
-        }
-      });
+    LiqPayCheckout.init({ data, signature, language: i18n.language, mode: 'popup' });
   }
 
   render() {
     const { amount, anonymous, newsletter, currency, fastAmounts } = this.state;
     const { t } = this.props;
     return (
-      <div style={{ ...flex, ...column, ...grow }}>
+      <div style={{ ...flex, ...column, ...grow }} className="donate-card">
         <h2>{t('form.title')}</h2>
 
         <div className="card" style={{ padding: '20px', marginTop: '37px' }}>
