@@ -5,7 +5,7 @@ const conf = require('./next.config');
 
 const nextI18next = require('./utils/translations');
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 const app = next({ conf, dev: process.env.NODE_ENV !== 'production' });
 const handle = app.getRequestHandler();
 
