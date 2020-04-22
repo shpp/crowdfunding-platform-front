@@ -15,6 +15,7 @@ import '../assets/styles/card.css';
 import '../assets/styles/project.css';
 import '../assets/styles/help.css';
 import '../assets/styles/footer.css';
+import '../assets/styles/admin.css';
 
 const MyApp = ({ Component, pageProps }) => (
   <div>

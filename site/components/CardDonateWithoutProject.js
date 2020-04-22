@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import api from '../api';
-import { flex, grow, p, column, colors } from '../utils/theme';
+import { flex, grow, p, column } from '../utils/theme';
 import { i18n, withTranslation } from '../utils/translations';
 
 const styles = {
@@ -231,88 +231,6 @@ class CardDonateWithoutProject extends Component {
             <div id="formContainer" className="hidden" />
           </div>
         </div>
-
-        <style jsx>
-          {`
-        ::placeholder {
-          color: #aaa;
-        }
-        .radio {
-          padding: 10px;
-          border: none;
-          border-radius: 0;
-          cursor: pointer;
-          font-size: 14px;
-          outline-color: white;
-          flex-grow: 1;
-          transition: all 0.25s;
-          border-top-right-radius: 10px;
-          border-top-left-radius: 10px;
-          background-color: #eeeeee;
-        }
-        .radio.checked {
-          background: white;
-          color: green;
-        }
-        .radio:hover {
-          background-color: rgb(250, 250, 250)
-        }
-        input[type=number],
-        input[type=text] {
-          border: none;
-          border-bottom: 1px solid #aaa;
-          outline-color: white;
-          font-size: 16px;
-          width: 55px;
-          color: #222;
-          padding: 4px 1px;
-        }
-        .sum {
-          padding: 7px;
-          border: none;
-          border-radius: 0;
-          cursor: pointer;
-          color: #444;
-          background-color: #CEE1DB;
-        }
-        .sum:hover {
-          background-color: ${colors.green};
-          color: white;
-        }
-        .sum.checked {
-          background-color: #45BD79  
-        }
-        label {
-          display: inline-block;
-          margin: 0 5px 15px;
-          font-size: 11px;
-          font-weight: normal;
-        }
-        input[type=checkbox] {
-          vertical-align: middle;
-          margin-top: 0;
-        }
-        input[type=text] {
-          font-size: 14px;
-          width: 100%;
-          
-        }
-        .white-overlay {
-          position: relative;
-        }
-      
-        .white-overlay:after {
-          background: rgba(255, 255, 255, .6);
-          width: 100%;
-          position: absolute;
-          top: 0;
-          content: '';
-          left: 0;
-          height: 100%;
-          z-index: 1;
-        }
-        `}
-        </style>
       </div>
     );
   }

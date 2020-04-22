@@ -1,0 +1,21 @@
+.edit-project input[type=text],
+.edit-project input[type=date],
+.edit-project input[type=number]
+{
+    padding: 5px;
+    width: 100%;
+    font-size: 14px;
+}
+
+.edit-project label {
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+.nav-tabs {
+    margin-top: 1rem;
+}
+.tab-pane {
+    border: 1px solid #ccc;
+    padding: 20px;
+}
