@@ -24,7 +24,7 @@ class ProjectPage extends React.Component {
     const { project, router, t } = this.props;
     const lang = i18n.language || 'uk';
     const projectURL = process.env.APP_URL + router.asPath;
-    if (project) {
+    if (project && i18n.language) {
       return (
         <Page>
           <NextSeo
@@ -51,13 +51,12 @@ class ProjectPage extends React.Component {
               <span className="text-green">{project.completed ? `(${t('funded')})` : ''}</span>
               <span className="creation-date">{new Date(+project.created_at).toLocaleDateString(lang)}</span>
             </div>
-
             <section>
-              <div dangerouslySetInnerHTML={{ __html: project[`description_${lang}`] }} />
+              <div dangerouslySetInnerHTML={{ __html: project[`description_${lang}`] }} key={lang} />
             </section>
             <section>
               <p><strong>{this.props.t('expenses.planned.title')}:</strong></p>
-              <div dangerouslySetInnerHTML={{ __html: project[`planned_spendings_${lang}`] }} />
+              <div dangerouslySetInnerHTML={{ __html: project[`planned_spendings_${lang}`] }} key={lang} />
             </section>
             <ProgressBar
               amount={project.amount}
@@ -66,7 +65,7 @@ class ProjectPage extends React.Component {
             {project.completed && project.actual_spendings && (
               <section>
                 <p><strong>{this.props.t('expenses.actual.title')}:</strong></p>
-                <div dangerouslySetInnerHTML={{ __html: project[`actual_spendings_${lang}`] }} />
+                <div dangerouslySetInnerHTML={{ __html: project[`actual_spendings_${lang}`] }} key={lang} />
               </section>
             )}
             {!project.completed && (<ButtonDonate project_id={project._id} />)}
