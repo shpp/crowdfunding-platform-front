@@ -28,6 +28,7 @@ class AddTransaction extends Component {
   async createTransaction() {
     await api.post('create_transaction', {
       ...this.state.transaction,
+      type: 'manual',
       amount: +this.state.transaction.amount
     });
   }
