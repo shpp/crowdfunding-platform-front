@@ -29,7 +29,7 @@ class AdminListPage extends Component {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Назва</th>
+                    <th>Назва українською</th>
                     <th>Сума</th>
                     <th>Зібрано</th>
                     <th>Стан</th>
@@ -40,7 +40,7 @@ class AdminListPage extends Component {
                 <tbody>
                   {projects
                     .filter(({ state }) => state !== 'archived')
-                    .sort((a, b) => b.createdAtTS - a.createdAtTS)
+                    .sort((a, b) => b.created_at - a.created_at)
                     .map((project, index) => (
                       <Link
                         key={project._id}
@@ -49,12 +49,12 @@ class AdminListPage extends Component {
                       >
                         <tr style={{ cursor: 'pointer' }}>
                           <td>{index + 1}</td>
-                          <td>{project.name.slice(0, 30)}</td>
+                          <td>{(project.name_uk || '').slice(0, 30)}</td>
                           <td>{project.amount}</td>
-                          <td>{project.amountFunded}</td>
+                          <td>{project.amount_funded}</td>
                           <td>{project.state}</td>
                           <td>{project.completed.toString()}</td>
-                          <td>{new Date(+project.createdAtTS || 0).toLocaleDateString('uk')}</td>
+                          <td>{new Date(+project.created_at || 0).toLocaleDateString('uk')}</td>
                         </tr>
                       </Link>
                     ))}

@@ -34,9 +34,10 @@ class ButtonDonate extends Component {
   }
 
   async componentDidMount() {
-    const { projectId } = this.props;
+    // eslint-disable-next-line camelcase
+    const { project_id } = this.props;
     const { button } = await api.get('button', {
-      id: projectId,
+      id: project_id,
       language: i18n.language,
       currency: i18n.language === 'uk' ? 'UAH' : 'EUR'
     });

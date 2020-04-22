@@ -1,25 +1,24 @@
 import React, { Component } from 'react';
 
-const style = {
-  height: '200px',
-};
 class Editor extends Component {
-  quill = null;
+  state = {
+    quill: null
+  };
 
   componentDidMount() {
     // eslint-disable-next-line global-require
-    this.quill = require('react-quill');
+    this.setState({ quill: require('react-quill') });
   }
 
   render() {
     const { content, onChange } = this.props;
-    const Quill = this.quill;
+    const { quill: Quill } = this.state;
     if (Quill) {
       return (
         <Quill
           value={content}
-          onChange={(e) => onChange(e)}
-          style={style}
+          onChange={onChange}
+          style={{ height: '200px' }}
         />
       );
     }

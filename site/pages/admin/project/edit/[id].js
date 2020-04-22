@@ -8,21 +8,37 @@ import Page from '../../../../components/layout/admin/Page';
 import Editor from '../../../../components/admin/Editor';
 import withAuth from '../../../../components/layout/admin/HOC/withAuth';
 import api from '../../../../api';
+import { i18n } from '../../../../utils/translations';
 
 const style = {
   backgroundColor: 'white',
   padding: '20px',
 };
 
+function formatCreationDate(createdAt) {
+  return new Date((+createdAt + 2 * 60 * 60 * 1000) || Date.now())
+    .toISOString()
+    .split('T')[0];
+}
+
 class AdminProjectEdit extends Component {
   state = {
     project: {
-      plannedSpendings: '',
-      description: '',
-      actualSpendings: '',
+      planned_spendings_uk: '',
+      planned_spendings_en: '',
+      description_uk: '',
+      description_en: '',
+      name_uk: '',
+      name_en: '',
+      actual_spendings_uk: '',
+      actual_spendings_en: '',
+      short_description_uk: '',
+      short_description_en: '',
       published: false,
       archived: false,
-      creationDate: ''
+      created_at: '',
+      amount: 0,
+      _ready: false
     }
   };
 
@@ -35,32 +51,25 @@ class AdminProjectEdit extends Component {
 
     const { projects } = await api.get('admin_projects');
     const project = projects.find((item) => item._id === query.id);
+
     this.setState({
       project: {
         ...project,
         published: project.state === 'published',
         archived: project.state === 'archived',
-        creationDate: new Date((+project.createdAtTS + 2 * 60 * 60 * 1000) || Date.now())
-          .toISOString()
-          .split('T')[0]
+        created_at: +new Date(project.created_at),
+        _ready: true
       }
     });
   }
 
-  handleChange(change) {
+  handleChange(input) {
     const { project } = this.state;
-
-    if (change.name === 'createdAtTS') {
-      try {
-        // eslint-disable-next-line no-param-reassign
-        change.value = +new Date(change.value);
-        // eslint-disable-next-line no-empty
-      } catch (_) {}
-    }
+    const newv = input.name !== 'created_at' ? input.value : +new Date(input.value);
     this.setState({
       project: {
         ...project,
-        [change.name]: change.value
+        [input.name]: newv
       }
     });
   }
@@ -69,8 +78,11 @@ class AdminProjectEdit extends Component {
     event.preventDefault();
     const projectData = {
       ...this.state.project,
+      id: this.state.project._id,
       image: this.state.project.image || '',
-      createdAtTS: +new Date(this.state.project.creationDate),
+      currency: 'UAH',
+      amount: +this.state.project.amount,
+      created_at: +new Date(this.state.project.created_at),
       // eslint-disable-next-line no-nested-ternary
       state: this.state.project.archived
         ? 'archived'
@@ -87,27 +99,45 @@ class AdminProjectEdit extends Component {
   render() {
     const { project } = this.state;
 
-    const labels = [
-      { name: 'name', label: "Ім'я проекту", type: 'text', value: [project.name] },
-      { name: 'creationDate', label: 'Дата створення', type: 'text', value: [project.creationDate] },
-      { name: 'amount', label: 'Сума, яку необхідно зібрати', type: 'number', value: [project.amount] },
-      { name: 'image', label: 'Картинка-обкладинка (URL)', type: 'text', value: [project.image], description: 'Краще за все видно картинки зі співвідношенням 16:9' },
-      { name: 'shortDescription', label: 'Короткий опис', type: 'text', value: [project.shortDescription], description: '1-2 речення, які коротко описують весь проект' },
+    // eslint-disable-next-line no-underscore-dangle
+    if (!project._ready) {
+      return null;
+    }
+
+    const simpleLabels = [
+      { name: 'amount', label: 'Сума, яку необхідно зібрати', type: 'number', value: project },
+      { name: 'image', label: 'Картинка-обкладинка (URL)', type: 'text', value: project, description: 'Краще за все видно картинки зі співвідношенням 16:9' },
+      { name: 'created_at', label: 'Дата створення', type: 'date', value: { ...project, created_at: formatCreationDate(project.created_at) } }
+    ];
+    const langLabels = [
+      { name: 'name', label: "Ім'я проекту", type: 'text', value: project },
+      { name: 'short_description', label: 'Короткий опис', type: 'text', value: project, description: '1-2 речення, які коротко описують весь проект' },
+    ];
+    const longreadLables = [
+      { key: 'description', title: 'Опис проекту' },
+      { key: 'planned_spendings', title: 'Заплановані витрати' },
+      { key: 'actual_spendings', title: 'Куди реально витратили кошти? ' }
     ];
 
     return (
       <Page>
-        <Container className="mt-4 con" style={style}>
+        <Container className="mt-4 con edit-project" style={style}>
           <h1 className="form-header text-center">
-            Редагувати дані проекту
+            Редагувати дані проекту {this.state.project.amount}
           </h1>
           <Form onSubmit={this.handleSubmit.bind(this)}>
-            <Row className="flex-column flex-md-row">
+            <Row>
               <Col>
-                <InputBlock
-                  inputLabels={labels}
-                  handleChange={(e) => this.handleChange(e.target)}
-                />
+                {simpleLabels.map((label) => (
+                  <InputBlock
+                    key={label.name}
+                    label={label}
+                    handleChange={(e) => this.handleChange(e.target)}
+                  />
+                ))}
+              </Col>
+
+              <Col>
                 <Form.Group>
                   <Form.Switch
                     checked={project.published}
@@ -132,46 +162,48 @@ class AdminProjectEdit extends Component {
                   />
                 </Form.Group>
               </Col>
-              <Col>
-                <Tabs defaultActiveKey="description">
-                  <Tab eventKey="description" title="Опис проекту">
-                    <Editor
-                      content={project.description}
-                      onChange={(value) => this.handleChange({
-                        value,
-                        name: 'description'
-                      })}
-                    />
-                  </Tab>
-                  <Tab eventKey="purpose" title="Запланований кошторис">
-                    <Editor
-                      content={project.plannedSpendings}
-                      onChange={(value) => this.handleChange({
-                        value,
-                        name: 'plannedSpendings'
-                      })}
-                    />
-                  </Tab>
-                  <Tab eventKey="actualSpending" title="Куди по факту витрачено кошти">
-                    <Editor
-                      content={project.actualSpendings}
-                      onChange={(value) => this.handleChange({
-                        value,
-                        name: 'actualSpendings'
-                      })}
-                    />
-                  </Tab>
-                </Tabs>
-              </Col>
             </Row>
-            <Row className="justify-content-center mt-5 mt-md-3">
-              <Button
-                variant="primary"
-                type="submit"
-              >
-                Зберегти зміни
-              </Button>
-            </Row>
+            <br />
+            <Tabs defaultActiveKey={i18n.language} id="lang">
+              {['uk', 'en'].map((lang) => (
+                <Tab eventKey={lang} title={`Мова: ${lang}`} key={lang}>
+                  <Row className="flex-column flex-md-row">
+                    <Col>
+                      {langLabels.map((label) => (
+                        <InputBlock
+                          key={label.name}
+                          label={label}
+                          lang={lang}
+                          handleChange={(e) => this.handleChange(e.target)}
+                        />
+                      ))}
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <Tabs defaultActiveKey="description" id="longread-field">
+                        {longreadLables.map((label) => (
+                          <Tab eventKey={label.key} title={`${label.title} (${lang})`} key={label.key}>
+                            <Editor
+                              content={project[`${label.key}_${lang}`]}
+                              onChange={(value) => this.handleChange({ value, name: `${label.key}_${lang}` })}
+                            />
+                          </Tab>
+                        ))}
+                      </Tabs>
+                    </Col>
+                  </Row>
+                  <Row className="justify-content-center mt-5 mt-md-3">
+                    <Button
+                      variant="primary"
+                      type="submit"
+                    >
+                      Зберегти зміни
+                    </Button>
+                  </Row>
+                </Tab>
+              ))}
+            </Tabs>
           </Form>
         </Container>
       </Page>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
-// import Link from 'next/link';
 import api from '../api';
 import Page from '../components/layout/Page';
 import CardProject from '../components/CardProject';
@@ -37,7 +36,7 @@ class HomePage extends Component {
     return (filter === 'completed'
       ? completedProjects
       : [...notCompletedProjects, ...completedProjects])
-      .sort((a, b) => a.createdAtTS - b.createdAtTS);
+      .sort((a, b) => a.created_at - b.created_at);
   }
 
   render() {
@@ -47,33 +46,40 @@ class HomePage extends Component {
     return (
       <Page>
         <div className="homepage">
-          <div className="item">
-            <div className="card" style={{ padding: '20px' }}>
-              <Link href="/help">
-                <h3 className="project-title">
-                  <a>{t('supportCard.title')}</a>
-                </h3>
-              </Link>
-              {t('supportCard.p', { returnObjects: true }).map((par) => (
-                <p dangerouslySetInnerHTML={{ __html: par }} key={par} style={p} />
-              ))}
-              <p style={p}><Link href="/help"><a>{t('details')}</a></Link></p>
-              <div style={grow} />
-              <div className="button-wrapper">
-                <Link href="/help">
-                  <a>
-                    <button className="submit-button" type="button">
-                      {t('support')}
-                    </button>
-                  </a>
-                </Link>
-              </div>
-            </div>
-          </div>
+          {
+            this.props.router.query.filter === 'completed'
+              ? null
+              : (
+                <div className="item">
+                  <div className="card" style={{ padding: '20px' }}>
+                    <Link href="/help">
+                      <h3 className="project-title">
+                        <a>{t('supportCard.title')}</a>
+                      </h3>
+                    </Link>
+                    {t('supportCard.p', { returnObjects: true })
+                      .map((par) => (
+                        <p dangerouslySetInnerHTML={{ __html: par }} key={par} style={p} />
+                      ))}
+                    <p style={p}><Link href="/help"><a>{t('details')}</a></Link></p>
+                    <div style={grow} />
+                    <div className="button-wrapper">
+                      <Link href="/help">
+                        <a>
+                          <button className="submit-button" type="button">
+                            {t('support')}
+                          </button>
+                        </a>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )
+          }
           {/* eslint-disable-next-line no-nested-ternary */}
           {projects.length
             ? projects
-              .sort((a, b) => b.createdAtTS - a.createdAtTS)
+              .sort((a, b) => b.created_at - a.created_at)
               .map((project) => (
                 <div key={project._id} className="card item">
                   <CardProject project={project} />

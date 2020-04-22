@@ -12,14 +12,14 @@ const styles = {
   },
   link: {
     cursor: 'pointer',
-    'text-decoration': 'underline'
+    textDecoration: 'underline'
   }
 };
 
 class TransactionView extends Component {
   state = {
     transaction: {}
-  }
+  };
 
   async componentDidMount() {
     await this.getTransaction();
@@ -54,16 +54,16 @@ class TransactionView extends Component {
         <Container className="mt-5" style={styles.container}>
           <Col className="col-8 mx-auto ">
             <h1>Перегляд транзакції</h1>
-            <p>Ім&apos;я донатора: <span className="text-success">{transaction.donatorName}</span></p>
-            <p>Номер телефону: <span className="text-success">{transaction.donatorPhone}</span></p>
+            <p>Ім&apos;я донатора: <span className="text-success">{transaction.donator_name} {transaction.donator_surname}</span></p>
+            <p>Номер телефону: <span className="text-success">{transaction.donator_phone}</span></p>
             <p>Статус: <span className="text-success">{transaction.status}</span></p>
             <p>Сума: <span className="text-success">{transaction.amount}</span></p>
             <p>Дата: <span className="text-success">{transaction.time}</span></p>
             <p>Проект:
               <Link
                 href="/admin/project/view/[id]"
-                as={`/admin/project/view/${transaction.projectId}`}
-              ><span className="text-success" style={styles.link}>{transaction.projectId}</span>
+                as={`/admin/project/view/${transaction.project_id}`}
+              ><span className="text-success" style={styles.link}>{transaction.project_id}</span>
               </Link>
             </p>
             <div className="d-flex justify-content-around">

@@ -1,23 +1,18 @@
-import { Form } from 'react-bootstrap';
 import React from 'react';
 
-const CustomBlock = ({ inputLabels, handleChange }) => {
+const CustomBlock = ({ label, lang, handleChange }) => {
+  const fieldname = lang ? `${label.name}_${lang}` : label.name;
   return (
     <div>
-      {
-        inputLabels.map((input) => (
-          <Form.Group key={input.name}>
-            <Form.Label>{input.label}</Form.Label>
-            <div><i>{input.description}</i></div>
-            <Form.Control
-              name={input.name}
-              type={input.type}
-              value={input.value}
-              onChange={(event) => handleChange(event)}
-            />
-          </Form.Group>
-        ))
-      }
+      <label htmlFor={label.name}>{label.label} {lang && `(${lang})`}</label>
+      <div><i>{label.description}</i></div>
+      <input
+        name={fieldname}
+        id={fieldname}
+        type={label.type}
+        value={label.value[fieldname]}
+        onChange={(event) => handleChange(event)}
+      />
     </div>
   );
 };

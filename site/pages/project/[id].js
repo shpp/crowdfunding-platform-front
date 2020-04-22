@@ -22,18 +22,19 @@ class ProjectPage extends React.Component {
 
   render() {
     const { project, router, t } = this.props;
+    const lang = i18n.language || 'uk';
     const projectURL = process.env.APP_URL + router.asPath;
     if (project) {
       return (
         <Page>
           <NextSeo
-            title={`${project.name} | Збір коштів`}
-            description={project.shortDescription}
+            title={`${project[`name_${lang}`]} | Збір коштів`}
+            description={project[`short_description_${lang}`]}
             canonical={projectURL}
             openGraph={{
               url: projectURL,
-              title: `${project.name} | Збір коштів`,
-              description: project.shortDescription,
+              title: `${project[`name_${lang}`]} | Збір коштів`,
+              description: project.short_description,
               images: [
                 { url: `${process.env.APP_URL}/api/getImage?url=${encodeURI(project.image)}` }
               ],
@@ -41,34 +42,34 @@ class ProjectPage extends React.Component {
             }}
           />
           <Head>
-            <title>{project.name} | Ш++ збір коштів</title>
+            <title>{project[`name_${lang}`]} | Ш++ збір коштів</title>
           </Head>
           <div className="project-image-wrapper" style={{ backgroundImage: `url(${project.image})` }} />
           <div className="container">
             <div>
-              <h2>{project.name}&nbsp;</h2>
+              <h2>{project[`name_${lang}`]}&nbsp;</h2>
               <span className="text-green">{project.completed ? `(${t('funded')})` : ''}</span>
-              <span className="creation-date">{new Date(+project.createdAtTS).toLocaleDateString(i18n.language)}</span>
+              <span className="creation-date">{new Date(+project.created_at).toLocaleDateString(lang)}</span>
             </div>
 
             <section>
-              <div dangerouslySetInnerHTML={{ __html: project.description }} />
+              <div dangerouslySetInnerHTML={{ __html: project[`description_${lang}`] }} />
             </section>
             <section>
-              <p><strong>{this.props.t('expenses.actual.title')}:</strong></p>
-              <div dangerouslySetInnerHTML={{ __html: project.plannedSpendings }} />
+              <p><strong>{this.props.t('expenses.planned.title')}:</strong></p>
+              <div dangerouslySetInnerHTML={{ __html: project[`planned_spendings_${lang}`] }} />
             </section>
             <ProgressBar
               amount={project.amount}
-              funded={project.amountFunded}
+              funded={project.amount_funded}
             />
-            {project.completed && project.actualSpendings && (
+            {project.completed && project.actual_spendings && (
               <section>
                 <p><strong>{this.props.t('expenses.actual.title')}:</strong></p>
-                <div dangerouslySetInnerHTML={{ __html: project.actualSpendings }} />
+                <div dangerouslySetInnerHTML={{ __html: project[`actual_spendings_${lang}`] }} />
               </section>
             )}
-            {!project.completed && (<ButtonDonate projectId={project._id} />)}
+            {!project.completed && (<ButtonDonate project_id={project._id} />)}
           </div>
         </Page>
       );

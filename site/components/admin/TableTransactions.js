@@ -36,8 +36,8 @@ const TableTransactions = ({ transactions, fullTable }) => {
             <td>{ index + 1 }</td>
             { fullTable && <td>{transaction.name}</td>}
             <td>{transaction.time}</td>
-            <td>{transaction.donatorName}</td>
-            <td>{transaction.donatorPhone}</td>
+            <td>{transaction.donator_name} {transaction.donator_surname}</td>
+            <td>{transaction.donator_phone}</td>
             <td>{transaction.amount}</td>
             <td>{transaction.status}</td>
           </tr>

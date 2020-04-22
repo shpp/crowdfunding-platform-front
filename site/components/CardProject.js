@@ -29,11 +29,11 @@ class CardProject extends React.Component {
             as={`/project/${project._id}`}
           >
             <h3 className="project-title">
-              <a>{project.name}</a>
+              <a>{project[`name_${i18n.language}`]}</a>
             </h3>
           </Link>
           <div style={grow}>
-            <p style={p}>{project.shortDescription}</p>
+            <p style={p}>{project[`short_description_${i18n.language}`]}</p>
             <p style={p}>
               <Link
                 href={`${i18n.language === 'uk' ? '' : `/${i18n.language}`}/project/[id]`}
@@ -43,15 +43,15 @@ class CardProject extends React.Component {
               </Link>
             </p>
           </div>
-          {!project.completed && (<ButtonDonate projectId={project._id} />)}
+          {!project.completed && (<ButtonDonate project_id={project._id} />)}
 
           <ProgressBar
             amount={project.amount}
-            funded={project.amountFunded}
+            funded={project.amount_funded}
           />
 
           <div className="text-small">
-            {t('createdAt')} {formatDate(+project.createdAtTS, i18n.language)}
+            {t('createdAt')} {formatDate(+project.created_at, i18n.language)}
           </div>
         </div>
       </div>

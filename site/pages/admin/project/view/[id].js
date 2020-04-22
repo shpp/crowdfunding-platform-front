@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button, Card, Col, Container, Row, Form } from 'react-bootstrap';
+import { Button, Card, Col, Row, Form } from 'react-bootstrap';
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
 import Page from '../../../../components/layout/admin/Page';
@@ -8,6 +8,7 @@ import withAuth from '../../../../components/layout/admin/HOC/withAuth';
 import api from '../../../../api';
 import Edit from '../../../../assets/icon/edit.svg';
 import Eye from '../../../../assets/icon/eye.svg';
+import { i18n } from '../../../../utils/translations';
 
 const styles = {
   section: {
@@ -60,7 +61,7 @@ class AdminViewProjectPage extends Component {
     const { project, transactions } = this.state;
 
     const creationDate = () => {
-      const event = new Date(+project.createdAtTS);
+      const event = new Date(+project.created_at);
       return `${event.getDate()}.${event.getMonth()}.${event.getFullYear()}`;
     };
     // eslint-disable-next-line no-nested-ternary
@@ -73,12 +74,12 @@ class AdminViewProjectPage extends Component {
     return (
       <Page>
         <div className="project-image-wrapper" />
-        <Container className="container-fluid">
+        <div className="container-fluid" style={{ marginTop: '30px' }}>
           <Card border={borderType}>
             <Card.Header className="d-flex justify-content-between">
               <div>
                 <h2 className="form-title">
-                  {project.name}&nbsp;
+                  {project[`name_${i18n.language}`]}&nbsp;
                 </h2>
                 <span className="text-danger">{this.state.project.archived ? '(видалено)' : ''}</span>
                 <span className="text-green">{this.state.project.completed ? '(профінансовано)' : ''}</span>
@@ -86,7 +87,7 @@ class AdminViewProjectPage extends Component {
                   <span className="mr-1">
                     {project.currency}
                   </span>
-                  <span className="text-green">{project.amountFunded}</span>
+                  <span className="text-green">{project.amount_funded}</span>
                   <span className="text-muted">/{project.amount}</span>
                 </div>
               </div>
@@ -122,22 +123,32 @@ class AdminViewProjectPage extends Component {
               <Row>
                 <Col>
                   <section style={styles.section}>
-                    <p><strong>Короткий опис:</strong></p>
-                    <div>{project.shortDescription}</div>
+                    <p><strong>Короткий опис ({i18n.language}):</strong></p>
+                    <div>{project[`short_description_${i18n.language}`]}</div>
                   </section>
                 </Col>
               </Row>
               <Row>
                 <Col>
                   <section style={styles.section}>
-                    <p><strong>Опис:</strong></p>
-                    <div dangerouslySetInnerHTML={{ __html: project.description }} />
+                    <p><strong>Опис ({i18n.language}):</strong></p>
+                    <div dangerouslySetInnerHTML={{ __html: project[`description_${i18n.language}`] }} />
                   </section>
                 </Col>
+              </Row>
+              <Row>
                 <Col>
                   <section style={styles.section}>
-                    <p><strong>Заплановані витрати:</strong></p>
-                    <div dangerouslySetInnerHTML={{ __html: project.plannedSpendings }} />
+                    <p><strong>Заплановані витрати ({i18n.language}):</strong></p>
+                    <div dangerouslySetInnerHTML={{ __html: project[`planned_spendings_${i18n.language}`] }} />
+                  </section>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <section style={styles.section}>
+                    <p><strong>Реальні витрати ({i18n.language}):</strong></p>
+                    <div dangerouslySetInnerHTML={{ __html: project[`actual_spendings_${i18n.language}`] }} />
                   </section>
                 </Col>
               </Row>
@@ -162,7 +173,7 @@ class AdminViewProjectPage extends Component {
               </Row>
             </Card.Footer>
           </Card>
-        </Container>
+        </div>
         <style jsx>
           {`
           .project-image-wrapper {
