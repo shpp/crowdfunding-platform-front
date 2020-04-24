@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button, Card, Col, Row, Form } from 'react-bootstrap';
+import { Button, Card, Form } from 'react-bootstrap';
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
 import Page from '../../../../components/layout/admin/Page';
@@ -21,7 +21,8 @@ const styles = {
 class AdminViewProjectPage extends Component {
   state = {
     project: {
-      published: false
+      published: false,
+      archived: false
     },
     transactions: []
   };
@@ -60,10 +61,6 @@ class AdminViewProjectPage extends Component {
   render() {
     const { project, transactions } = this.state;
 
-    const creationDate = () => {
-      const event = new Date(+project.created_at);
-      return `${event.getDate()}.${event.getMonth()}.${event.getFullYear()}`;
-    };
     // eslint-disable-next-line no-nested-ternary
     const borderType = this.state.project.archived
       ? 'danger'
@@ -73,7 +70,7 @@ class AdminViewProjectPage extends Component {
 
     return (
       <Page>
-        <div className="project-image-wrapper" />
+        {project.image && <div className="project-image-wrapper" />}
         <div className="container-fluid" style={{ marginTop: '30px' }}>
           <Card border={borderType}>
             <Card.Header className="d-flex justify-content-between">
@@ -85,10 +82,11 @@ class AdminViewProjectPage extends Component {
                 <span className="text-green">{this.state.project.completed ? '(профінансовано)' : ''}</span>
                 <div>
                   <span className="mr-1">
-                    {project.currency}
+                    {project.currency || 'UAH'}
                   </span>
-                  <span className="text-green">{project.amount_funded}</span>
+                  <span className="text-green">{project.slug === 'shpp-kowo' ? project.this_month_funded : project.amount_funded}</span>
                   <span className="text-muted">/{project.amount}</span>
+                  {project.slug === 'shpp-kowo' && <span className="text-muted">&nbsp;цього місяця</span>}
                 </div>
               </div>
               <div>
@@ -120,57 +118,37 @@ class AdminViewProjectPage extends Component {
               </div>
             </Card.Header>
             <Card.Body>
-              <Row>
-                <Col>
-                  <section style={styles.section}>
-                    <p><strong>Короткий опис ({i18n.language}):</strong></p>
-                    <div>{project[`short_description_${i18n.language}`]}</div>
-                  </section>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <section style={styles.section}>
-                    <p><strong>Опис ({i18n.language}):</strong></p>
-                    <div dangerouslySetInnerHTML={{ __html: project[`description_${i18n.language}`] }} />
-                  </section>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <section style={styles.section}>
-                    <p><strong>Заплановані витрати ({i18n.language}):</strong></p>
-                    <div dangerouslySetInnerHTML={{ __html: project[`planned_spendings_${i18n.language}`] }} />
-                  </section>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <section style={styles.section}>
-                    <p><strong>Реальні витрати ({i18n.language}):</strong></p>
-                    <div dangerouslySetInnerHTML={{ __html: project[`actual_spendings_${i18n.language}`] }} />
-                  </section>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <section style={styles.section}>
-                    <p><strong>Транзакції:</strong></p>
-                    <ProjectTransactions
-                      transactions={transactions}
-                      project_id={project._id}
-                    />
-                  </section>
-                </Col>
-              </Row>
+              <section style={styles.section}>
+                <p><strong>Короткий опис ({i18n.language}):</strong></p>
+                <div>{project[`short_description_${i18n.language}`]}</div>
+              </section>
+              <section style={styles.section}>
+                <p><strong>Опис ({i18n.language}):</strong></p>
+                <div dangerouslySetInnerHTML={{ __html: project[`description_${i18n.language}`] }} />
+              </section>
+              <section style={styles.section}>
+                <p><strong>Заплановані витрати ({i18n.language}):</strong></p>
+                <div dangerouslySetInnerHTML={{ __html: project[`planned_spendings_${i18n.language}`] }} />
+              </section>
+              <section style={styles.section}>
+                <p><strong>Реальні витрати ({i18n.language}):</strong></p>
+                <div dangerouslySetInnerHTML={{ __html: project[`actual_spendings_${i18n.language}`] }} />
+              </section>
+              <section style={styles.section}>
+                <p><strong>Транзакції:</strong></p>
+                <ProjectTransactions
+                  transactions={transactions}
+                  project_id={project._id}
+                />
+              </section>
             </Card.Body>
             <Card.Footer>
-              <Row className="text-muted d-flex justify-content-between">
+              <div className="text-muted d-flex justify-content-between">
                 <span>
-                  <span>Створено:</span>
-                  {creationDate()}
+                  <span>Створено:&nbsp;</span>
+                  {new Date(project.created_at).toLocaleDateString('uk')}
                 </span>
-              </Row>
+              </div>
             </Card.Footer>
           </Card>
         </div>

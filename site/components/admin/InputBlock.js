@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CustomBlock = ({ label, lang, handleChange }) => {
+const CustomBlock = ({ label, lang, handleChange, value }) => {
   const fieldname = lang ? `${label.name}_${lang}` : label.name;
   return (
     <div>
@@ -10,7 +10,7 @@ const CustomBlock = ({ label, lang, handleChange }) => {
         name={fieldname}
         id={fieldname}
         type={label.type}
-        value={label.value[fieldname]}
+        value={value[fieldname]}
         onChange={(event) => handleChange(event)}
       />
     </div>

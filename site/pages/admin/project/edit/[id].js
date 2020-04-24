@@ -15,8 +15,8 @@ const style = {
   padding: '20px',
 };
 
-function formatCreationDate(createdAt) {
-  return new Date((+createdAt + 2 * 60 * 60 * 1000) || Date.now())
+function formatDate(createdAt) {
+  return new Date((createdAt) || Date.now())
     .toISOString()
     .split('T')[0];
 }
@@ -57,7 +57,7 @@ class AdminProjectEdit extends Component {
         ...project,
         published: project.state === 'published',
         archived: project.state === 'archived',
-        created_at: +new Date(project.created_at),
+        created_at: formatDate(project.created_at),
         _ready: true
       }
     });
@@ -65,7 +65,7 @@ class AdminProjectEdit extends Component {
 
   handleChange(input) {
     const { project } = this.state;
-    const newv = input.name !== 'created_at' ? input.value : +new Date(input.value);
+    const newv = input.name !== 'created_at' ? input.value : formatDate(input.value);
     this.setState({
       project: {
         ...project,
@@ -76,17 +76,18 @@ class AdminProjectEdit extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
+    const { project } = this.state;
     const projectData = {
-      ...this.state.project,
-      id: this.state.project._id,
-      image: this.state.project.image || '',
+      ...project,
+      id: project._id,
+      image: project.image || '',
       currency: 'UAH',
-      amount: +this.state.project.amount,
-      created_at: +new Date(this.state.project.created_at),
+      amount: +project.amount,
+      created_at: +new Date(project.created_at),
       // eslint-disable-next-line no-nested-ternary
-      state: this.state.project.archived
+      state: project.archived
         ? 'archived'
-        : this.state.project.published
+        : project.published
           ? 'published'
           : 'unpublished',
     };
@@ -105,13 +106,13 @@ class AdminProjectEdit extends Component {
     }
 
     const simpleLabels = [
-      { name: 'amount', label: 'Сума, яку необхідно зібрати', type: 'number', value: project },
-      { name: 'image', label: 'Картинка-обкладинка (URL)', type: 'text', value: project, description: 'Краще за все видно картинки зі співвідношенням 16:9' },
-      { name: 'created_at', label: 'Дата створення', type: 'date', value: { ...project, created_at: formatCreationDate(project.created_at) } }
+      { name: 'amount', label: 'Сума, яку необхідно зібрати', type: 'number' },
+      { name: 'image', label: 'Картинка-обкладинка (URL)', type: 'text', description: 'Краще за все видно картинки зі співвідношенням 16:9' },
+      { name: 'created_at', label: 'Дата створення', type: 'date' }
     ];
     const langLabels = [
-      { name: 'name', label: "Ім'я проекту", type: 'text', value: project },
-      { name: 'short_description', label: 'Короткий опис', type: 'text', value: project, description: '1-2 речення, які коротко описують весь проект' },
+      { name: 'name', label: "Ім'я проекту", type: 'text' },
+      { name: 'short_description', label: 'Короткий опис', type: 'text', description: '1-2 речення, які коротко описують весь проект' },
     ];
     const longreadLables = [
       { key: 'description', title: 'Опис проекту' },
@@ -123,7 +124,7 @@ class AdminProjectEdit extends Component {
       <Page>
         <Container className="mt-4 con edit-project" style={style}>
           <h1 className="form-header text-center">
-            Редагувати дані проекту {this.state.project.amount}
+            Редагувати дані проекту
           </h1>
           <Form onSubmit={this.handleSubmit.bind(this)}>
             <Row>
@@ -132,6 +133,7 @@ class AdminProjectEdit extends Component {
                   <InputBlock
                     key={label.name}
                     label={label}
+                    value={project}
                     handleChange={(e) => this.handleChange(e.target)}
                   />
                 ))}
@@ -174,6 +176,7 @@ class AdminProjectEdit extends Component {
                           key={label.name}
                           label={label}
                           lang={lang}
+                          value={project}
                           handleChange={(e) => this.handleChange(e.target)}
                         />
                       ))}
