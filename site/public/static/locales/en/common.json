@@ -10,15 +10,16 @@
       "School++ and KOWO are independent, non-profit projects, and every month they need a livelihood: rent and utilities, salaries of administrators, repair, tea, cookies, equipment.",
       "From monthly expenses of <strong>~3 000 USD</strong> the half is already covered by donations of people/companies, who believe in us.",
       "Help us to grow even faster &mdash; subscribe to a small monthly donation!"
-    ]
+    ],
+    "small": "Already have for the current month"
   },
   "noresults": "There is nothing here yet :(",
   "expenses": {
     "actual": {
-      "title": "We spent received donations at"
+      "title": "We spent received donations on"
     },
     "planned": {
-      "title": "We plan to spend these money at"
+      "title": "We plan to spend these money on"
     }
   }
 }

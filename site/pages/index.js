@@ -6,6 +6,7 @@ import CardProject from '../components/CardProject';
 import CardSkeleton from '../components/CardSkeleton';
 import { grow, p } from '../utils/theme';
 import { withTranslation, Link } from '../utils/translations';
+import ProgressBar from '../components/ProgressBar';
 
 class HomePage extends Component {
   constructor(props) {
@@ -33,16 +34,18 @@ class HomePage extends Component {
     const completedProjects = projects.filter((project) => project.completed);
     const notCompletedProjects = projects.filter((project) => !project.completed);
 
-    return (filter === 'completed'
+    return filter === 'completed'
       ? completedProjects
-      : [...notCompletedProjects, ...completedProjects])
-      .sort((a, b) => a.created_at - b.created_at);
+      : [...notCompletedProjects, ...completedProjects]
+        .filter(({ state }) => state === 'published')
+        .sort((a, b) => a.created_at - b.created_at);
   }
 
   render() {
     const projects = this.getSortedProjects(this.state.projects);
     const { loading } = this.state;
     const { t } = this.props;
+    const livelihood = this.state.projects.find(({ slug }) => slug === 'shpp-kowo') || {};
     return (
       <Page>
         <div className="homepage">
@@ -71,6 +74,13 @@ class HomePage extends Component {
                           </button>
                         </a>
                       </Link>
+                    </div>
+                    <ProgressBar
+                      amount={livelihood.amount}
+                      funded={livelihood.this_month_funded}
+                    />
+                    <div className="text-small">
+                      {t('supportCard.small')}
                     </div>
                   </div>
                 </div>
