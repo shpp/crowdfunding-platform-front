@@ -3,6 +3,7 @@ import Page from '../../components/layout/admin/Page';
 import api from '../../api';
 import TableTransactions from '../../components/admin/TableTransactions';
 import withAuth from '../../components/layout/admin/HOC/withAuth';
+import { i18n } from '../../utils/translations';
 
 /* eslint-disable no-console */
 class Transactions extends Component {
@@ -13,20 +14,13 @@ class Transactions extends Component {
   async componentDidMount() {
     // get all projects
     const { projects } = await api.get('admin_projects');
-    // send request by each project id ti get transactions of each project
-    const requests = projects.map((project) => api.get('transactions', { project_id: project._id }));
-    // collect all promises
-    const responses = await Promise.all(requests);
-    // bundle all transactions to array
-    const transactionsArray = responses.reduce(
-      (result, response) => [...result, ...response.transactions],
-      [],
-    );
+    // get all transactions
+    const { transactions } = await api.get('transactions');
     // get projects names
-    const names = projects.reduce((acc, project) => ({ ...acc, [project._id]: project.name }), {});
+    const projectNames = projects.reduce((acc, project) => ({ ...acc, [project._id]: project[`name_${i18n.language}`] }), {});
     // add project name property to each transaction
-    const namedTransactions = transactionsArray.map((transaction) => {
-      return { ...transaction, name: names[transaction.projectId] };
+    const namedTransactions = transactions.map((transaction) => {
+      return { ...transaction, project_name: projectNames[transaction.project_id] };
     });
 
     this.setState({ namedTransactions });
@@ -37,7 +31,7 @@ class Transactions extends Component {
       <Page>
         <h1 className="text-center">Транзакції</h1>
         <TableTransactions
-          transactions={this.state.namedTransactions.filter((t) => t.status !== 'revoked')}
+          transactions={this.state.namedTransactions}
           fullTable
         />
       </Page>

@@ -58,7 +58,7 @@ class TransactionView extends Component {
             <p>Номер телефону: <span className="text-success">{transaction.donator_phone}</span></p>
             <p>Статус: <span className="text-success">{transaction.status}</span></p>
             <p>Сума: <span className="text-success">{transaction.amount}</span></p>
-            <p>Дата: <span className="text-success">{transaction.time}</span></p>
+            <p>Дата: <span className="text-success">{transaction.created_at}</span></p>
             <p>Проект:
               <Link
                 href="/admin/project/view/[id]"
@@ -68,7 +68,7 @@ class TransactionView extends Component {
             </p>
             <div className="d-flex justify-content-around">
               {
-                transaction.status === 'confirmed'
+                transaction.status === 'success'
                   ? revokeButton
                   : reaffirmButton
               }

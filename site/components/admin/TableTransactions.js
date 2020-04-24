@@ -18,7 +18,7 @@ const TableTransactions = ({ transactions, fullTable }) => {
           <th>#</th>
           {fullTable && <th>Проект</th>}
           <th>Час</th>
-          <th>Імя</th>
+          <th>Імя донатора</th>
           <th>Телефон</th>
           <th>Сума</th>
           <th>Статус</th>
@@ -34,8 +34,8 @@ const TableTransactions = ({ transactions, fullTable }) => {
         >
           <tr key={transaction._id} style={style}>
             <td>{ index + 1 }</td>
-            { fullTable && <td>{transaction.name}</td>}
-            <td>{transaction.time}</td>
+            { fullTable && <td>{transaction.project_name}</td>}
+            <td>{transaction.created_at.slice(0, -5).replace(/T/g, ' ')}</td>
             <td>{transaction.donator_name} {transaction.donator_surname}</td>
             <td>{transaction.donator_phone}</td>
             <td>{transaction.amount}</td>

@@ -29,6 +29,7 @@ class AddTransaction extends Component {
     await api.post('create_transaction', {
       ...this.state.transaction,
       type: 'manual',
+      status: 'success',
       amount: +this.state.transaction.amount
     });
   }
@@ -56,7 +57,7 @@ class AddTransaction extends Component {
                   <Form.Control name="donator_name" type="text" placeholder="Щедрий Пан" onChange={this.handleChange.bind(this)} />
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label>Номер телефону</Form.Label>
+                  <Form.Label>Номер телефону (необов&apos;язково)</Form.Label>
                   <Form.Control name="donator_phone" type="tel" placeholder="+380667876655" onChange={this.handleChange.bind(this)} />
                 </Form.Group>
                 <Form.Group>
