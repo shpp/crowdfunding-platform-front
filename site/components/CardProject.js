@@ -9,7 +9,7 @@ import { withTranslation, i18n, Link } from '../utils/translations';
 
 class CardProject extends React.Component {
   render() {
-    const { project, t } = this.props;
+    const { project, t, currency } = this.props;
     return (
       <div style={{ ...flex, ...column, ...grow }}>
         {project.completed && <div className="project-completed"><Check style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('completed')}</div> }
@@ -48,6 +48,7 @@ class CardProject extends React.Component {
           <ProgressBar
             amount={project.amount}
             funded={project.amount_funded}
+            currency={currency}
           />
 
           <div className="text-small">

@@ -3,6 +3,7 @@ import { withRouter } from 'next/router';
 import Head from 'next/dist/next-server/lib/head';
 import { NextSeo } from 'next-seo';
 
+import axios from 'axios';
 import api from '../../api';
 
 import Page from '../../components/layout/Page';
@@ -12,6 +13,16 @@ import ButtonDonate from '../../components/ButtonDonate';
 import { withTranslation, i18n } from '../../utils/translations';
 
 class ProjectPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currency: {
+        ccy: 'UAH',
+        buy: 1
+      },
+    };
+  }
+
   static async getInitialProps({ query: { id } }) {
     const { projects = [] } = await api.get('projects');
     return {
@@ -20,8 +31,17 @@ class ProjectPage extends React.Component {
     };
   }
 
+  componentDidMount() {
+    axios.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5')
+      .then(({ data }) => this.setState({
+        currency: data.find(({ ccy }) => ccy.toUpperCase() === 'USD')
+      }));
+  }
+
   render() {
     const { project, router, t } = this.props;
+    const { currency } = this.state;
+    const selectedCurrency = i18n.language === 'en' ? currency : { ccy: 'UAH', buy: 1 };
     const lang = i18n.language || 'uk';
     const projectURL = process.env.APP_URL + router.asPath;
     if (project && i18n.language) {
@@ -61,6 +81,7 @@ class ProjectPage extends React.Component {
             <ProgressBar
               amount={project.amount}
               funded={project.amount_funded}
+              currency={selectedCurrency}
             />
             {project.completed && project.actual_spendings && (
               <section>

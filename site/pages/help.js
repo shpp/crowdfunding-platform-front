@@ -58,13 +58,16 @@ class Help extends Component {
     const { income, expenses } = this.state;
     const { t } = this.props;
 
-    const getTooltipContent = ({ label }) => (
-      <div className="help-chart-tooltip">
-        <p><strong>{t(`expense.${label}.title`)}</strong></p>
-        <p>{t(`expense.${label}.description`)}</p>
-        {/* <p><Link href="/reports"><a>фін. звіт</a></Link></p> */}
-      </div>
-    );
+    const getTooltipContent = ({ payload = [] }) => {
+      const { category } = (payload[0] || {}).payload || {};
+      return (
+        <div className="help-chart-tooltip">
+          <p><strong>{t(`expense.${category}.title`)}</strong></p>
+          <p>{t(`expense.${category}.description`)}</p>
+          {/* <p><Link href="/reports"><a>фін. звіт</a></Link></p> */}
+        </div>
+      );
+    };
 
     if (income && expenses) {
       const coloredCell = (_, index) => <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
@@ -88,9 +91,8 @@ class Help extends Component {
                 <div className="help-chart-wrapper">
                   <div className="help-chart-container">
                     <ResponsiveContainer>
-                      <PieChart key={i18n.language}>
+                      <PieChart>
                         <Pie
-                          key={i18n.language}
                           data={income}
                           dataKey="amount"
                           nameKey="category"
@@ -119,7 +121,7 @@ class Help extends Component {
                     <ResponsiveContainer>
                       <BarChart data={expenses} key={i18n.language}>
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="category" />
+                        <XAxis dataKey={(v) => t(`expense.${v.category}.shortTitle`)} />
                         <YAxis domain={[0, 40000]} />
                         <Tooltip
                           coordinate={{ x: 100, y: 140 }}

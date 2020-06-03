@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
+import axios from 'axios';
+
 import api from '../api';
 import Page from '../components/layout/Page';
 import CardProject from '../components/CardProject';
@@ -14,6 +16,10 @@ class HomePage extends Component {
     this.state = {
       // initial state
       projects: [],
+      currency: {
+        ccy: 'UAH',
+        buy: 1
+      },
       loading: true
     };
   }
@@ -25,8 +31,12 @@ class HomePage extends Component {
   }
 
   async componentDidMount() {
-    const { projects } = await api.get('projects');
-    this.setState({ projects, loading: false });
+    api.get('projects')
+      .then(({ projects }) => this.setState({ projects, loading: false }));
+    axios.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5')
+      .then(({ data }) => this.setState({
+        currency: data.find(({ ccy }) => ccy.toUpperCase() === 'USD')
+      }));
   }
 
   getSortedProjects(projects = []) {
@@ -43,9 +53,10 @@ class HomePage extends Component {
 
   render() {
     const projects = this.getSortedProjects(this.state.projects);
-    const { loading } = this.state;
-    const { t } = this.props;
+    const { loading, currency } = this.state;
+    const { t, i18n } = this.props;
     const livelihood = this.state.projects.find(({ slug }) => slug === 'shpp-kowo') || {};
+    const selectedCurrency = i18n.language === 'en' ? currency : { ccy: 'UAH', buy: 1 };
     return (
       <Page>
         <div className="homepage">
@@ -78,6 +89,7 @@ class HomePage extends Component {
                     <ProgressBar
                       amount={livelihood.amount}
                       funded={livelihood.this_month_funded}
+                      currency={selectedCurrency}
                     />
                     <div className="text-small">
                       {t('supportCard.small')}
@@ -92,7 +104,7 @@ class HomePage extends Component {
               .sort((a, b) => b.created_at - a.created_at)
               .map((project) => (
                 <div key={project._id} className="card item">
-                  <CardProject project={project} />
+                  <CardProject project={project} currency={selectedCurrency} />
                 </div>
               ))
             : loading

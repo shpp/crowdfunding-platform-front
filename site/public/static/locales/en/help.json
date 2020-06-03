@@ -41,18 +41,22 @@
   "expense": {
     "rent": {
       "title": "Rent",
+      "shortTitle": "Rent",
       "description": "Office of 360 sq. in the city center."
     },
     "utilities": {
       "title": "Utilities",
+      "shortTitle": "Utilities",
       "description": "Heating, electricity, water supply, internet etc."
     },
     "everyday": {
       "title": "Everyday expenses",
+      "shortTitle": "Everyday expenses",
       "description": "Tea, cookies, polygraphy, repair, rent of servers etc."
     },
     "salaries": {
       "title": "Salaries",
+      "shortTitle": "Salaries",
       "description": "Remuneration of 2 administrators and 1 manager + taxes."
     }
   },
