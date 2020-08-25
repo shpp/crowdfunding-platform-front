@@ -91,5 +91,6 @@
       "regular": "Підписатись на {{amount}} {{curr}}",
       "oneTime": "Підтримати одноразово"
     }
-  }
+  },
+  "subscriptionsList": "Вже є {{donators}} чудових підписників → {{money}} грн щомісяця"
 }

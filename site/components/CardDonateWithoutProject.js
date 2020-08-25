@@ -42,11 +42,15 @@ class CardDonateWithoutProject extends Component {
         USD: [5, 25, 50, 100],
         EUR: [5, 25, 50, 100]
       },
-      currencies: ['UAH', 'USD', 'EUR']
+      currencies: ['UAH', 'USD', 'EUR'],
+      monthlyMoney: 0,
+      monthlyDonators: 0
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    // eslint-disable-next-line camelcase
+    const { money_amount: monthlyMoney, donators_amount: monthlyDonators } = await api.get('list_subscriptions');
     i18n.on('languageChanged', () => {
       if (i18n.language === 'uk' && ['USD', 'EUR'].includes(this.state.currency)) {
         this.setState({ currency: 'UAH', amount: 500 });
@@ -58,6 +62,7 @@ class CardDonateWithoutProject extends Component {
         await api.post('paid', {
           id: d.order_id,
           UAH_amount: d.amount_debit,
+          status: d.status,
           _notify: false
         });
         const Toast = () => (
@@ -106,7 +111,7 @@ class CardDonateWithoutProject extends Component {
   }
 
   render() {
-    const { amount, anonymous, newsletter, currency, fastAmounts } = this.state;
+    const { amount, anonymous, newsletter, currency, fastAmounts, monthlyMoney, monthlyDonators } = this.state;
     const { t } = this.props;
     return (
       <div style={{ ...flex, ...column, ...grow }} className="donate-card">
@@ -231,6 +236,7 @@ class CardDonateWithoutProject extends Component {
             <div id="formContainer" className="hidden" />
           </div>
         </div>
+        <p><small>{monthlyDonators ? t('subscriptionsList', { money: monthlyMoney, donators: monthlyDonators }).replace('&nbsp;', '\xa0') : ''}</small></p>
       </div>
     );
   }

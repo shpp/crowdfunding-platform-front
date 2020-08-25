@@ -91,5 +91,6 @@
       "regular": "Subscribe to a donation of {{amount}} {{curr}}",
       "oneTime": "Support once"
     }
-  }
+  },
+  "subscriptionsList": "We already have {{donators}} awesome subscribers → {{money}}&nbsp;UAH monthly"
 }

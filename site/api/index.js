@@ -15,7 +15,8 @@ export const api = Instance({
     projects: 'projects/list',
     button: 'projects/button',
     pay: 'orders/shpp/donate',
-    paid: 'orders/shpp/donated'
+    paid: 'orders/shpp/donated',
+    list_subscriptions: 'orders/list-subscriptions'
   },
 });
 
