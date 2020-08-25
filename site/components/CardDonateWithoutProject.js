@@ -51,6 +51,7 @@ class CardDonateWithoutProject extends Component {
   async componentDidMount() {
     // eslint-disable-next-line camelcase
     const { money_amount: monthlyMoney, donators_amount: monthlyDonators } = await api.get('list_subscriptions');
+    this.setState({ monthlyMoney, monthlyDonators });
     i18n.on('languageChanged', () => {
       if (i18n.language === 'uk' && ['USD', 'EUR'].includes(this.state.currency)) {
         this.setState({ currency: 'UAH', amount: 500 });
