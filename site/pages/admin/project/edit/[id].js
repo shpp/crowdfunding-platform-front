@@ -15,6 +15,24 @@ const style = {
   padding: '20px',
 };
 
+const defaultProjectValue = {
+  planned_spendings_uk: '',
+  planned_spendings_en: '',
+  description_uk: '',
+  description_en: '',
+  name_uk: '',
+  name_en: '',
+  actual_spendings_uk: '',
+  actual_spendings_en: '',
+  short_description_uk: '',
+  short_description_en: '',
+  published: false,
+  archived: false,
+  created_at: '',
+  amount: 0,
+  _ready: false
+};
+
 function formatDate(createdAt) {
   return new Date((createdAt) || Date.now())
     .toISOString()
@@ -24,21 +42,7 @@ function formatDate(createdAt) {
 class AdminProjectEdit extends Component {
   state = {
     project: {
-      planned_spendings_uk: '',
-      planned_spendings_en: '',
-      description_uk: '',
-      description_en: '',
-      name_uk: '',
-      name_en: '',
-      actual_spendings_uk: '',
-      actual_spendings_en: '',
-      short_description_uk: '',
-      short_description_en: '',
-      published: false,
-      archived: false,
-      created_at: '',
-      amount: 0,
-      _ready: false
+      ...defaultProjectValue
     }
   };
 
@@ -54,6 +58,7 @@ class AdminProjectEdit extends Component {
 
     this.setState({
       project: {
+        ...defaultProjectValue,
         ...project,
         published: project.state === 'published',
         archived: project.state === 'archived',
@@ -68,6 +73,7 @@ class AdminProjectEdit extends Component {
     const newv = input.name !== 'created_at' ? input.value : formatDate(input.value);
     this.setState({
       project: {
+        ...defaultProjectValue,
         ...project,
         [input.name]: newv
       }
@@ -78,6 +84,7 @@ class AdminProjectEdit extends Component {
     event.preventDefault();
     const { project } = this.state;
     const projectData = {
+      ...defaultProjectValue,
       ...project,
       id: project._id,
       image: project.image || '',
