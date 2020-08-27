@@ -17,16 +17,22 @@ import '../assets/styles/help.css';
 import '../assets/styles/footer.css';
 import '../assets/styles/admin.css';
 
+// TODO: use NEXT SEO with translations
 const MyApp = ({ Component, pageProps }) => (
-  <div>
+  <>
     <DefaultSeo
+      title="Ш++ збір коштів"
+      description="Підтримай Ш++ - незалежний соціально-культурний проект у Кропивницькому"
       openGraph={{
         type: 'website',
         locale: 'uk',
         url: process.env.APP_URL,
         site_name: 'Ш++ збір коштів',
         description: 'Підтримай Ш++ - незалежний соціально-культурний проект у Кропивницькому',
-        image: '/cover-image.png'
+        images: [
+          { url: `${process.env.APP_URL}/cover-image.png` },
+          { url: `${process.env.APP_URL}/cover-image-1.png` }
+        ]
       }}
       twitter={{
         handle: '@shplusplus',
@@ -69,7 +75,7 @@ const MyApp = ({ Component, pageProps }) => (
       }
       `}
     </style>
-  </div>
+  </>
 );
 
 MyApp.getInitialProps = async ({ Component, ctx }) => {

@@ -28,7 +28,7 @@ const styles = {
   }
 };
 
-const ProgressBar = ({ amount, funded = 0, currency }) => {
+const ProgressBar = ({ amount, funded = 0, currency = { buy: 1 } }) => {
   // eslint-disable-next-line no-bitwise
   const fundedPercentage = ~~((100 * funded) / amount);
   const notFundedPercentage = Math.max(0, 100 - fundedPercentage);
