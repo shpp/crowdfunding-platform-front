@@ -10,6 +10,7 @@ import { colors } from '../utils/theme';
 // add stylesheets with this awful way because of awful next.js
 import 'axios-progress-bar/dist/nprogress.css';
 import 'react-toastify/dist/ReactToastify.css';
+import '../assets/styles/quill.css';
 import '../assets/styles/main.css';
 import '../assets/styles/card.css';
 import '../assets/styles/project.css';
