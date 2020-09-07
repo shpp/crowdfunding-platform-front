@@ -60,7 +60,7 @@ class CardDonateWithoutProject extends Component {
     // eslint-disable-next-line no-undef
     LiqPayCheckout.on('liqpay.callback', async (d) => {
       if (['subscribed', 'success'].includes(d.status)) {
-        await api.post('paid', {
+        await api.post('donate-2', {
           id: d.order_id,
           UAH_amount: d.amount_debit,
           status: d.status,
@@ -98,7 +98,7 @@ class CardDonateWithoutProject extends Component {
       surname: this.state.surname,
       newsletter: this.state.newsletter
     };
-    const { data, signature } = await api.post('pay', {
+    const { data, signature } = await api.post('donate-1', {
       ...personalInfo,
       subscribe: this.state.subscribe,
       amount: this.state.amount,

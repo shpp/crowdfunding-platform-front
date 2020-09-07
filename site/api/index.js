@@ -14,9 +14,11 @@ export const api = Instance({
     admin_projects: 'projects/admin-list',
     projects: 'projects/list',
     button: 'projects/button',
-    pay: 'orders/shpp/donate',
-    paid: 'orders/shpp/donated',
-    list_subscriptions: 'orders/list-subscriptions'
+    list_subscriptions: 'orders/list-subscriptions',
+    'donate-1': 'orders/shpp/donate',
+    'donate-2': 'orders/shpp/donated',
+    'project-1': 'projects/donate-step-1',
+    'project-2': 'projects/donate-step-2',
   },
 });
 

@@ -21,5 +21,14 @@
     "planned": {
       "title": "We plan to spend these money on"
     }
+  },
+  "next": "Next",
+  "phone-title": "Your phone number",
+  "viber-notifications": "We will send you project reports to Viber or Telegram.",
+  "invalid-phone": "Please enter a valid phone number",
+  "notification": {
+    "success": {
+      "general": "Payment was successful, thank you! ♥"
+    }
   }
 }
