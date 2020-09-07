@@ -68,7 +68,7 @@ class ProjectPage extends React.Component {
               <title>{project[`name_${lang}`]} | Ш++ збір коштів</title>
             </Head>
             <div className="project-image-wrapper" style={{ backgroundImage: `url(${project.image})` }} />
-            <div className="container project-info">
+            <div className="container project-info big">
               <div>
                 <h1>{project[`name_${lang}`]}&nbsp;</h1>
                 <span className="text-green">{project.completed ? `(${t('funded')})` : ''}</span>
