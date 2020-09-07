@@ -68,9 +68,9 @@ class ProjectPage extends React.Component {
               <title>{project[`name_${lang}`]} | Ш++ збір коштів</title>
             </Head>
             <div className="project-image-wrapper" style={{ backgroundImage: `url(${project.image})` }} />
-            <div className="container">
+            <div className="container project-info">
               <div>
-                <h2>{project[`name_${lang}`]}&nbsp;</h2>
+                <h1>{project[`name_${lang}`]}&nbsp;</h1>
                 <span className="text-green">{project.completed ? `(${t('funded')})` : ''}</span>
                 <span className="creation-date">{new Date(+project.created_at).toLocaleDateString(lang)}</span>
               </div>
@@ -78,7 +78,7 @@ class ProjectPage extends React.Component {
                 <div dangerouslySetInnerHTML={{ __html: project[`description_${lang}`] }} key={lang} />
               </section>
               <section>
-                <p><strong>{this.props.t('expenses.planned.title')}:</strong></p>
+                <h2>{this.props.t('expenses.planned.title')}:</h2>
                 <div dangerouslySetInnerHTML={{ __html: project[`planned_spendings_${lang}`] }} key={lang} />
               </section>
               <ProgressBar
@@ -88,7 +88,7 @@ class ProjectPage extends React.Component {
               />
               {project.completed && project[`actual_spendings_${lang}`] && (
                 <section>
-                  <p><strong>{this.props.t('expenses.actual.title')}:</strong></p>
+                  <h2>{this.props.t('expenses.actual.title')}:</h2>
                   <div dangerouslySetInnerHTML={{ __html: project[`actual_spendings_${lang}`] }} key={lang} />
                 </section>
               )}

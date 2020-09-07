@@ -14,6 +14,24 @@
     background-size: cover;
     background-position: center center;
 }
+.project-info {
+    font-size: 16px;
+}
+.project-info p,
+.project-info ol,
+.project-info ul {
+    margin: 0
+}
+
+.project-info h1 {
+    font-size: 24px;
+    display: inline-block;
+    margin: 1.2em 0;
+}
+
+.project-info span:not([class]) {
+    color: inherit!important;
+}
 
 @media screen and (max-width: 460px) {
     .project-image-wrapper {
