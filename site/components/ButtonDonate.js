@@ -34,27 +34,37 @@ class ButtonDonate extends Component {
   };
 
   componentDidMount() {
-    // eslint-disable-next-line camelcase
-    const { project_id } = this.props;
-    // eslint-disable-next-line no-undef
-    LiqPayCheckout.on('liqpay.callback', async (d) => {
-      if (['success'].includes(d.status)) {
-        await api.post('project-2', {
-          ...d,
-          project_id,
-          UAH_amount: d.amount_debit,
-          status: d.status,
-          _notify: false
-        });
-        const Toast = () => (
-          <div>
-            <p>{this.props.t('notification.success.general')}</p>
-          </div>
-        );
-        toast(Toast, { autoClose: false, position: 'top-center', closeOnClick: false, draggable: false });
-        setTimeout(window.location.reload, 2000);
-      }
-    });
+    // this hook was called twice
+    // because props had two values
+    // the prop is i18n and this is the hack to check if it is in final state already
+    if (i18n.language) {
+      // eslint-disable-next-line camelcase
+      const { project_id } = this.props;
+      // eslint-disable-next-line no-undef
+      LiqPayCheckout.on('liqpay.callback', async (d) => {
+        if (['success'].includes(d.status)) {
+          await api.post('project-2', {
+            ...d,
+            project_id,
+            UAH_amount: d.amount_debit,
+            status: d.status,
+            _notify: false
+          });
+          const Toast = () => (
+            <div>
+              <p>{this.props.t('notification.success.general')}</p>
+            </div>
+          );
+          toast(Toast, {
+            autoClose: false,
+            position: 'top-center',
+            closeOnClick: false,
+            draggable: false
+          });
+          setTimeout(window.location.reload, 2000);
+        }
+      });
+    }
   }
 
   // eslint-disable-next-line react/sort-comp
