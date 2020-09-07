@@ -52,6 +52,7 @@ class ButtonDonate extends Component {
           </div>
         );
         toast(Toast, { autoClose: false, position: 'top-center', closeOnClick: false, draggable: false });
+        setTimeout(window.location.reload, 2000);
       }
     });
   }
