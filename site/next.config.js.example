@@ -9,9 +9,10 @@ module.exports = {
     }
   },
   env: {
-    API_URL: "%API_URL%",
-    APP_URL: "%APP_URL%",
-    HASH_SALT: "%HASH_SALT%"
+    API_URL: "<<API_URL>>",
+    APP_URL: "<<APP_URL>>",
+    HASH_SALT: "<<HASH_SALT>>",
+    SENTRY_DSN: "<<SENTRY_DSN>>"
   },
   serverRuntimeConfig: {},
   publicRuntimeConfig: {

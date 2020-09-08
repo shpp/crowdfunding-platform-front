@@ -15,6 +15,8 @@
     "author": "programming.kr.ua",
     "license": "ISC",
     "dependencies": {
+        "@sentry/react": "^5.22.3",
+        "@sentry/tracing": "^5.22.3",
         "@zeit/next-css": "^1.0.1",
         "axios": "^0.19.2",
         "axios-progress-bar": "^1.2.0",

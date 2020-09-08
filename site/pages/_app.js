@@ -4,6 +4,9 @@ import withGA from 'next-ga';
 import Head from 'next/head';
 import { DefaultSeo } from 'next-seo';
 
+import * as Sentry from '@sentry/react';
+import { Integrations } from '@sentry/tracing';
+
 import { appWithTranslation } from '../utils/translations';
 import { colors } from '../utils/theme';
 
@@ -17,6 +20,14 @@ import '../assets/styles/project.css';
 import '../assets/styles/help.css';
 import '../assets/styles/footer.css';
 import '../assets/styles/admin.css';
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  integrations: [
+    new Integrations.BrowserTracing(),
+  ],
+  tracesSampleRate: 1.0,
+});
 
 // TODO: use NEXT SEO with translations
 const MyApp = ({ Component, pageProps }) => (
