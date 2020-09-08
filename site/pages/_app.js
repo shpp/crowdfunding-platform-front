@@ -45,7 +45,7 @@ const MyApp = ({ Component, pageProps }) => (
       <title>Ш++ збір коштів</title>
       <link rel="shortcut icon" href="/favicon.ico" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      <script src="//static.liqpay.ua/libjs/checkout.js" async />
+      <script src="//static.liqpay.ua/libjs/checkout.js" />
     </Head>
     {/* eslint-disable-next-line react/jsx-props-no-spreading */}
     <Component {...pageProps} />
