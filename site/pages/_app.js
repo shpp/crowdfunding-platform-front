@@ -42,7 +42,7 @@ const MyApp = ({ Component, pageProps }) => (
         site_name: 'Ш++ збір коштів',
         description: 'Підтримай Ш++ - незалежний соціально-культурний проект у Кропивницькому',
         images: [
-          { url: `${process.env.APP_URL}/cover-image.png` },
+          { url: `${process.env.APP_URL}/cover-image.jpg` },
           { url: `${process.env.APP_URL}/cover-image-1.png` }
         ]
       }}

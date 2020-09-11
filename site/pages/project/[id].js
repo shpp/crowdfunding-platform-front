@@ -59,7 +59,7 @@ class ProjectPage extends React.Component {
                 description: project[`short_description_${lang}`],
                 images: [
                   { url: `${process.env.APP_URL}/api/getImage?url=${encodeURI(project.image)}` },
-                  { url: `${process.env.APP_URL}/cover-image.png` }
+                  { url: `${process.env.APP_URL}/cover-image.jpg` }
                 ],
                 site_name: 'Підтримай++ - спільнокошт',
               }}
@@ -109,7 +109,7 @@ class ProjectPage extends React.Component {
               description: project[`short_description_${lang}`],
               images: [
                 { url: `${process.env.APP_URL}/api/getImage?url=${encodeURI(project.image)}` },
-                { url: `${process.env.APP_URL}/cover-image.png` }
+                { url: `${process.env.APP_URL}/cover-image.jpg` }
               ],
               site_name: 'Підтримай++ - спільнокошт',
             }}
