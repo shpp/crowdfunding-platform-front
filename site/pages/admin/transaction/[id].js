@@ -67,6 +67,12 @@ class TransactionView extends Component {
               </Link>
             </p>
             <div className="d-flex justify-content-around">
+              <Link
+                href="/admin/transaction/edit/[id]"
+                as={`/admin/transaction/edit/${transaction._id}`}
+              >
+                <Button className="btn-warning">Редагувати транзакцію</Button>
+              </Link>
               {
                 transaction.status === 'success'
                   ? revokeButton

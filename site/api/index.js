@@ -7,6 +7,7 @@ export const api = Instance({
     transactions: 'transactions/list',
     revoke_transaction: 'transactions/revoke',
     reaffirm_transaction: 'transactions/reaffirm',
+    update_transaction: 'transactions/update',
     update_project: 'projects/update',
     create_project: 'projects/create',
     delete_project: 'projects/delete',
