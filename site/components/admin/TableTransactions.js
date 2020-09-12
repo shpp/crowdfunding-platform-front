@@ -4,6 +4,11 @@ import Link from 'next/link';
 const style = {
   cursor: 'pointer'
 };
+function getLocalDate(UTCDateString) {
+  const date = new Date(UTCDateString);
+  date.setHours(date.getHours() + 3);
+  return date.toISOString().slice(0, -5).replace(/T/g, ' ');
+}
 
 const TableTransactions = ({ transactions, fullTable }) => {
   return (
@@ -35,7 +40,7 @@ const TableTransactions = ({ transactions, fullTable }) => {
           <tr key={transaction._id} style={style}>
             <td>{ index + 1 }</td>
             { fullTable && <td>{transaction.project_name}</td>}
-            <td>{transaction.created_at.slice(0, -5).replace(/T/g, ' ')}</td>
+            <td>{getLocalDate(transaction.created_at)}</td>
             <td>{transaction.donator_name} {transaction.donator_surname}</td>
             <td>{transaction.donator_phone}</td>
             <td>{transaction.amount}</td>

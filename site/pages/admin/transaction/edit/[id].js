@@ -49,7 +49,6 @@ class TransactionEdit extends Component {
         <Container className="mt-5" style={styles.container}>
           <Col className="col-8 mx-auto ">
             <h2>Редагування транзакції</h2>
-            {JSON.stringify(transaction)}
             <div>
               <label>
                 <strong>Ім&apos;я донатора: </strong><br />
