@@ -12,7 +12,8 @@ module.exports = {
     API_URL: "<<API_URL>>",
     APP_URL: "<<APP_URL>>",
     HASH_SALT: "<<HASH_SALT>>",
-    SENTRY_DSN: "<<SENTRY_DSN>>"
+    SENTRY_DSN: "<<SENTRY_DSN>>",
+    ALTERNATIVE_DONATE_LINK: "<<ALTERNATIVE_DONATE_LINK>>"
   },
   serverRuntimeConfig: {},
   publicRuntimeConfig: {

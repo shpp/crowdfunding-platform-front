@@ -26,6 +26,8 @@
   "phone-title": "Your phone number",
   "viber-notifications": "We will send you project reports to Viber or Telegram.",
   "invalid-phone": "Please enter a valid phone number",
+  "alternative-donate-link-1": "Could not donate? Try ",
+  "alternative-donate-link-2": "paying directly",
   "notification": {
     "success": {
       "general": "Payment was successful, thank you! ♥"

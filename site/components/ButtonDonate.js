@@ -145,6 +145,15 @@ class ButtonDonate extends Component {
                   >
                     {this.props.t('next')}
                   </button>
+                  {process.env.ALTERNATIVE_DONATE_LINK
+                    ? (
+                      <div className="text-small">
+                        <br />
+                        {this.props.t('alternative-donate-link-1')}
+                        <a href={process.env.ALTERNATIVE_DONATE_LINK} target="_blank" rel="noreferrer noopener">{this.props.t('alternative-donate-link-2')}</a>
+                      </div>
+                    )
+                    : null}
                 </div>
               </div>
             </div>

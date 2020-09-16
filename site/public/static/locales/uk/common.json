@@ -26,6 +26,8 @@
   "phone-title": "Ваш номер телефону",
   "viber-notifications": "Ми надсилатимемо вам на нього звіти по проекту у Viber чи Telegram.",
   "invalid-phone": "Введіть будь ласка коректний номер",
+  "alternative-donate-link-1": "Не вийшло оплатити? Спробуйте ",
+  "alternative-donate-link-2": "платіж напряму",
   "notification": {
     "success": {
       "general": "Оплата пройшла успішно, дякуємо за підтримку! ♥"
