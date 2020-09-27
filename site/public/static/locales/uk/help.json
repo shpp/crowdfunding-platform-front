@@ -92,5 +92,5 @@
       "oneTime": "Підтримати одноразово"
     }
   },
-  "subscriptionsList": "Вже є {{donators}} чудових підписників → {{money}} грн щомісяця"
+  "subscriptionsList": "Вже є {{donators}} чудових підписників → {{money}} {{currency}} щомісяця"
 }

@@ -86,14 +86,20 @@ class HomePage extends Component {
                         </a>
                       </Link>
                     </div>
-                    <ProgressBar
-                      amount={livelihood.amount}
-                      funded={livelihood.this_month_funded}
-                      currency={selectedCurrency}
-                    />
-                    <div className="text-small">
-                      {t('supportCard.small')}
-                    </div>
+                    {livelihood
+                      ? (
+                        <>
+                          <ProgressBar
+                            amount={livelihood.amount}
+                            funded={livelihood.this_month_funded}
+                            currency={selectedCurrency}
+                          />
+                          <div className="text-small">
+                            {t('supportCard.small')}
+                          </div>
+                        </>
+                      ) : null}
+
                   </div>
                 </div>
               )

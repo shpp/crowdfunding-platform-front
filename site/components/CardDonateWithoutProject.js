@@ -49,14 +49,22 @@ class CardDonateWithoutProject extends Component {
   }
 
   async componentDidMount() {
+    const setCurrency = (lang) => {
+      if (lang === 'uk' && ['USD', 'EUR'].includes(this.state.currency)) {
+        this.setState({ currency: 'UAH', amount: 500 });
+      }
+      if (lang === 'en' && this.state.currency === 'UAH') {
+        this.setState({ currency: 'USD', amount: 50 });
+      }
+    };
+
     // eslint-disable-next-line camelcase
     const { money_amount: monthlyMoney, donators_amount: monthlyDonators } = await api.get('list_subscriptions');
     this.setState({ monthlyMoney, monthlyDonators });
     i18n.on('languageChanged', () => {
-      if (i18n.language === 'uk' && ['USD', 'EUR'].includes(this.state.currency)) {
-        this.setState({ currency: 'UAH', amount: 500 });
-      }
+      setCurrency(i18n.language);
     });
+    setCurrency(i18n.language);
     // eslint-disable-next-line no-undef
     LiqPayCheckout.on('liqpay.callback', async (d) => {
       if (['subscribed', 'success'].includes(d.status)) {
@@ -113,7 +121,7 @@ class CardDonateWithoutProject extends Component {
 
   render() {
     const { amount, anonymous, newsletter, currency, fastAmounts, monthlyMoney, monthlyDonators } = this.state;
-    const { t } = this.props;
+    const { t, exchangeRate } = this.props;
     return (
       <div style={{ ...flex, ...column, ...grow }} className="donate-card">
         <h2>{t('form.title')}</h2>
@@ -237,7 +245,7 @@ class CardDonateWithoutProject extends Component {
             <div id="formContainer" className="hidden" />
           </div>
         </div>
-        <p><small>{monthlyDonators ? t('subscriptionsList', { money: monthlyMoney, donators: monthlyDonators }).replace('&nbsp;', '\xa0') : ''}</small></p>
+        <p><small>{monthlyDonators ? t('subscriptionsList', { money: Math.round(monthlyMoney / exchangeRate.buy), donators: monthlyDonators, currency: exchangeRate.ccy }).replace('&nbsp;', '\xa0') : ''}</small></p>
       </div>
     );
   }

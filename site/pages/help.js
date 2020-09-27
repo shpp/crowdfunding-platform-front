@@ -1,4 +1,5 @@
 /* eslint-disable no-nested-ternary */
+import axios from 'axios';
 import React, { Component } from 'react';
 import Papa from 'papaparse';
 import {
@@ -20,6 +21,11 @@ const colors = [
   '#0392cf', '#f6abb6', '#03396c',
 ];
 
+const UAHRate = {
+  ccy: 'UAH',
+  buy: 1
+};
+
 class Help extends Component {
   static getInitialProps() {
     return {
@@ -30,15 +36,23 @@ class Help extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      income: null,
-      expenses: null
+      income: {},
+      expenses: {},
+      exchangeRate: {
+        uk: { ...UAHRate },
+        en: { ...UAHRate }
+      },
     };
   }
 
   async componentDidMount() {
-    const data = await (fetch('/report.csv').then((res) => res.text()));
+    const { data: currencies } = await axios.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');
 
-    const reports = Papa.parse(data, {
+    const exchangeRate = currencies.find(({ ccy }) => ccy.toUpperCase() === 'USD');
+
+    const rawReport = await (fetch('/report.csv').then((res) => res.text()));
+
+    const reports = Papa.parse(rawReport, {
       header: true,
       dynamicTyping: true,
       skipEmptyLines: true,
@@ -49,14 +63,26 @@ class Help extends Component {
       .filter(({ month, year }) => isLastThreeMonths(new Date(year, month - 1, 1)));
 
     this.setState({
-      income: getAverageStats(reports, 'income'),
-      expenses: getAverageStats(reports, 'expense')
+      exchangeRate: {
+        uk: { ...UAHRate },
+        en: exchangeRate
+      },
+      income: {
+        uk: getAverageStats(reports, 'income', 1),
+        en: getAverageStats(reports, 'income', exchangeRate.buy),
+      },
+      expenses: {
+        en: getAverageStats(reports, 'expense', exchangeRate.buy),
+        uk: getAverageStats(reports, 'expense', 1),
+      },
     });
   }
 
   render() {
-    const { income, expenses } = this.state;
     const { t } = this.props;
+    const exchangeRate = this.state.exchangeRate[i18n.language];
+    const income = this.state.income[i18n.language];
+    const expenses = this.state.expenses[i18n.language];
 
     const getTooltipContent = ({ payload = [] }) => {
       const { category } = (payload[0] || {}).payload || {};
@@ -93,6 +119,7 @@ class Help extends Component {
                     <ResponsiveContainer>
                       <PieChart>
                         <Pie
+                          isAnimationActive={false}
                           data={income}
                           dataKey="amount"
                           nameKey="category"
@@ -108,7 +135,7 @@ class Help extends Component {
                         >
                           {income.map(coloredCell)}
                         </Pie>
-                        <Tooltip formatter={(value, name) => [formatMoney(value, i18n.language), t(`income.${name}`)]} />
+                        <Tooltip formatter={(value, name) => [formatMoney(value, i18n.language, exchangeRate.ccy), t(`income.${name}`)]} />
                       </PieChart>
                     </ResponsiveContainer>
                   </div>
@@ -122,15 +149,15 @@ class Help extends Component {
                       <BarChart data={expenses} key={i18n.language}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey={(v) => t(`expense.${v.category}.shortTitle`)} />
-                        <YAxis domain={[0, 40000]} />
+                        <YAxis domain={[0, exchangeRate.ccy === 'UAH' ? 40000 : 1200]} />
                         <Tooltip
                           coordinate={{ x: 100, y: 140 }}
                           content={getTooltipContent}
                           allowEscapeViewBox={{ x: true, y: false }}
                           wrapperStyle={{ pointerEvents: 'all', zIndex: 1 }}
                         />
-                        <Bar dataKey="amount">
-                          <LabelList content={({ value }) => formatMoney(value, i18n.language)} position="top" />
+                        <Bar dataKey="amount" isAnimationActive={false}>
+                          <LabelList content={({ value }) => formatMoney(value, i18n.language, exchangeRate.ccy)} position="top" />
                           {expenses.map(coloredCell)}
                         </Bar>
                       </BarChart>
@@ -143,7 +170,7 @@ class Help extends Component {
               </section>
             </div>
             <aside>
-              <CardDonateWithoutProject />
+              <CardDonateWithoutProject exchangeRate={exchangeRate} />
             </aside>
           </div>
         </Page>

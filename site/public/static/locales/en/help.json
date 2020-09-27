@@ -92,5 +92,5 @@
       "oneTime": "Support once"
     }
   },
-  "subscriptionsList": "We already have {{donators}} awesome subscribers → {{money}}&nbsp;UAH monthly"
+  "subscriptionsList": "We already have {{donators}} awesome subscribers → {{money}}&nbsp;{{currency}} monthly"
 }
