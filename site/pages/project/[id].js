@@ -86,7 +86,6 @@ class ProjectPage extends React.Component {
                 funded={project.amount_funded}
                 currency={selectedCurrency}
               />
-              {project.completed && project[`actual_spendings_${lang}`] && (
               {project.completed && project[`actual_spendings_${lang}`] && project[`actual_spendings_${lang}`].length && (
                 <section>
                   <h2>{this.props.t('expenses.actual.title')}:</h2>
