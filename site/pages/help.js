@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import axios from 'axios';
 import React, { Component } from 'react';
-import Papa from 'papaparse';
+
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Bar, LabelList,
 } from 'recharts';
@@ -27,9 +27,17 @@ const UAHRate = {
 };
 
 class Help extends Component {
-  static getInitialProps() {
+  static async getInitialProps() {
+    const { data: rawReport } = await axios.post(process.env.SHEETS_URL);
+    const reports = rawReport
+      .data
+      .sort((a, b) => b.month - a.month)
+      .sort((a, b) => b.year - a.year)
+      .filter(({ month, year }) => isLastThreeMonths(new Date(year, month - 1, 1)));
+
     return {
       namespacesRequired: ['help'],
+      reports
     };
   }
 
@@ -50,30 +58,18 @@ class Help extends Component {
 
     const exchangeRate = currencies.find(({ ccy }) => ccy.toUpperCase() === 'USD');
 
-    const rawReport = await (fetch('/report.csv').then((res) => res.text()));
-
-    const reports = Papa.parse(rawReport, {
-      header: true,
-      dynamicTyping: true,
-      skipEmptyLines: true,
-    })
-      .data
-      .sort((a, b) => b.month - a.month)
-      .sort((a, b) => b.year - a.year)
-      .filter(({ month, year }) => isLastThreeMonths(new Date(year, month - 1, 1)));
-
     this.setState({
       exchangeRate: {
         uk: { ...UAHRate },
         en: exchangeRate
       },
       income: {
-        uk: getAverageStats(reports, 'income', 1),
-        en: getAverageStats(reports, 'income', exchangeRate.buy),
+        uk: getAverageStats(this.props.reports, 'income', 1),
+        en: getAverageStats(this.props.reports, 'income', exchangeRate.buy),
       },
       expenses: {
-        en: getAverageStats(reports, 'expense', exchangeRate.buy),
-        uk: getAverageStats(reports, 'expense', 1),
+        en: getAverageStats(this.props.reports, 'expense', exchangeRate.buy),
+        uk: getAverageStats(this.props.reports, 'expense', 1),
       },
     });
   }
@@ -101,19 +97,28 @@ class Help extends Component {
         <Page>
           <div style={{ ...flex }} className="help-container">
             <div className="help-text-block">
-              <section style={{ ...flex, ...row, alignItems: 'start' }} className="help-intro">
+              <section
+                style={{
+                  ...flex,
+                  ...row,
+                  alignItems: 'start'
+                }}
+                className="help-intro"
+              >
                 <div>
                   <h2>{t('text.title')}</h2>
-                  {t('text.p1', { returnObjects: true }).map((par) => (
-                    <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
-                  ))}
+                  {t('text.p1', { returnObjects: true })
+                    .map((par) => (
+                      <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
+                    ))}
                 </div>
                 <img src="/roma.jpg" alt="Roman Shmelev" />
               </section>
               <section>
-                {t('text.p2', { returnObjects: true }).map((par) => (
-                  <p key={par}>{par}</p>
-                ))}
+                {t('text.p2', { returnObjects: true })
+                  .map((par) => (
+                    <p key={par}>{par}</p>
+                  ))}
                 <div className="help-chart-wrapper">
                   <div className="help-chart-container">
                     <ResponsiveContainer>
@@ -135,14 +140,17 @@ class Help extends Component {
                         >
                           {income.map(coloredCell)}
                         </Pie>
-                        <Tooltip formatter={(value, name) => [formatMoney(value, i18n.language, exchangeRate.ccy), t(`income.${name}`)]} />
+                        <Tooltip
+                          formatter={(value, name) => [formatMoney(value, i18n.language, exchangeRate.ccy), t(`income.${name}`)]}
+                        />
                       </PieChart>
                     </ResponsiveContainer>
                   </div>
                 </div>
-                {t('text.p3', { returnObjects: true }).map((par) => (
-                  <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
-                ))}
+                {t('text.p3', { returnObjects: true })
+                  .map((par) => (
+                    <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
+                  ))}
                 <div className="help-chart-wrapper">
                   <div className="help-chart-container">
                     <ResponsiveContainer>
@@ -151,22 +159,35 @@ class Help extends Component {
                         <XAxis dataKey={(v) => t(`expense.${v.category}.shortTitle`)} />
                         <YAxis domain={[0, exchangeRate.ccy === 'UAH' ? 40000 : 1200]} />
                         <Tooltip
-                          coordinate={{ x: 100, y: 140 }}
+                          coordinate={{
+                            x: 100,
+                            y: 140
+                          }}
                           content={getTooltipContent}
-                          allowEscapeViewBox={{ x: true, y: false }}
-                          wrapperStyle={{ pointerEvents: 'all', zIndex: 1 }}
+                          allowEscapeViewBox={{
+                            x: true,
+                            y: false
+                          }}
+                          wrapperStyle={{
+                            pointerEvents: 'all',
+                            zIndex: 1
+                          }}
                         />
                         <Bar dataKey="amount" isAnimationActive={false}>
-                          <LabelList content={({ value }) => formatMoney(value, i18n.language, exchangeRate.ccy)} position="top" />
+                          <LabelList
+                            content={({ value }) => formatMoney(value, i18n.language, exchangeRate.ccy)}
+                            position="top"
+                          />
                           {expenses.map(coloredCell)}
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
                 </div>
-                {t('text.p4', { returnObjects: true }).map((par) => (
-                  <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
-                ))}
+                {t('text.p4', { returnObjects: true })
+                  .map((par) => (
+                    <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
+                  ))}
               </section>
             </div>
             <aside>
