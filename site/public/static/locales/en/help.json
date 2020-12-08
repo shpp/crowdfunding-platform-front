@@ -57,7 +57,7 @@
     "salaries": {
       "title": "Salaries",
       "shortTitle": "Salaries",
-      "description": "Remuneration of 2 administrators and 1 manager + taxes."
+      "description": "Remuneration of 2 administrators and 3 managers + taxes."
     }
   },
   "form": {
