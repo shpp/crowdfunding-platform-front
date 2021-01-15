@@ -112,7 +112,7 @@ class Help extends Component {
                       <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
                     ))}
                 </div>
-                <img src="/roma.jpg" alt="Roman Shmelev" />
+                <img src="/roma-2.jpg" alt="Roman Shmelev" />
               </section>
               <section>
                 {t('text.p2', { returnObjects: true })
@@ -157,7 +157,7 @@ class Help extends Component {
                       <BarChart data={expenses} key={i18n.language}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey={(v) => t(`expense.${v.category}.shortTitle`)} />
-                        <YAxis domain={[0, exchangeRate.ccy === 'UAH' ? 40000 : 1200]} />
+                        <YAxis domain={[0, exchangeRate.ccy === 'UAH' ? 50000 : 1750]} />
                         <Tooltip
                           coordinate={{
                             x: 100,
