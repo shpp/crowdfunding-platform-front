@@ -36,7 +36,7 @@ const Footer = ({ t }) => {
             <article>
               <i><Email className="icon" /></i>
               <div>
-                <a href="mailto:info@programming.kr.ua">info@programming.kr.ua</a>
+                <a href="mailto:info@programming.org.ua">info@programming.org.ua</a>
               </div>
             </article>
           </section>
@@ -51,7 +51,7 @@ const Footer = ({ t }) => {
           </section>
         </div>
         <div style={{ ...flex }} className="row notices">
-          <p>&copy; {new Date().getFullYear()} <a href="https://programming.kr.ua">Ш++</a>. {t('copyright')} Icons made by&nbsp;<a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>&nbsp;from&nbsp;<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+          <p>&copy; {new Date().getFullYear()} <a href="https://programming.org.ua">Ш++</a>. {t('copyright')} Icons made by&nbsp;<a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>&nbsp;from&nbsp;<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
           <p style={{ ...flex, width: '100px' }}>
             <SocialIcon link={instagram}>
               <Instagram className="icon" />
