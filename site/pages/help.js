@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 
 import {
-  PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Bar, LabelList,
+  PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Bar, LabelList, Legend,
 } from 'recharts';
 
 import Page from '../components/layout/Page';
@@ -128,18 +128,31 @@ class Help extends Component {
                           data={income}
                           dataKey="amount"
                           nameKey="category"
-                          cx={isMobile() ? '35%' : isTablet() ? '25%' : '50%'}
-                          innerRadius={isMobile() ? 20 : isTablet() ? 40 : 70}
-                          outerRadius={isMobile() ? 30 : isTablet() ? 55 : 100}
+                          cx={isMobile() ? '25%' : isTablet() ? '45%' : '50%'}
+                          innerRadius={isMobile() ? 45 : isTablet() ? 40 : 65}
+                          outerRadius={isMobile() ? 60 : isTablet() ? 55 : 90}
                           paddingAngle={5}
                           animationBegin={0}
                           animationDuration={700}
                           label={
-                            ({ category, percent }) => `${t(`income.${category}`)} — ${(percent * 100).toFixed(1)}%`
+                            ({ category, percent }) => isMobile()
+                              ? `${(percent * 100).toFixed(1)}%`
+                              : `${t(`income.${category}`)}\n — ${(percent * 100).toFixed(1)}%`
                           }
                         >
                           {income.map(coloredCell)}
                         </Pie>
+                        {
+                          isMobile()
+                            ? (
+                              <Legend
+                                formatter={(value) => `${t(`income.${value}`)}`}
+                                layout="vertical"
+                                verticalAlign="top"
+                              />
+                            )
+                            : null
+                        }
                         <Tooltip
                           formatter={(value, name) => [formatMoney(value, i18n.language, exchangeRate.ccy), t(`income.${name}`)]}
                         />
@@ -157,7 +170,7 @@ class Help extends Component {
                       <BarChart data={expenses} key={i18n.language}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey={(v) => t(`expense.${v.category}.shortTitle`)} />
-                        <YAxis domain={[0, exchangeRate.ccy === 'UAH' ? 40000 : 1400]} />
+                        <YAxis domain={[0, exchangeRate.ccy === 'UAH' ? 50000 : 1600]} />
                         <Tooltip
                           coordinate={{
                             x: 100,
