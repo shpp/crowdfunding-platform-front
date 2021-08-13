@@ -18,7 +18,7 @@
         "axios": "^0.19.2",
         "axios-progress-bar": "^1.2.0",
         "crypto": "^1.0.1",
-        "next": "^9.3.4",
+        "next": "^11.1.0",
         "next-ga": "^2.3.4",
         "next-seo": "^4.4.0",
         "papaparse": "^5.2.0",
