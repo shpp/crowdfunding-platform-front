@@ -25,6 +25,10 @@ const UAHRate = {
   ccy: 'UAH',
   buy: 1
 };
+const USDRate = {
+  ccy: 'USD',
+  buy: '39.75000'
+};
 
 class Help extends Component {
   static async getInitialProps() {
@@ -48,30 +52,39 @@ class Help extends Component {
       expenses: {},
       exchangeRate: {
         uk: { ...UAHRate },
-        en: { ...UAHRate }
+        en: { ...USDRate }
       },
     };
   }
 
   async componentDidMount() {
-    const { data: currencies } = await axios.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');
+    try {
+      const { data: currencies } = await axios.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');
 
-    const exchangeRate = currencies.find(({ ccy }) => ccy.toUpperCase() === 'USD');
+      const exchangeRate = currencies.find(({ ccy }) => ccy.toUpperCase() === 'USD');
 
-    this.setState({
-      exchangeRate: {
-        uk: { ...UAHRate },
-        en: exchangeRate
-      },
-      income: {
-        uk: getAverageStats(this.props.reports, 'income', 1),
-        en: getAverageStats(this.props.reports, 'income', exchangeRate.buy),
-      },
-      expenses: {
-        en: getAverageStats(this.props.reports, 'expense', exchangeRate.buy),
-        uk: getAverageStats(this.props.reports, 'expense', 1),
-      },
-    });
+      this.setState({
+        exchangeRate: {
+          uk: { ...UAHRate },
+          en: exchangeRate
+        }
+      });
+    } catch (e) {
+      return Promise.resolve();
+    } finally {
+      const exchangeRate = this.state.exchangeRate.en.buy;
+      
+      this.setState({
+        income: {
+          uk: getAverageStats(this.props.reports, 'income', 1),
+          en: getAverageStats(this.props.reports, 'income', exchangeRate.buy),
+        },
+        expenses: {
+          en: getAverageStats(this.props.reports, 'expense', exchangeRate.buy),
+          uk: getAverageStats(this.props.reports, 'expense', 1),
+        }
+      });
+    }
   }
 
   render() {
