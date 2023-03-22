@@ -17,7 +17,7 @@ class Transactions extends Component {
     // get all transactions
     const { transactions } = await api.get('transactions');
     // get projects names
-    const projectNames = projects.reduce((acc, project) => ({ ...acc, [project._id]: project[`name_${i18n.language}`] }), {});
+    const projectNames = projects.reduce((acc, project) => ({ ...acc, [project.id]: project[`name_${i18n.language}`] }), {});
     // add project name property to each transaction
     const namedTransactions = transactions.map((transaction) => {
       return { ...transaction, project_name: projectNames[transaction.project_id] };

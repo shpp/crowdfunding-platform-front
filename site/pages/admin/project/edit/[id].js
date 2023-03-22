@@ -54,7 +54,7 @@ class AdminProjectEdit extends Component {
     const { query } = this.props.router;
 
     const { projects } = await api.get('admin_projects');
-    const project = projects.find((item) => item._id === query.id);
+    const project = projects.find((item) => item.id == query.id);
 
     this.setState({
       project: {

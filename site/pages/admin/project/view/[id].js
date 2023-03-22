@@ -35,7 +35,7 @@ class AdminViewProjectPage extends Component {
     const { query } = this.props.router;
 
     const { projects } = await api.get('admin_projects');
-    const project = projects.find((item) => item._id === query.id);
+    const project = projects.find((item) => item.id == query.id);
 
     const { transactions } = await api.get('transactions', { project_id: query.id }) || {};
 
@@ -51,7 +51,7 @@ class AdminViewProjectPage extends Component {
     const projectData = {
       ...this.state.project,
       state,
-      id: this.state.project._id
+      id: this.state.project.id
     };
 
     await api.post('update_project', projectData);
@@ -95,7 +95,7 @@ class AdminViewProjectPage extends Component {
                     <Eye /> Preview
                   </Button>
                 </Link>
-                <Link href="/admin/project/edit/[id]" as={`/admin/project/edit/${project._id}`}>
+                <Link href="/admin/project/edit/[id]" as={`/admin/project/edit/${project.id}`}>
                   <Button variant="outline-secondary" size="sm">
                     <Edit /> Edit
                   </Button>
@@ -138,7 +138,7 @@ class AdminViewProjectPage extends Component {
                 <p><strong>Транзакції:</strong></p>
                 <ProjectTransactions
                   transactions={transactions}
-                  project_id={project._id}
+                  project_id={project.id}
                 />
               </section>
             </Card.Body>

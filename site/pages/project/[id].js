@@ -26,7 +26,7 @@ class ProjectPage extends React.Component {
   static async getInitialProps({ query: { id } }) {
     const { projects = [] } = await api.get('projects');
     return {
-      project: projects.find((item) => item._id === id),
+      project: projects.find((item) => item.id == id),
       namespacesRequired: ['common']
     };
   }
@@ -72,14 +72,10 @@ class ProjectPage extends React.Component {
               <div>
                 <h1>{project[`name_${lang}`]}&nbsp;</h1>
                 <span className="text-green">{project.completed ? `(${t('funded')})` : ''}</span>
-                <span className="creation-date">{new Date(+project.created_at).toLocaleDateString(lang)}</span>
+                <span className="creation-date">{new Date(project.created_at).toLocaleDateString(lang)}</span>
               </div>
               <section>
                 <div dangerouslySetInnerHTML={{ __html: project[`description_${lang}`] }} key={lang} />
-              </section>
-              <section>
-                <h2>{this.props.t('expenses.planned.title')}:</h2>
-                <div dangerouslySetInnerHTML={{ __html: project[`planned_spendings_${lang}`] }} key={lang} />
               </section>
               <ProgressBar
                 amount={project.amount}
@@ -92,7 +88,7 @@ class ProjectPage extends React.Component {
                   <div dangerouslySetInnerHTML={{ __html: project[`actual_spendings_${lang}`] }} key={lang} />
                 </section>
               )}
-              {!project.completed && (<ButtonDonate project_id={project._id} />)}
+              {!project.completed && (<ButtonDonate project_id={project.id} />)}
             </div>
           </Page>
         );

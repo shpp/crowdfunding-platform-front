@@ -15,7 +15,7 @@ class CardProject extends React.Component {
         {project.completed && <div className="project-completed"><Check style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('completed')}</div> }
         <Link
           href={`${i18n.language === 'uk' ? '' : `/${i18n.language}`}/project/[id]`}
-          as={`/project/${project._id}`}
+          as={`/project/${project.id}`}
         >
           <img
             src={project.image}
@@ -37,13 +37,13 @@ class CardProject extends React.Component {
             <p style={p}>
               <Link
                 href={`${i18n.language === 'uk' ? '' : `/${i18n.language}`}/project/[id]`}
-                as={`/project/${project._id}`}
+                as={`/project/${project.id}`}
               >
                 <a>{t('details')}</a>
               </Link>
             </p>
           </div>
-          {!project.completed && (<ButtonDonate project_id={project._id} />)}
+          {!project.completed && (<ButtonDonate project_id={project.id} />)}
 
           <ProgressBar
             amount={project.amount}
@@ -52,7 +52,7 @@ class CardProject extends React.Component {
           />
 
           <div className="text-small">
-            {t('createdAt')} {formatDate(+project.created_at, i18n.language)}
+            {t('createdAt')} {formatDate(project.created_at, i18n.language)}
           </div>
         </div>
       </div>

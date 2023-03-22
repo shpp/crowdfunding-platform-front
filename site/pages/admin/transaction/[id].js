@@ -28,7 +28,7 @@ class TransactionView extends Component {
   async getTransaction() {
     const { transactions } = await api.get('transactions');
     this.setState({
-      transaction: transactions.filter((t) => t._id === this.props.router.query.id).pop()
+      transaction: transactions.filter((t) => t.id == this.props.router.query.id).pop()
     });
   }
 
@@ -69,7 +69,7 @@ class TransactionView extends Component {
             <div className="d-flex justify-content-around">
               <Link
                 href="/admin/transaction/edit/[id]"
-                as={`/admin/transaction/edit/${transaction._id}`}
+                as={`/admin/transaction/edit/${transaction.id}`}
               >
                 <Button className="btn-warning">Редагувати транзакцію</Button>
               </Link>

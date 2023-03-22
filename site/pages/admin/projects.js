@@ -40,12 +40,12 @@ class AdminListPage extends Component {
                 <tbody>
                   {projects
                     .filter(({ state }) => state !== 'archived')
-                    .sort((a, b) => b.created_at - a.created_at)
+                    .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
                     .map((project, index) => (
                       <Link
-                        key={project._id}
+                        key={project.id}
                         href="/admin/project/view/[id]"
-                        as={`/admin/project/view/${project._id}`}
+                        as={`/admin/project/view/${project.id}`}
                       >
                         <tr style={{ cursor: 'pointer' }}>
                           <td>{index + 1}</td>
@@ -54,7 +54,7 @@ class AdminListPage extends Component {
                           <td>{project.amount_funded}</td>
                           <td>{project.state}</td>
                           <td>{project.completed.toString()}</td>
-                          <td>{new Date(+project.created_at || 0).toLocaleDateString('uk')}</td>
+                          <td>{new Date(project.created_at || 0).toLocaleDateString('uk')}</td>
                         </tr>
                       </Link>
                     ))}

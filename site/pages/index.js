@@ -48,7 +48,7 @@ class HomePage extends Component {
       ? completedProjects
       : [...notCompletedProjects, ...completedProjects]
         .filter(({ state }) => state === 'published')
-        .sort((a, b) => a.created_at - b.created_at);
+        .sort((a, b) => Date.parse(a.created_at) - Date.parse(b.created_at));
   }
 
   render() {
@@ -107,9 +107,9 @@ class HomePage extends Component {
           {/* eslint-disable-next-line no-nested-ternary */}
           {projects.length
             ? projects
-              .sort((a, b) => b.created_at - a.created_at)
+              .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
               .map((project) => (
-                <div key={project._id} className="card item">
+                <div key={project.id} className="card item">
                   <CardProject project={project} currency={selectedCurrency} />
                 </div>
               ))
