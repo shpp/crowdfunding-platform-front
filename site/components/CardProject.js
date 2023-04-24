@@ -21,6 +21,7 @@ class CardProject extends React.Component {
             src={project.image}
             alt="placeholder"
             className="project-image"
+            hidden={!project.image}
           />
         </Link>
         <div className="project-info">
