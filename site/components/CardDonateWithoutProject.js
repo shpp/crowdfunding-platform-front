@@ -67,11 +67,6 @@ class CardDonateWithoutProject extends Component {
     setCurrency(i18n.language);
     // eslint-disable-next-line no-undef
     LiqPayCheckout.on('liqpay.callback', async (d) => {
-      console.log(d.project_id);
-      console.log(localStorage.getItem('lastHandledOrderId') !== d.order_id);
-      console.log(localStorage.getItem('lastHandledOrderId'));
-      console.log(d.order_id);
-
       if (
         // hack for several same requests
         !d.project_id
