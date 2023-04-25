@@ -69,7 +69,7 @@ class CardDonateWithoutProject extends Component {
     LiqPayCheckout.on('liqpay.callback', async (d) => {
       if (
         // hack for several same requests
-        !d.project_id
+        !localStorage.getItem('lastRequestedProjectId')
         && localStorage.getItem('lastHandledOrderId') !== d.order_id
         && ['subscribed', 'success'].includes(d.status)
       ) {
@@ -121,6 +121,7 @@ class CardDonateWithoutProject extends Component {
       language: i18n.language,
       _notify: false
     });
+    localStorage.setItem('lastRequestedProjectId', null);
 
     // eslint-disable-next-line no-undef
     LiqPayCheckout.init({ data, signature, language: i18n.language, mode: 'popup' });
