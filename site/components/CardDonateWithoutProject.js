@@ -67,6 +67,7 @@ class CardDonateWithoutProject extends Component {
     setCurrency(i18n.language);
     // eslint-disable-next-line no-undef
     LiqPayCheckout.on('liqpay.callback', async (d) => {
+      console.log(JSON.stringify(d));
       if (
         // hack for several same requests
         +d.project_id === 12 // this is the id of the main project
