@@ -70,7 +70,7 @@ class CardDonateWithoutProject extends Component {
       if (
         // hack for several same requests
         // +d.project_id === 12 // this is the id of the main project
-        && localStorage.getItem('lastHandledOrderId') !== d.order_id
+        localStorage.getItem('lastHandledOrderId') !== d.order_id
         && ['subscribed', 'success'].includes(d.status)
       ) {
         console.log(JSON.stringify(this.props));
