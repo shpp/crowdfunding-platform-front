@@ -67,13 +67,22 @@ class CardDonateWithoutProject extends Component {
     setCurrency(i18n.language);
     // eslint-disable-next-line no-undef
     LiqPayCheckout.on('liqpay.callback', async (d) => {
-      if (
-        // hack for several same requests
-        localStorage.getItem('lastRequestedProjectId') === 'shpp'
-        && localStorage.getItem('lastHandledOrderId') !== d.order_id
-        && ['subscribed', 'success'].includes(d.status)
-      ) {
-        localStorage.setItem('lastHandledOrderId', d.order_id);
+      let processableCallback = true;
+
+      // hack for several same requests
+      try {
+        processableCallback = localStorage.getItem('lastRequestedProjectId') === 'shpp'
+          && localStorage.getItem('lastHandledOrderId') !== d.order_id;
+      } catch (e) {
+        //
+      }
+
+      if (processableCallback && ['subscribed', 'success'].includes(d.status)) {
+        try {
+          localStorage.setItem('lastHandledOrderId', d.order_id);
+        } catch (e) {
+          //
+        }
         await api.post('donate-2', {
           id: d.order_id,
           UAH_amount: d.amount_debit,
@@ -121,7 +130,12 @@ class CardDonateWithoutProject extends Component {
       language: i18n.language,
       _notify: false
     });
-    localStorage.setItem('lastRequestedProjectId', 'shpp');
+
+    try {
+      localStorage.setItem('lastRequestedProjectId', 'shpp');
+    } catch (e) {
+      //
+    }
 
     // eslint-disable-next-line no-undef
     LiqPayCheckout.init({ data, signature, language: i18n.language, mode: 'popup' });

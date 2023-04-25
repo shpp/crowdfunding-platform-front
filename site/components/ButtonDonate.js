@@ -42,13 +42,22 @@ class ButtonDonate extends Component {
       const { project_id } = this.props;
       // eslint-disable-next-line no-undef
       LiqPayCheckout.on('liqpay.callback', async (d) => {
-        if (
-          // hack for several same requests
-          localStorage.getItem('lastRequestedProjectId') == project_id
-          && localStorage.getItem('lastHandledOrderId') !== d.order_id
-          && ['success'].includes(d.status)
-        ) {
-          localStorage.setItem('lastHandledOrderId', d.order_id);
+        let processableCallback = true;
+
+        // hack for several same requests
+        try {
+          processableCallback = localStorage.getItem('lastRequestedProjectId') === project_id + ''
+            && localStorage.getItem('lastHandledOrderId') !== d.order_id;
+        } catch (e) {
+          //
+        }
+
+        if (processableCallback && ['success'].includes(d.status)) {
+          try {
+            localStorage.setItem('lastHandledOrderId', d.order_id);
+          } catch (e) {
+            //
+          }
           await api.post('project-2', {
             ...d,
             project_id,
@@ -105,7 +114,12 @@ class ButtonDonate extends Component {
         language: i18n.language,
         _notify: false
       });
-      localStorage.setItem('lastRequestedProjectId', project_id);
+
+      try {
+        localStorage.setItem('lastRequestedProjectId', project_id);
+      } catch (e) {
+        //
+      }
 
       // eslint-disable-next-line no-undef
       LiqPayCheckout.init({ data, signature, language: i18n.language, mode: 'popup' });
