@@ -67,7 +67,6 @@ class CardDonateWithoutProject extends Component {
     setCurrency(i18n.language);
     // eslint-disable-next-line no-undef
     LiqPayCheckout.on('liqpay.callback', async (d) => {
-      console.log('donate-2' + JSON.stringify(d));
       if (['subscribed', 'success'].includes(d.status)) {
         await api.post('donate-2', {
           id: d.order_id,
@@ -75,6 +74,8 @@ class CardDonateWithoutProject extends Component {
           status: d.status,
           _notify: false
         });
+        // eslint-disable-next-line no-undef
+        LiqPayCheckout.off('liqpay.callback');
         const Toast = () => (
           <div>
             <p>{this.props.t('notification.success.general')}</p>

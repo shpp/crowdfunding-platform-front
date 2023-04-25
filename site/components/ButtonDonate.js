@@ -42,7 +42,6 @@ class ButtonDonate extends Component {
       const { project_id } = this.props;
       // eslint-disable-next-line no-undef
       LiqPayCheckout.on('liqpay.callback', async (d) => {
-        console.log('project-2' + JSON.stringify(d));
         if (['success'].includes(d.status)) {
           await api.post('project-2', {
             ...d,
@@ -51,6 +50,8 @@ class ButtonDonate extends Component {
             status: d.status,
             _notify: false
           });
+          // eslint-disable-next-line no-undef
+          LiqPayCheckout.off('liqpay.callback');
           const Toast = () => (
             <div>
               <p>{this.props.t('notification.success.general')}</p>
