@@ -69,11 +69,10 @@ class CardDonateWithoutProject extends Component {
     LiqPayCheckout.on('liqpay.callback', async (d) => {
       if (
         // hack for several same requests
-        // +d.project_id === 12 // this is the id of the main project
-        localStorage.getItem('lastHandledOrderId') !== d.order_id
+        +d.project_id === 12 // this is the id of the main project
+        && localStorage.getItem('lastHandledOrderId') !== d.order_id
         && ['subscribed', 'success'].includes(d.status)
       ) {
-        console.log(JSON.stringify(this.props));
         console.log(JSON.stringify(this.state));
         localStorage.setItem('lastHandledOrderId', d.order_id);
         await api.post('donate-2', {
