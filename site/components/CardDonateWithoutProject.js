@@ -67,7 +67,15 @@ class CardDonateWithoutProject extends Component {
     setCurrency(i18n.language);
     // eslint-disable-next-line no-undef
     LiqPayCheckout.on('liqpay.callback', async (d) => {
-      if (['subscribed', 'success'].includes(d.status)) {
+      if (
+        // hack for several same requests
+        +d.project_id === 12 // this is the id of the main project
+        && localStorage.getItem('lastHandledOrderId') !== d.order_id
+        && ['subscribed', 'success'].includes(d.status)
+      ) {
+        console.log(JSON.stringify(this.props));
+        console.log(JSON.stringify(this.state));
+        localStorage.setItem('lastHandledOrderId', d.order_id);
         await api.post('donate-2', {
           id: d.order_id,
           UAH_amount: d.amount_debit,
@@ -75,7 +83,6 @@ class CardDonateWithoutProject extends Component {
           _notify: false
         });
         // eslint-disable-next-line no-undef
-        LiqPayCheckout.off('liqpay.callback');
         const Toast = () => (
           <div>
             <p>{this.props.t('notification.success.general')}</p>
