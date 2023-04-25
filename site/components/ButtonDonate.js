@@ -42,6 +42,7 @@ class ButtonDonate extends Component {
       const { project_id } = this.props;
       // eslint-disable-next-line no-undef
       LiqPayCheckout.on('liqpay.callback', async (d) => {
+        console.log('project-2' + JSON.stringify(d));
         if (['success'].includes(d.status)) {
           await api.post('project-2', {
             ...d,
