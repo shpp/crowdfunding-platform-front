@@ -67,11 +67,9 @@ class CardDonateWithoutProject extends Component {
     setCurrency(i18n.language);
     // eslint-disable-next-line no-undef
     LiqPayCheckout.on('liqpay.callback', async (d) => {
-      console.log(!localStorage.getItem('lastRequestedProjectId'));
-      console.log(localStorage.getItem('lastHandledOrderId') !== d.order_id);
       if (
         // hack for several same requests
-        !localStorage.getItem('lastRequestedProjectId')
+        localStorage.getItem('lastRequestedProjectId') === 'shpp'
         && localStorage.getItem('lastHandledOrderId') !== d.order_id
         && ['subscribed', 'success'].includes(d.status)
       ) {
@@ -123,7 +121,7 @@ class CardDonateWithoutProject extends Component {
       language: i18n.language,
       _notify: false
     });
-    localStorage.setItem('lastRequestedProjectId', null);
+    localStorage.setItem('lastRequestedProjectId', 'shpp');
 
     // eslint-disable-next-line no-undef
     LiqPayCheckout.init({ data, signature, language: i18n.language, mode: 'popup' });
