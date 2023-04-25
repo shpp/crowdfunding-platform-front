@@ -42,11 +42,11 @@ class ButtonDonate extends Component {
       const { project_id } = this.props;
       // eslint-disable-next-line no-undef
       LiqPayCheckout.on('liqpay.callback', async (d) => {
-        console.log(localStorage.getItem('lastRequestedProjectId') === project_id);
+        console.log(localStorage.getItem('lastRequestedProjectId') == project_id);
         console.log(localStorage.getItem('lastHandledOrderId') !== d.order_id);
         if (
           // hack for several same requests
-          localStorage.getItem('lastRequestedProjectId') === project_id
+          localStorage.getItem('lastRequestedProjectId') == project_id
           && localStorage.getItem('lastHandledOrderId') !== d.order_id
           && ['success'].includes(d.status)
         ) {
