@@ -54,8 +54,8 @@ class TransactionView extends Component {
         <Container className="mt-5" style={styles.container}>
           <Col className="col-8 mx-auto ">
             <h1>Перегляд транзакції</h1>
-            <p>Ім&apos;я донатора: <span className="text-success">{transaction.donator_name} {transaction.donator_surname}</span></p>
-            <p>Номер телефону: <span className="text-success">{transaction.donator_phone}</span></p>
+            <p>Ім&apos;я донатора: <span className="text-success">{transaction.donator?.name} {transaction.donator?.surname}</span></p>
+            <p>Номер телефону: <span className="text-success">{transaction.donator?.phone}</span></p>
             <p>Статус: <span className="text-success">{transaction.status}</span></p>
             <p>Сума: <span className="text-success">{transaction.amount}</span></p>
             <p>Дата: <span className="text-success">{transaction.created_at}</span></p>
@@ -63,7 +63,7 @@ class TransactionView extends Component {
               <Link
                 href="/admin/project/view/[id]"
                 as={`/admin/project/view/${transaction.project_id}`}
-              ><span className="text-success" style={styles.link}>{transaction.project_id}</span>
+              ><span className="text-success" style={styles.link}>{transaction.project?.name}</span>
               </Link>
             </p>
             <div className="d-flex justify-content-around">

@@ -33,16 +33,16 @@ const TableTransactions = ({ transactions, fullTable }) => {
         { transactions
       && transactions.map((transaction, index) => (
         <Link
-          key={transaction._id}
+          key={transaction.id}
           href="/admin/transaction/[id]"
-          as={`/admin/transaction/${transaction._id}`}
+          as={`/admin/transaction/${transaction.id}`}
         >
-          <tr key={transaction._id} style={style}>
+          <tr key={transaction.id} style={style}>
             <td>{ index + 1 }</td>
-            { fullTable && <td>{transaction.project_name}</td>}
+            { fullTable && <td>{transaction.project.name}</td>}
             <td>{getLocalDate(transaction.created_at)}</td>
-            <td>{transaction.donator_name} {transaction.donator_surname}</td>
-            <td>{transaction.donator_phone}</td>
+            <td>{transaction.donator?.name} {transaction.donator?.surname}</td>
+            <td>{transaction.donator?.phone}</td>
             <td>{transaction.amount}</td>
             <td>{transaction.status}</td>
           </tr>
