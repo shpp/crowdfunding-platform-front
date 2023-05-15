@@ -38,6 +38,7 @@ const Layout = ({ children }) => (
       { href: '/admin/project/add', text: 'Додати' },
       { href: '/admin/projects', text: 'Проекти' },
       { href: '/admin/transactions', text: 'Транзакції' },
+      { href: '/admin/subscriptions', text: 'Підписки' },
     ]}
     />
     <main>{children}</main>

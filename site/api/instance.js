@@ -59,6 +59,13 @@ export const Instance = (config) => {
     post(what, params) {
       return instance.post(config.endpoints[what], params);
     },
+    request(url, method, params) {
+      return instance.request({
+        url,
+        method,
+        params
+      });
+    },
   };
 };
 
