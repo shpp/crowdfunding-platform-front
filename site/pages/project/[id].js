@@ -24,9 +24,9 @@ class ProjectPage extends React.Component {
   }
 
   static async getInitialProps({ query: { id } }) {
-    const { projects = [] } = await api.get('projects');
+    const { project } = await api.request(`projects/${id}`, 'get');
     return {
-      project: projects.find((item) => item.id == id),
+      project,
       namespacesRequired: ['common']
     };
   }

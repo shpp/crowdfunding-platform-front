@@ -16,11 +16,6 @@ class Subscriptions extends Component {
    this.setState({ subscriptions });
  }
 
- async unsubscribe(orderId) {
-   await api.post('unsubscribe', { orderId });
-   await this.componentDidMount();
- }
-
  render() {
    return (
      <Page>

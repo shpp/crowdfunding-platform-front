@@ -49,7 +49,7 @@ class AdminListPage extends Component {
                       >
                         <tr style={{ cursor: 'pointer' }}>
                           <td>{index + 1}</td>
-                          <td>{(project.name_uk || '').slice(0, 30)}</td>
+                          <td>{(project.name_uk || project.name || '').slice(0, 30)}</td>
                           <td>{project.amount}</td>
                           <td>{project.amount_funded}</td>
                           <td>{project.state}</td>

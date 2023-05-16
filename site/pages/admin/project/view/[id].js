@@ -127,14 +127,6 @@ class AdminViewProjectPage extends Component {
                 <div dangerouslySetInnerHTML={{ __html: project[`description_${i18n.language}`] }} />
               </section>
               <section style={styles.section}>
-                <p><strong>Заплановані витрати ({i18n.language}):</strong></p>
-                <div dangerouslySetInnerHTML={{ __html: project[`planned_spendings_${i18n.language}`] }} />
-              </section>
-              <section style={styles.section}>
-                <p><strong>Реальні витрати ({i18n.language}):</strong></p>
-                <div dangerouslySetInnerHTML={{ __html: project[`actual_spendings_${i18n.language}`] }} />
-              </section>
-              <section style={styles.section}>
                 <p><strong>Транзакції:</strong></p>
                 <ProjectTransactions
                   transactions={transactions}

@@ -18,7 +18,7 @@ class Unsubscribe extends Component {
   };
 
   async componentDidMount() {
-    const { order } = await api.request(`orders/${this.state.order.id}`, 'get');
+    const { order } = await api.request(`admin/orders/${this.state.order.id}`, 'get');
     this.setState({
       order
     });
