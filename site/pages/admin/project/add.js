@@ -60,7 +60,7 @@ class AddProject extends Component {
     ];
 
     const longInputLabels = [
-      { name: 'name', label: "Ім'я проекту", type: 'text' },
+      { name: 'name', label: 'Назва проекту', type: 'text' },
       { name: 'content_id', label: 'ID сторінки в ноушені', type: 'text' },
     ];
 

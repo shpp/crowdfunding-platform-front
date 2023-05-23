@@ -53,6 +53,7 @@ class Subscriptions extends Component {
              <th>Сума</th>
              <th>Статус</th>
              <th>Дата підписки</th>
+             <th>Остання транзакція</th>
            </tr>
          </thead>
          <tbody>
@@ -70,7 +71,7 @@ class Subscriptions extends Component {
                  <td>{subscription.amount} {subscription.currency}</td>
                  <td>{subscription.status}</td>
                  <td>{subscription.created_at ? getLocalDate(subscription.created_at) : ''}</td>
-
+                 <td>{subscription.transaction ? `${getLocalDate(subscription.transaction.created_at)} - ${subscription.transaction.status}` : ''}</td>
                </tr>
              </Link>
 
