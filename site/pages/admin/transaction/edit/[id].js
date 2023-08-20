@@ -25,7 +25,7 @@ class TransactionEdit extends Component {
 
   async getTransaction() {
     const { transactions } = await api.get('transactions');
-    const newTransaction = transactions.filter((t) => t.id == this.props.router.query.id).pop();
+    const newTransaction = transactions.filter((t) => t.id === this.props.router.query.id).pop();
     const oldTransaction = this.state.transaction;
     const setTransaction = {};
     Object.keys(newTransaction).forEach((key) => {

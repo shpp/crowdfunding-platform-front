@@ -11,14 +11,8 @@ export function formatDate(date, lang) {
   const yearStr = new Date().getFullYear() === year ? '' : `${year}${lang === 'uk' ? 'р.' : ''}`;
   return `${day} ${months[lang][month]} ${yearStr}`;
 }
-// eslint-disable-next-line no-nested-ternary
-export const formatMoney = (x, lang, currency) => `${new Intl.NumberFormat(lang).format(x)} ${lang === 'uk' ? (currency === 'UAH' ? 'грн' : 'дол') : currency}`;
 
-export const isLastThreeMonths = (date) => {
-  const today = new Date();
-  const startOfCurrentMonth = +new Date(today.getFullYear(), today.getMonth(), 1);
-  return +date >= (+startOfCurrentMonth - 3 * 31 * 24 * 60 * 60 * 1000) && +date <= startOfCurrentMonth;
-};
+export const formatMoney = (x, lang) => `${new Intl.NumberFormat(lang).format(x)} ${lang === 'uk' ? 'грн' : 'дол'}`;
 
 export const sumValues = (acc, { category, amount }) => ({
   ...acc,
@@ -30,13 +24,5 @@ export const objToArray = (obj, keyname, valuename) => Object.keys(obj).map((k) 
   [valuename]: obj[k]
 }));
 
-export function getAverageStats(rawstats, type, exchangeCoefficient = 1) {
-  const reports = rawstats.filter((r) => r.type === type);
-  const months = new Set(reports.map(({ month }) => month)).size;
-  return objToArray(reports.reduce(sumValues, {}), 'category', 'amount')
-    .map((i) => ({ ...i, amount: Math.round(i.amount / months / exchangeCoefficient) }))
-    .sort((a, b) => b.amount - a.amount);
-}
-
-export const isMobile = () => window.matchMedia('only screen and (max-width: 460px)').matches;
-export const isTablet = () => window.matchMedia('only screen and (max-width: 768px)').matches;
+export const isMobile = () => (typeof window !== 'undefined' ? window.matchMedia('only screen and (max-width: 460px)').matches : false);
+export const isTablet = () => (typeof window !== 'undefined' ? window.matchMedia('only screen and (max-width: 768px)').matches : false);

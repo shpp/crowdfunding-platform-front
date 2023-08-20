@@ -1,11 +1,9 @@
-import Router from 'next/router';
 import React from 'react';
-import withGA from 'next-ga';
 import Head from 'next/head';
 import { DefaultSeo } from 'next-seo';
 
-// import * as Sentry from '@sentry/react';
-// import { Integrations } from '@sentry/tracing';
+import * as Sentry from '@sentry/react';
+import { Integrations } from '@sentry/tracing';
 
 import { appWithTranslation } from '../utils/translations';
 import { colors } from '../utils/theme';
@@ -21,13 +19,13 @@ import '../assets/styles/help.css';
 import '../assets/styles/footer.css';
 import '../assets/styles/admin.css';
 
-// Sentry.init({
-//   dsn: process.env.SENTRY_DSN,
-//   integrations: [
-//     new Integrations.BrowserTracing(),
-//   ],
-//   tracesSampleRate: 1.0,
-// });
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  integrations: [
+    new Integrations.BrowserTracing(),
+  ],
+  tracesSampleRate: 1.0,
+});
 
 // TODO: use NEXT SEO with translations
 const MyApp = ({ Component, pageProps }) => (
@@ -57,6 +55,15 @@ const MyApp = ({ Component, pageProps }) => (
       <link rel="shortcut icon" href="/favicon.ico" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       <script src="//static.liqpay.ua/libjs/checkout.js" />
+      <script src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_KEY}`} />
+      <script>{`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${process.env.GOOGLE_ANALYTICS_KEY}', {
+          page_path: window.location.pathname,
+        });`}
+      </script>
     </Head>
     {/* eslint-disable-next-line react/jsx-props-no-spreading */}
     <Component {...pageProps} />
@@ -101,4 +108,4 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
   };
 };
 
-export default withGA('UA-159546538-1', Router)(appWithTranslation(MyApp));
+export default appWithTranslation(MyApp);

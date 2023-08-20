@@ -9,8 +9,8 @@ import {
 import Page from '../components/layout/Page';
 import CardDonateWithoutProject from '../components/CardDonateWithoutProject';
 
-import { flex, p, row, section } from '../utils/theme';
-import { formatMoney, isLastThreeMonths, getAverageStats, isMobile, isTablet } from '../utils';
+import { flex, row } from '../utils/theme';
+import { formatMoney, isMobile, isTablet } from '../utils';
 import { withTranslation, i18n } from '../utils/translations';
 
 const colors = [
@@ -31,67 +31,31 @@ const USDRate = {
 };
 
 class Help extends Component {
-  static async getInitialProps() {
-    const { data: rawReport } = await axios.post(process.env.SHEETS_URL);
-    const reports = rawReport
-      .data
-      .sort((a, b) => b.month - a.month)
-      .sort((a, b) => b.year - a.year)
-      .filter(({ month, year }) => isLastThreeMonths(new Date(year, month - 1, 1)));
+  static async getInitialProps({ req: { locale } }) {
+    const { data } = await axios.post(process.env.SHEETS_URL);
+
+    const exchangeRate = {
+      uk: UAHRate,
+      en: data.currencies.find(({ ccy }) => ccy.toUpperCase() === 'USD') ?? USDRate
+    };
 
     return {
       namespacesRequired: ['help'],
-      reports
+      incomes: Object.entries(data.incomes).map(([key, value]) => ({
+        category: key,
+        amount: value / exchangeRate[locale].buy ?? 1
+      })),
+      expenses: Object.entries(data.expenses).map(([key, value]) => ({
+        category: key,
+        amount: value / exchangeRate[locale].buy ?? 1
+      })).sort((a, b) => b.amount - a.amount),
+      exchangeRate
     };
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      income: {},
-      expenses: {},
-      exchangeRate: {
-        uk: { ...UAHRate },
-        en: { ...USDRate }
-      },
-    };
-  }
-
-  async componentDidMount() {
-    try {
-      const { data: currencies } = await axios.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');
-
-      const exchangeRate = currencies.find(({ ccy }) => ccy.toUpperCase() === 'USD');
-
-      this.setState({
-        exchangeRate: {
-          uk: { ...UAHRate },
-          en: exchangeRate
-        }
-      });
-    } catch (e) {
-      return Promise.resolve();
-    } finally {
-      const exchangeRate = this.state.exchangeRate.en.buy;
-      
-      this.setState({
-        income: {
-          uk: getAverageStats(this.props.reports, 'income', 1),
-          en: getAverageStats(this.props.reports, 'income', exchangeRate.buy),
-        },
-        expenses: {
-          en: getAverageStats(this.props.reports, 'expense', exchangeRate.buy),
-          uk: getAverageStats(this.props.reports, 'expense', 1),
-        }
-      });
-    }
-  }
 
   render() {
-    const { t } = this.props;
-    const exchangeRate = this.state.exchangeRate[i18n.language];
-    const income = this.state.income[i18n.language];
-    const expenses = this.state.expenses[i18n.language];
+    const { t, exchangeRate, incomes, expenses } = this.props;
 
     const getTooltipContent = ({ payload = [] }) => {
       const { category } = (payload[0] || {}).payload || {};
@@ -99,12 +63,11 @@ class Help extends Component {
         <div className="help-chart-tooltip">
           <p><strong>{t(`expense.${category}.title`)}</strong></p>
           <p>{t(`expense.${category}.description`)}</p>
-          {/* <p><Link href="/reports"><a>фін. звіт</a></Link></p> */}
         </div>
       );
     };
 
-    if (income && expenses) {
+    if (incomes && expenses) {
       const coloredCell = (_, index) => <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
       return (
         <Page>
@@ -138,7 +101,7 @@ class Help extends Component {
                       <PieChart>
                         <Pie
                           isAnimationActive={false}
-                          data={income}
+                          data={incomes}
                           dataKey="amount"
                           nameKey="category"
                           cx={isMobile() ? '25%' : isTablet() ? '45%' : '50%'}
@@ -148,12 +111,12 @@ class Help extends Component {
                           animationBegin={0}
                           animationDuration={700}
                           label={
-                            ({ category, percent }) => isMobile()
+                            ({ category, percent }) => (isMobile()
                               ? `${(percent * 100).toFixed(1)}%`
-                              : `${t(`income.${category}`)}\n — ${(percent * 100).toFixed(1)}%`
+                              : `${t(`income.${category}`)}\n — ${(percent * 100).toFixed(1)}%`)
                           }
                         >
-                          {income.map(coloredCell)}
+                          {incomes.map(coloredCell)}
                         </Pie>
                         {
                           isMobile()
@@ -166,9 +129,6 @@ class Help extends Component {
                             )
                             : null
                         }
-                        <Tooltip
-                          formatter={(value, name) => [formatMoney(value, i18n.language, exchangeRate.ccy), t(`income.${name}`)]}
-                        />
                       </PieChart>
                     </ResponsiveContainer>
                   </div>
@@ -183,7 +143,7 @@ class Help extends Component {
                       <BarChart data={expenses} key={i18n.language}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey={(v) => t(`expense.${v.category}.shortTitle`)} />
-                        <YAxis domain={[0, exchangeRate.ccy === 'UAH' ? 50000 : 1600]} />
+                        <YAxis domain={[0, i18n.language === 'uk' ? 50000 : 1600]} />
                         <Tooltip
                           coordinate={{
                             x: 100,
@@ -201,7 +161,7 @@ class Help extends Component {
                         />
                         <Bar dataKey="amount" isAnimationActive={false}>
                           <LabelList
-                            content={({ value }) => formatMoney(value, i18n.language, exchangeRate.ccy)}
+                            content={({ value }) => formatMoney(value, i18n.language)}
                             position="top"
                           />
                           {expenses.map(coloredCell)}

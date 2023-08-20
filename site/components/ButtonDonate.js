@@ -46,7 +46,8 @@ class ButtonDonate extends Component {
 
         // hack for several same requests
         try {
-          processableCallback = localStorage.getItem('lastRequestedProjectId') === project_id + ''
+          // eslint-disable-next-line camelcase
+          processableCallback = localStorage.getItem('lastRequestedProjectId') === `${project_id}`
             && localStorage.getItem('lastHandledOrderId') !== d.order_id;
         } catch (e) {
           //

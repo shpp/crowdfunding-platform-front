@@ -28,7 +28,7 @@ class TransactionView extends Component {
   async getTransaction() {
     const { transactions } = await api.get('transactions');
     this.setState({
-      transaction: transactions.filter((t) => t.id == this.props.router.query.id).pop()
+      transaction: transactions.filter((t) => t.id === this.props.router.query.id).pop()
     });
   }
 

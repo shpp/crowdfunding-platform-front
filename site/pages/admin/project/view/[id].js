@@ -35,7 +35,7 @@ class AdminViewProjectPage extends Component {
     const { query } = this.props.router;
 
     const { projects } = await api.get('admin_projects');
-    const project = projects.find((item) => item.id == query.id);
+    const project = projects.find((item) => item.id === query.id);
 
     const { transactions } = await api.get('transactions', { project_id: query.id }) || {};
 
@@ -155,7 +155,7 @@ class AdminViewProjectPage extends Component {
             background-size: cover;
             background-position: center center;
             background-image: url(${project.image});
-          }    
+          }
           .form-title {
              margin-bottom: 0px;
           }
