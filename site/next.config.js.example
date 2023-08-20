@@ -14,7 +14,8 @@ module.exports = {
     SHEETS_URL: "<<SHEETS_URL>>",
     HASH_SALT: "<<HASH_SALT>>",
     SENTRY_DSN: "<<SENTRY_DSN>>",
-    ALTERNATIVE_DONATE_LINK: "<<ALTERNATIVE_DONATE_LINK>>"
+    ALTERNATIVE_DONATE_LINK: "<<ALTERNATIVE_DONATE_LINK>>",
+    GOOGLE_ANALYTICS_KEY: "<<GOOGLE_ANALYTICS_KEY>>"
   },
   serverRuntimeConfig: {},
   publicRuntimeConfig: {
