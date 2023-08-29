@@ -42,7 +42,7 @@
     "rent": {
       "title": "Rent",
       "shortTitle": "Rent",
-      "description": "Office of 360 sq. in the city center."
+      "description": "Office of 360 sq. in the city center + taxes"
     },
     "utilities": {
       "title": "Utilities",
@@ -57,7 +57,7 @@
     "salaries": {
       "title": "Salaries",
       "shortTitle": "Salaries",
-      "description": "Remuneration of 2 administrators + taxes."
+      "description": "Payments for staff and contractors + taxes. Mentors do not receive money"
     }
   },
   "form": {

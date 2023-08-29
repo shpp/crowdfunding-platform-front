@@ -58,6 +58,8 @@ class Help extends Component {
   render() {
     const { t, exchangeRate, incomes, expenses } = this.props;
     const locale = i18n.language;
+    const precision = locale === 'uk' ? 10000 : 500;
+    const expensesMaxValue = Math.ceil(Math.max(...expenses.map((e) => e[`amount-${locale}`])) / precision) * precision;
 
     const getTooltipContent = ({ payload = [] }) => {
       const { category } = (payload[0] || {}).payload || {};
@@ -145,7 +147,7 @@ class Help extends Component {
                       <BarChart data={expenses} key={`amount-${locale}`}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey={(v) => t(`expense.${v.category}.shortTitle`)} />
-                        <YAxis domain={[0, locale === 'uk' ? 50000 : 1600]} />
+                        <YAxis domain={[0, expensesMaxValue]} />
                         <Tooltip
                           coordinate={{
                             x: 100,
