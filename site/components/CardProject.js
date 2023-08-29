@@ -27,6 +27,7 @@ class CardProject extends React.Component {
           <Link
             href={`${i18n.language === 'uk' ? '' : `/${i18n.language}`}/project/[id]`}
             as={`/project/${project._id}`}
+            as={`/project/${project.id}`}
           >
             <h3 className="project-title">
               <a>{project[`name_${i18n.language}`]}</a>
