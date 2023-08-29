@@ -31,12 +31,11 @@ const USDRate = {
 };
 
 class Help extends Component {
-  static async getInitialProps(props) {
-    const locale = props.req?.locale ?? 'uk';
+  static async getInitialProps() {
     const { data } = await axios.post(process.env.SHEETS_URL);
 
     const exchangeRate = {
-      uk: UAHRate,
+      uk: data.currencies.find(({ ccy }) => ccy.toUpperCase() === 'UAH') ?? UAHRate,
       en: data.currencies.find(({ ccy }) => ccy.toUpperCase() === 'USD') ?? USDRate
     };
 
@@ -44,11 +43,12 @@ class Help extends Component {
       namespacesRequired: ['help'],
       incomes: Object.entries(data.incomes).map(([key, value]) => ({
         category: key,
-        amount: value / exchangeRate[locale].buy ?? 1
+        amount: value * 100
       })),
       expenses: Object.entries(data.expenses).map(([key, value]) => ({
         category: key,
-        amount: value / exchangeRate[locale].buy ?? 1
+        'amount-uk': Math.round(value / exchangeRate.uk.buy ?? 1),
+        'amount-en': Math.round(value / exchangeRate.en.buy ?? 1),
       })).sort((a, b) => b.amount - a.amount),
       exchangeRate
     };
@@ -57,6 +57,7 @@ class Help extends Component {
 
   render() {
     const { t, exchangeRate, incomes, expenses } = this.props;
+    const locale = i18n.language;
 
     const getTooltipContent = ({ payload = [] }) => {
       const { category } = (payload[0] || {}).payload || {};
@@ -141,10 +142,10 @@ class Help extends Component {
                 <div className="help-chart-wrapper">
                   <div className="help-chart-container">
                     <ResponsiveContainer>
-                      <BarChart data={expenses} key={i18n.language}>
+                      <BarChart data={expenses} key={`amount-${locale}`}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey={(v) => t(`expense.${v.category}.shortTitle`)} />
-                        <YAxis domain={[0, i18n.language === 'uk' ? 50000 : 1600]} />
+                        <YAxis domain={[0, locale === 'uk' ? 50000 : 1600]} />
                         <Tooltip
                           coordinate={{
                             x: 100,
@@ -160,9 +161,9 @@ class Help extends Component {
                             zIndex: 1
                           }}
                         />
-                        <Bar dataKey="amount" isAnimationActive={false}>
+                        <Bar dataKey={`amount-${locale}`} isAnimationActive={false}>
                           <LabelList
-                            content={({ value }) => formatMoney(value, i18n.language)}
+                            content={({ value }) => formatMoney(value, locale)}
                             position="top"
                           />
                           {expenses.map(coloredCell)}
@@ -178,7 +179,7 @@ class Help extends Component {
               </section>
             </div>
             <aside>
-              <CardDonateWithoutProject exchangeRate={exchangeRate} />
+              <CardDonateWithoutProject exchangeRate={exchangeRate[locale]} />
             </aside>
           </div>
         </Page>

@@ -12,7 +12,7 @@ export function formatDate(date, lang) {
   return `${day} ${months[lang][month]} ${yearStr}`;
 }
 
-export const formatMoney = (x, lang) => `${new Intl.NumberFormat(lang).format(x)} ${lang === 'uk' ? 'грн' : 'дол'}`;
+export const formatMoney = (x, lang) => `${new Intl.NumberFormat(lang).format(x)} ${lang === 'uk' ? 'грн' : '$'}`;
 
 export const sumValues = (acc, { category, amount }) => ({
   ...acc,
