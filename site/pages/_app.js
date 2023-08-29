@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import App from 'next/app';
 import { DefaultSeo } from 'next-seo';
 
 import * as Sentry from '@sentry/react';
@@ -97,11 +98,13 @@ const MyApp = ({ Component, pageProps }) => (
   </>
 );
 
-MyApp.getInitialProps = async ({ Component, ctx }) => {
-  let pageProps = {};
-  if (Component.getInitialProps) {
-    pageProps = await Component.getInitialProps(ctx);
+MyApp.getInitialProps = async (appContext) => {
+  let pageProps = await App.getInitialProps(appContext) ?? { };
+
+  if (appContext.Component.getInitialProps) {
+    pageProps = { ...pageProps, ...await appContext.Component.getInitialProps(appContext.ctx) };
   }
+
   return {
     pageProps,
     namespacesRequired: ['common', 'header', 'help', 'footer']

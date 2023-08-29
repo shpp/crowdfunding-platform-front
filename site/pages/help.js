@@ -31,7 +31,8 @@ const USDRate = {
 };
 
 class Help extends Component {
-  static async getInitialProps({ req: { locale } }) {
+  static async getInitialProps(props) {
+    const locale = props.req?.locale ?? 'uk';
     const { data } = await axios.post(process.env.SHEETS_URL);
 
     const exchangeRate = {
