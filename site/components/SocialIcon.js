@@ -2,14 +2,14 @@ const SocialIcon = ({ children, link }) => {
   return (
     <a href={link}>
       <i>{children}</i>
-      <style jsx>
+      <style>
         {`
           i {
             width: 20px;
             height: 20px;
             display: flex;
             justify-content: center;
-            align-items: center;        
+            align-items: center;
           }
           a {
             cursor: pointer;

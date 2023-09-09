@@ -1,7 +1,7 @@
 import { Instance } from './instance';
 
 export const api = Instance({
-  API_URL: `${process.env.API_URL}/api/v1/`,
+  API_URL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/`,
   endpoints: {
     create_transaction: 'admin/transactions/create',
     transactions: 'admin/transactions/list',

@@ -3,4 +3,6 @@ import withAuth from '../../components/layout/admin/HOC/withAuth';
 
 const HomePage = () => <div />;
 
+export const config = { runtime: process.env.RUNTIME };
+
 export default withAuth(HomePage);

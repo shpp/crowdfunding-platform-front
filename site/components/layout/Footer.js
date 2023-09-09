@@ -1,4 +1,5 @@
-import { withTranslation, Link } from '../../utils/translations';
+import { useTranslation } from 'next-i18next';
+import Link from 'next/link';
 
 import SocialIcon from '../SocialIcon';
 import Address from '../../assets/icon/001-pin.svg';
@@ -15,7 +16,8 @@ const instagram = 'https://instagram.com/shpp.kr';
 const facebook = 'https://facebook.com/shpp.kr';
 const telegram = 'https://t.me/shppkr';
 
-const Footer = ({ t }) => {
+const Footer = () => {
+  const { t } = useTranslation('footer');
   return (
     <footer>
       <div className="container">
@@ -42,7 +44,7 @@ const Footer = ({ t }) => {
           </section>
           <section>
             <Link href="/agreement">
-              <a>{t('agreement')}</a>
+              {t('agreement')}
             </Link>
             <div>
               <MasterCard className="icon-big" />
@@ -69,4 +71,4 @@ const Footer = ({ t }) => {
   );
 };
 
-export default withTranslation('footer')(Footer);
+export default Footer;

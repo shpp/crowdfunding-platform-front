@@ -1,5 +1,11 @@
 import React from 'react';
-import { colors } from '../utils/theme';
+
+const colors = {
+  progressGradientStart: '#4e53bd',
+  progressGradientMiddle: '#17aeb6',
+  progressGradientEnd: '#27ae60',
+  progressGradientEmpty: '#e1e9ee',
+};
 
 const styles = {
   wrapper: {

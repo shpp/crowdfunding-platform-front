@@ -40,9 +40,9 @@ export const Instance = (config) => {
     },
     async (error) => {
       if (isClientSide()) {
-        toast.error(`${error.response.status} ${JSON.stringify(error.response.data)}`);
+        toast.error(`${error?.response?.status} ${JSON.stringify(error?.response?.data)}`);
       }
-      if ([401, 500].includes(error.response.status)) {
+      if ([401, 500].includes(error?.response?.status)) {
         if (isClientSide()) {
           sessionStorage.removeItem('token');
           await Router.push('/admin/login');

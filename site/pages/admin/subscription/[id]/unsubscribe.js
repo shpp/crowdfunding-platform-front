@@ -1,54 +1,52 @@
-import { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'next/router';
 import { Button } from 'react-bootstrap';
-import api from '../../../../api';
+import api from '../../../../fetch';
 import Page from '../../../../components/layout/admin/Page';
 
-class Unsubscribe extends Component {
-  state = {
-    order: {
-      id: this.props.router.query.id,
-      amount: '',
-      currency: '',
-      donator: {
-        name: '',
-        surname: ''
-      },
-    }
+const Unsubscribe = ({ router }) => {
+  const initialOrder = {
+    id: router.query.id,
+    amount: '',
+    currency: '',
+    donator: {
+      name: '',
+      surname: ''
+    },
   };
 
-  async componentDidMount() {
-    const { order } = await api.request(`admin/orders/${this.state.order.id}`, 'get');
-    this.setState({
-      order
-    });
-  }
+  const [order, setOrder] = useState(initialOrder);
 
-  async unsubscribe() {
-    await api.post('unsubscribe', { orderId: this.state.order.id });
-    await this.props.router.push('/admin/subscriptions');
-  }
+  useEffect(() => {
+    async function fetchData() {
+      setOrder((await api.request(`admin/orders/${initialOrder.id}`, 'get')).order);
+    }
 
-  async gotoSubscriptions() {
-    await this.props.router.push('/admin/subscriptions');
-  }
+    fetchData();
+  }, []);
 
-  render() {
-    const { order } = this.state;
+  const unsubscribe = async () => {
+    await api.post('unsubscribe', { orderId: order.id });
+    await router.push('/admin/subscriptions');
+  };
 
-    return (
-      <Page>
-        <div className="container">
-          {/* eslint-disable-next-line max-len */}
-          <h2>Ви підтверджуєте скасування щомісячного платежу на суму { order.amount } { order.currency } від { order.donator.name } { order.donator.surname }?</h2>
-          <div style={{ textAlign: 'center' }} className="mb-2">
-            <Button style={{ width: '100px' }} className="btn-success" onClick={this.unsubscribe.bind(this)}>ТАК</Button>
-            <Button style={{ width: '100px' }} className="btn-success ml-2" onClick={this.gotoSubscriptions.bind(this)}>HI</Button>
-          </div>
+  return (
+    <Page>
+      <div className="container">
+        <h2>
+          Ви підтверджуєте скасування щомісячного платежу
+          на суму {order.amount} {order.currency}
+          від {order.donator.name} {order.donator.surname}?
+        </h2>
+        <div style={{ textAlign: 'center' }} className="mb-2">
+          <Button style={{ width: '100px' }} className="btn-success" onClick={unsubscribe}>ТАК</Button>
+          <Button style={{ width: '100px' }} className="btn-success ml-2" onClick={() => router.push('/admin/subscriptions')}>HI</Button>
         </div>
-      </Page>
-    );
-  }
-}
+      </div>
+    </Page>
+  );
+};
+
+export const config = { runtime: process.env.RUNTIME };
 
 export default withRouter(Unsubscribe);

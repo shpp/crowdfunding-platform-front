@@ -1,12 +1,12 @@
 import {
   Form, Row, Col, Container, Button,
 } from 'react-bootstrap';
-import { withRouter } from 'next/router';
-import React, { Component } from 'react';
+import { useRouter } from 'next/router';
+import React, { useState, useEffect } from 'react';
 import InputBlock from '../../../../components/admin/InputBlock';
 import Page from '../../../../components/layout/admin/Page';
 import withAuth from '../../../../components/layout/admin/HOC/withAuth';
-import api from '../../../../api';
+import api from '../../../../fetch';
 
 const style = {
   backgroundColor: 'white',
@@ -30,47 +30,40 @@ function formatDate(createdAt) {
     .split('T')[0];
 }
 
-class AdminProjectEdit extends Component {
-  state = {
-    project: {
-      ...defaultProjectValue
-    }
+const AdminProjectEdit = () => {
+  const [project, setProject] = useState({
+    ...defaultProjectValue
+  });
+  const router = useRouter();
+
+  const getProject = async () => {
+    const { query } = router;
+
+    const { project: fetchedProject } = await api.request(`projects/${query.id}`, 'get');
+    setProject({
+      ...fetchedProject,
+      published: fetchedProject.state === 'published',
+      archived: fetchedProject.state === 'archived',
+      created_at: formatDate(fetchedProject.created_at),
+      _ready: true
+    });
   };
 
-  async componentDidMount() {
-    await this.getProject();
-  }
+  useEffect(() => {
+    getProject();
+  }, []);
 
-  async getProject() {
-    const { query } = this.props.router;
-
-    const { project } = await api.request(`projects/${query.id}`, 'get');
-    this.setState({
-      project: {
-        ...project,
-        published: project.state === 'published',
-        archived: project.state === 'archived',
-        created_at: formatDate(project.created_at),
-        _ready: true
-      }
-    });
-  }
-
-  handleChange(input) {
-    const { project } = this.state;
+  const handleChange = (input) => {
     const newv = input.name !== 'created_at' ? input.value : formatDate(input.value);
-    this.setState({
-      project: {
-        ...defaultProjectValue,
-        ...project,
-        [input.name]: newv
-      }
+    setProject({
+      ...defaultProjectValue,
+      ...project,
+      [input.name]: newv
     });
-  }
+  };
 
-  async handleSubmit(event) {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const { project } = this.state;
     const projectData = {
       ...defaultProjectValue,
       ...project,
@@ -87,99 +80,96 @@ class AdminProjectEdit extends Component {
     };
 
     await api.post('update_project', projectData);
-    await this.getProject();
+    await getProject();
+  };
+
+  // eslint-disable-next-line no-underscore-dangle
+  if (!project._ready) {
+    return null;
   }
 
+  const shortInputLabels = [
+    { name: 'amount', label: 'Сума, яку необхідно зібрати', type: 'number' },
+    { name: 'created_at', label: 'Дата створення', type: 'date' },
+  ];
 
-  render() {
-    const { project } = this.state;
+  const longInputLabels = [
+    { name: 'name', label: "Ім'я проекту", type: 'text' },
+    { name: 'content_id', label: 'ID сторінки в ноушені', type: 'text' },
+  ];
 
-    // eslint-disable-next-line no-underscore-dangle
-    if (!project._ready) {
-      return null;
-    }
+  return (
+    <Page>
+      <Container className="mt-4 con edit-project" style={style}>
+        <h1 className="form-header text-center">
+          Редагувати дані проекту
+        </h1>
+        <Form onSubmit={handleSubmit}>
+          <Row>
+            <Col style={{ maxWidth: '50%' }}>
+              {shortInputLabels.map((label) => (
+                <InputBlock
+                  key={label.name}
+                  label={label}
+                  value={project}
+                  handleChange={(e) => handleChange(e.target)}
+                />
+              ))}
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              {longInputLabels.map((label) => (
+                <InputBlock
+                  key={label.name}
+                  label={label}
+                  value={project}
+                  handleChange={(e) => handleChange(e.target)}
+                />
+              ))}
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Form.Group>
+                <Form.Switch
+                  checked={project.published}
+                  id="published"
+                  name="published"
+                  onChange={(e) => handleChange({
+                    value: e.target.checked
+                  })}
+                  label="Опубліковано"
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Switch
+                  checked={project.archived}
+                  id="archived"
+                  isInvalid
+                  name="archived"
+                  onChange={(e) => handleChange({
+                    value: e.target.checked
+                  })}
+                  label="Видалено"
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row className="justify-content-center mt-5 mt-md-3">
+            <Button
+              variant="primary"
+              type="submit"
+            >
+              Зберегти зміни
+            </Button>
+          </Row>
+        </Form>
+      </Container>
+    </Page>
+  );
+};
 
-    const shortInputLabels = [
-      { name: 'amount', label: 'Сума, яку необхідно зібрати', type: 'number' },
-      { name: 'created_at', label: 'Дата створення', type: 'date' },
-    ];
+export const config = { runtime: process.env.RUNTIME };
 
-    const longInputLabels = [
-      { name: 'name', label: "Ім'я проекту", type: 'text' },
-      { name: 'content_id', label: 'ID сторінки в ноушені', type: 'text' },
-    ];
-
-    return (
-      <Page>
-        <Container className="mt-4 con edit-project" style={style}>
-          <h1 className="form-header text-center">
-            Редагувати дані проекту
-          </h1>
-          <Form onSubmit={this.handleSubmit.bind(this)}>
-            <Row>
-              <Col style={{ maxWidth: '50%' }}>
-                {shortInputLabels.map((label) => (
-                  <InputBlock
-                    key={label.name}
-                    label={label}
-                    value={project}
-                    handleChange={(e) => this.handleChange(e.target)}
-                  />
-                ))}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                {longInputLabels.map((label) => (
-                  <InputBlock
-                    key={label.name}
-                    label={label}
-                    value={project}
-                    handleChange={(e) => this.handleChange(e.target)}
-                  />
-                ))}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Form.Group>
-                  <Form.Switch
-                    checked={project.published}
-                    id="published"
-                    onChange={(e) => this.handleChange({
-                      name: 'published',
-                      value: e.target.checked
-                    })}
-                    label="Опубліковано"
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Switch
-                    checked={project.archived}
-                    id="archived"
-                    isInvalid
-                    onChange={(e) => this.handleChange({
-                      name: 'archived',
-                      value: e.target.checked
-                    })}
-                    label="Видалено"
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row className="justify-content-center mt-5 mt-md-3">
-              <Button
-                variant="primary"
-                type="submit"
-              >
-                Зберегти зміни
-              </Button>
-            </Row>
-          </Form>
-        </Container>
-      </Page>
-    );
-  }
-}
-
-export default withAuth(withRouter(AdminProjectEdit));
+export default withAuth(AdminProjectEdit);

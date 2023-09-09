@@ -1,29 +1,41 @@
-import { withRouter } from 'next/router';
-import React, { Component } from 'react';
+import { useRouter, withRouter } from 'next/router';
+import { useEffect } from 'react';
 
 /**
  * HOC to wrap admin pages with auth component
- */
-export default function WithAuth(WrappedComponent) {
-  class ProtectedComponent extends Component {
-    static async getInitialProps(ctx) {
-      return (WrappedComponent.getInitialProps && await WrappedComponent.getInitialProps(ctx)) || {};
-    }
+*/
+const WithAuth = (WrappedComponent) => {
+  const ProtectedComponent = (props) => {
+    const router = useRouter();
 
-    async componentDidMount() {
+    useEffect(() => {
       const logged = sessionStorage.getItem('token');
-      const { pathname, push } = this.props.router;
       if (!logged) {
-        await push('/admin/login');
-      } else if (pathname === '/admin') {
-        await push('/admin/projects');
+        router.push('/admin/login');
+      } else if (router.pathname === '/admin') {
+        router.push('/admin/projects');
       }
-    }
+    }, []);
 
-    render() {
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      return <WrappedComponent {...this.props} />;
-    }
-  }
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <WrappedComponent {...props} />;
+  };
+
+  ProtectedComponent.getServerSideProps = async (context) => {
+    const componentProps = WrappedComponent.getServerSideProps
+      ? await WrappedComponent.getServerSideProps(context)
+      : {};
+
+    return {
+      props: {
+        ...componentProps
+      }
+    };
+  };
+
   return withRouter(ProtectedComponent);
-}
+};
+
+// export const config = { runtime: 'experimental-edge' };
+
+export default WithAuth;
