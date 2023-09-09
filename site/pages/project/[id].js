@@ -83,6 +83,6 @@ const ProjectPage = ({ project, router, currency }) => {
   );
 };
 
-export const runtime = 'edge';
+export const runtime = 'experimental-edge';
 
 export default withRouter(ProjectPage);

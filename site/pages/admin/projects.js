@@ -65,6 +65,6 @@ const AdminListPage = () => {
   );
 };
 
-export const runtime = 'edge';
+export const runtime = 'experimental-edge';
 
 export default withAuth(AdminListPage);

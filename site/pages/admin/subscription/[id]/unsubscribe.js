@@ -47,6 +47,6 @@ const Unsubscribe = ({ router }) => {
   );
 };
 
-export const runtime = 'edge';
+export const runtime = 'experimental-edge';
 
 export default withRouter(Unsubscribe);
