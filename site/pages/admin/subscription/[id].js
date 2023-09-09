@@ -95,6 +95,6 @@ const SubscriptionPage = (props) => {
   );
 };
 
-export const config = { runtime: process.env.RUNTIME };
+export const runtime = process.env.RUNTIME;
 
 export default withAuth(withRouter(SubscriptionPage));

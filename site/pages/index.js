@@ -78,6 +78,6 @@ export async function getServerSideProps({ locale, query }) {
   };
 }
 
-export const config = { runtime: process.env.RUNTIME };
+export const runtime = process.env.RUNTIME;
 
 export default withRouter(HomePage);

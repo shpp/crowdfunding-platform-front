@@ -43,6 +43,6 @@ const Login = ({ router }) => {
   );
 };
 
-export const config = { runtime: process.env.RUNTIME };
+export const runtime = process.env.RUNTIME;
 
 export default withRouter(Login);

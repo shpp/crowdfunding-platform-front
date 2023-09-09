@@ -82,6 +82,6 @@ MyApp.getInitialProps = async (appContext) => {
   };
 };
 
-export const config = { runtime: process.env.RUNTIME };
+export const runtime = process.env.RUNTIME;
 
 export default appWithTranslation(MyApp);
