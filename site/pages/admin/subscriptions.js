@@ -86,6 +86,6 @@ const Subscriptions = () => {
   );
 };
 
-export const runtime = process.env.RUNTIME;
+export const runtime = 'edge';
 
 export default withAuth(Subscriptions);

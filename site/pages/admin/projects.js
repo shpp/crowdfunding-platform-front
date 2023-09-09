@@ -65,6 +65,6 @@ const AdminListPage = () => {
   );
 };
 
-export const runtime = process.env.RUNTIME;
+export const runtime = 'edge';
 
 export default withAuth(AdminListPage);

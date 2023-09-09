@@ -24,6 +24,6 @@ const Transactions = () => {
   );
 };
 
-export const runtime = process.env.RUNTIME;
+export const runtime = 'edge';
 
 export default withAuth(Transactions);

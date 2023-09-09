@@ -28,6 +28,6 @@ export async function getStaticProps({ locale }) {
   };
 }
 
-export const runtime = process.env.RUNTIME;
+export const runtime = 'edge';
 
 export default UnsubscribedPage;

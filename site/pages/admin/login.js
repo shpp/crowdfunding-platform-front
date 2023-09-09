@@ -43,6 +43,6 @@ const Login = ({ router }) => {
   );
 };
 
-export const runtime = process.env.RUNTIME;
+export const runtime = 'edge';
 
 export default withRouter(Login);

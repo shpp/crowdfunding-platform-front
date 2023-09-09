@@ -193,6 +193,6 @@ export async function getServerSideProps({ locale }) {
   };
 }
 
-export const runtime = process.env.RUNTIME;
+export const runtime = 'edge';
 
 export default Help;
