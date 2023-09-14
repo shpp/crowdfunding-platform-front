@@ -2,10 +2,7 @@
 .DS_Store
 site/node_modules
 site/build
+site/next.config.js
 site/public/report.csv
-site/.vercel
-site/.next
-site/next.config.__vercel_builder_backup__.js
-site/.env.local
 .next
 .env
