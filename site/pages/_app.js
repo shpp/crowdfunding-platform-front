@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import App from 'next/app';
 import { DefaultSeo } from 'next-seo';
 import NextNProgress from 'nextjs-progressbar';
 import * as Sentry from '@sentry/react';
@@ -67,6 +68,19 @@ const MyApp = ({ Component, pageProps }) => (
     <Component {...pageProps} />
   </>
 );
+
+MyApp.getInitialProps = async (appContext) => {
+  let pageProps = await App.getInitialProps(appContext) ?? { };
+
+  if (appContext.Component.getInitialProps) {
+    pageProps = { ...pageProps, ...await appContext.Component.getInitialProps(appContext.ctx) };
+  }
+
+  return {
+    pageProps,
+    namespacesRequired: ['common', 'header', 'help', 'footer']
+  };
+};
 
 // export const runtime = 'experimental-edge';
 
