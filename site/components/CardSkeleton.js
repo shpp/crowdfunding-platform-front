@@ -1,6 +1,6 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { p } from '../theme/utils';
+import { p } from '../utils/theme';
 
 const styles = {
   wrapper: {

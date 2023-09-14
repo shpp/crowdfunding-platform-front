@@ -1,182 +1,175 @@
 import {
-  Form, Row, Col, Container, Button, Tabs, Tab,
+  Form, Row, Col, Container, Button,
 } from 'react-bootstrap';
-import { withRouter } from 'next/router';
-import React, { Component } from 'react';
-import InputBlock from '../../../../components/InputBlock';
-import Page from '../../../../layout/admin/Page';
-import Editor from '../../../../components/Editor';
-import withAuth from '../../../../layout/admin/HOC/withAuth';
-import api from '../../../../api';
+import { useRouter } from 'next/router';
+import React, { useState, useEffect } from 'react';
+import InputBlock from '../../../../components/admin/InputBlock';
+import Page from '../../../../components/layout/admin/Page';
+import withAuth from '../../../../components/layout/admin/HOC/withAuth';
+import api from '../../../../fetch';
 
 const style = {
   backgroundColor: 'white',
   padding: '20px',
 };
 
-class AdminProjectEdit extends Component {
-  state = {
-    project: {
-      plannedSpendings: '',
-      description: '',
-      actualSpendings: '',
-      published: false,
-      archived: false,
-      creationDate: ''
-    }
+const defaultProjectValue = {
+  name: '',
+  content_id: '',
+  published: false,
+  archived: false,
+  created_at: '',
+  amount: 0,
+  currency: 'UAH',
+  _ready: false,
+};
+
+function formatDate(createdAt) {
+  return new Date((createdAt) || Date.now())
+    .toISOString()
+    .split('T')[0];
+}
+
+const AdminProjectEdit = () => {
+  const [project, setProject] = useState({
+    ...defaultProjectValue
+  });
+  const router = useRouter();
+
+  const getProject = async () => {
+    const { query } = router;
+
+    const { project: fetchedProject } = await api.request(`projects/${query.id}`, 'get');
+    setProject({
+      ...fetchedProject,
+      published: fetchedProject.state === 'published',
+      archived: fetchedProject.state === 'archived',
+      created_at: formatDate(fetchedProject.created_at),
+      _ready: true
+    });
   };
 
-  async componentDidMount() {
-    await this.getProject();
-  }
+  useEffect(() => {
+    getProject();
+  }, []);
 
-  async getProject() {
-    const { query } = this.props.router;
-
-    const { projects } = await api.get('admin_projects');
-    const project = projects.find((item) => item._id === query.id);
-    this.setState({
-      project: {
-        ...project,
-        published: project.state === 'published',
-        archived: project.state === 'archived',
-        creationDate: new Date((+project.createdAtTS + 2 * 60 * 60 * 1000) || Date.now())
-          .toISOString()
-          .split('T')[0]
-      }
+  const handleChange = (input) => {
+    const newv = input.name !== 'created_at' ? input.value : formatDate(input.value);
+    setProject({
+      ...defaultProjectValue,
+      ...project,
+      [input.name]: newv
     });
-  }
+  };
 
-  handleChange(change) {
-    const { project } = this.state;
-
-    if (change.name === 'createdAtTS') {
-      try {
-        // eslint-disable-next-line no-param-reassign
-        change.value = +new Date(change.value);
-        // eslint-disable-next-line no-empty
-      } catch (_) {}
-    }
-    this.setState({
-      project: {
-        ...project,
-        [change.name]: change.value
-      }
-    });
-  }
-
-  async handleSubmit(event) {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const projectData = {
-      ...this.state.project,
-      image: this.state.project.image || '',
-      createdAtTS: +new Date(this.state.project.creationDate),
+      ...defaultProjectValue,
+      ...project,
+      id: project.id,
+      currency: project.currency,
+      amount: +project.amount,
+      created_at: project.created_at,
       // eslint-disable-next-line no-nested-ternary
-      state: this.state.project.archived
+      state: project.archived
         ? 'archived'
-        : this.state.project.published
+        : project.published
           ? 'published'
           : 'unpublished',
     };
 
     await api.post('update_project', projectData);
-    await this.getProject();
+    await getProject();
+  };
+
+  // eslint-disable-next-line no-underscore-dangle
+  if (!project._ready) {
+    return null;
   }
 
+  const shortInputLabels = [
+    { name: 'amount', label: 'Сума, яку необхідно зібрати', type: 'number' },
+    { name: 'created_at', label: 'Дата створення', type: 'date' },
+  ];
 
-  render() {
-    const { project } = this.state;
+  const longInputLabels = [
+    { name: 'name', label: "Ім'я проекту", type: 'text' },
+    { name: 'content_id', label: 'ID сторінки в ноушені', type: 'text' },
+  ];
 
-    const labels = [
-      { name: 'name', label: "Ім'я проекту", type: 'text', value: [project.name] },
-      { name: 'creationDate', label: 'Дата створення', type: 'text', value: [project.creationDate] },
-      { name: 'amount', label: 'Сума, яку необхідно зібрати', type: 'number', value: [project.amount] },
-      { name: 'image', label: 'Картинка-обкладинка (URL)', type: 'text', value: [project.image], description: 'Краще за все видно картинки зі співвідношенням 16:9' },
-      { name: 'shortDescription', label: 'Короткий опис', type: 'text', value: [project.shortDescription], description: '1-2 речення, які коротко описують весь проект' },
-    ];
-
-    return (
-      <Page>
-        <Container className="mt-4 con" style={style}>
-          <h1 className="form-header text-center">
-            Редагувати дані проекту
-          </h1>
-          <Form onSubmit={this.handleSubmit.bind(this)}>
-            <Row className="flex-column flex-md-row">
-              <Col>
+  return (
+    <Page>
+      <Container className="mt-4 con edit-project" style={style}>
+        <h1 className="form-header text-center">
+          Редагувати дані проекту
+        </h1>
+        <Form onSubmit={handleSubmit}>
+          <Row>
+            <Col style={{ maxWidth: '50%' }}>
+              {shortInputLabels.map((label) => (
                 <InputBlock
-                  inputLabels={labels}
-                  handleChange={(e) => this.handleChange(e.target)}
+                  key={label.name}
+                  label={label}
+                  value={project}
+                  handleChange={(e) => handleChange(e.target)}
                 />
-                <Form.Group>
-                  <Form.Switch
-                    checked={project.published}
-                    id="published"
-                    onChange={(e) => this.handleChange({
-                      name: 'published',
-                      value: e.target.checked
-                    })}
-                    label="Опубліковано"
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Switch
-                    checked={project.archived}
-                    id="archived"
-                    isInvalid
-                    onChange={(e) => this.handleChange({
-                      name: 'archived',
-                      value: e.target.checked
-                    })}
-                    label="Видалено"
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Tabs defaultActiveKey="description">
-                  <Tab eventKey="description" title="Опис проекту">
-                    <Editor
-                      content={project.description}
-                      onChange={(value) => this.handleChange({
-                        value,
-                        name: 'description'
-                      })}
-                    />
-                  </Tab>
-                  <Tab eventKey="purpose" title="Запланований кошторис">
-                    <Editor
-                      content={project.plannedSpendings}
-                      onChange={(value) => this.handleChange({
-                        value,
-                        name: 'plannedSpendings'
-                      })}
-                    />
-                  </Tab>
-                  <Tab eventKey="actualSpending" title="Куди по факту витрачено кошти">
-                    <Editor
-                      content={project.actualSpendings}
-                      onChange={(value) => this.handleChange({
-                        value,
-                        name: 'actualSpendings'
-                      })}
-                    />
-                  </Tab>
-                </Tabs>
-              </Col>
-            </Row>
-            <Row className="justify-content-center mt-5 mt-md-3">
-              <Button
-                variant="primary"
-                type="submit"
-              >
-                Зберегти зміни
-              </Button>
-            </Row>
-          </Form>
-        </Container>
-      </Page>
-    );
-  }
-}
+              ))}
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              {longInputLabels.map((label) => (
+                <InputBlock
+                  key={label.name}
+                  label={label}
+                  value={project}
+                  handleChange={(e) => handleChange(e.target)}
+                />
+              ))}
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Form.Group>
+                <Form.Switch
+                  checked={project.published}
+                  id="published"
+                  name="published"
+                  onChange={(e) => handleChange({
+                    value: e.target.checked
+                  })}
+                  label="Опубліковано"
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Switch
+                  checked={project.archived}
+                  id="archived"
+                  isInvalid
+                  name="archived"
+                  onChange={(e) => handleChange({
+                    value: e.target.checked
+                  })}
+                  label="Видалено"
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row className="justify-content-center mt-5 mt-md-3">
+            <Button
+              variant="primary"
+              type="submit"
+            >
+              Зберегти зміни
+            </Button>
+          </Row>
+        </Form>
+      </Container>
+    </Page>
+  );
+};
 
-export default withAuth(withRouter(AdminProjectEdit));
+// export const runtime = 'experimental-edge';
+
+export default withAuth(AdminProjectEdit);

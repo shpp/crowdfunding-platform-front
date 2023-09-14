@@ -1,5 +1,11 @@
 import React from 'react';
-import colors from '../theme/colors';
+
+const colors = {
+  progressGradientStart: '#4e53bd',
+  progressGradientMiddle: '#17aeb6',
+  progressGradientEnd: '#27ae60',
+  progressGradientEmpty: '#e1e9ee',
+};
 
 const styles = {
   wrapper: {
@@ -28,16 +34,17 @@ const styles = {
   }
 };
 
-const ProgressBar = ({ amount, funded }) => {
+const ProgressBar = ({ amount, funded = 0, currency = { buy: 1, ccy: 'UAH' } }) => {
   // eslint-disable-next-line no-bitwise
   const fundedPercentage = ~~((100 * funded) / amount);
   const notFundedPercentage = Math.max(0, 100 - fundedPercentage);
+  if (!amount) return '';
   return (
     <div style={styles.wrapper}>
       <div style={styles.text}>
         <span>
-          <strong className="text-green">{funded}&nbsp;</strong>
-          <span className="text-small">UAH зібрали</span>
+          <strong className="text-green">{(funded / currency.buy).toFixed(0)}&nbsp;</strong>
+          <span className="text-small">{currency.ccy}</span>
         </span>
         <strong className="text-small">
           {fundedPercentage}%

@@ -35,6 +35,7 @@
         "object-curly-newline": 0,
         "no-new": 0,
         "no-underscore-dangle":  ["error", { "allow": ["_id"] }],
+        "jsx-a11y/label-has-associated-control": 0,
         "jsx-a11y/anchor-is-valid": [ "error", {
             "components": [ "Link" ],
             "specialLink": [ "hrefLeft", "hrefRight" ],

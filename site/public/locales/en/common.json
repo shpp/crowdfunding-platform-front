@@ -1,0 +1,36 @@
+{
+  "support": "Donate",
+  "createdAt": "Created on",
+  "completed": "Funded",
+  "funded": "funded",
+  "details": "show more",
+  "supportCard": {
+    "title": "Support our activity",
+    "p": [
+      "School++ and KOWO are independent, non-profit projects, and every month they need a livelihood: rent and utilities, salaries of administrators, repair, tea, cookies, equipment.",
+      "From monthly expenses of <strong>~3 000 USD</strong> the half is already covered by donations of people/companies, who believe in us.",
+      "Help us to grow even faster &mdash; subscribe to a small monthly donation!"
+    ],
+    "small": "Already have for the current month"
+  },
+  "noresults": "There is nothing here yet :(",
+  "expenses": {
+    "actual": {
+      "title": "We spent received donations on"
+    },
+    "planned": {
+      "title": "We plan to spend these money on"
+    }
+  },
+  "next": "Next",
+  "phone-title": "Your phone number",
+  "viber-notifications": "We will send you project reports to Viber or Telegram.",
+  "invalid-phone": "Please enter a valid phone number",
+  "alternative-donate-link-1": "Could not donate? Try ",
+  "alternative-donate-link-2": "paying directly",
+  "notification": {
+    "success": {
+      "general": "Payment was successful, thank you! ♥"
+    }
+  }
+}
