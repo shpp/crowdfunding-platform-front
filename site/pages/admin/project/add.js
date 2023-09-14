@@ -110,6 +110,6 @@ function AddProject() {
   );
 }
 
-export const runtime = 'experimental-edge';
+// export const runtime = 'experimental-edge';
 
 export default AddProject;

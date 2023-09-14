@@ -30,6 +30,6 @@ export async function getStaticProps({ locale }) {
   };
 }
 
-export const runtime = 'experimental-edge';
+// export const runtime = 'experimental-edge';
 
 export default Agreement;

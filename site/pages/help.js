@@ -193,6 +193,6 @@ export async function getServerSideProps({ locale }) {
   };
 }
 
-export const runtime = 'experimental-edge';
+// export const runtime = 'experimental-edge';
 
 export default Help;

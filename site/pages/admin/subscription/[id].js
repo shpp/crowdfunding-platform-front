@@ -95,6 +95,6 @@ const SubscriptionPage = (props) => {
   );
 };
 
-export const runtime = 'experimental-edge';
+// export const runtime = 'experimental-edge';
 
 export default withAuth(withRouter(SubscriptionPage));
