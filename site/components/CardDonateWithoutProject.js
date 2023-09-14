@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { toast } from 'react-toastify';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
 import api from '../fetch';
 import { flex, grow, p, column } from '../utils/theme';
@@ -43,8 +43,7 @@ const CardDonateWithoutProject = ({
   const [email, setEmail] = useState('');
   const [newsletter, setNewsletter] = useState(false);
   const [currency, setCurrency] = useState('UAH');
-  const t = useTranslations('help');
-  const locale = useLocale();
+  const { t, i18n } = useTranslation('help');
 
   useEffect(() => {
     const changeCurrency = (lang) => {
@@ -58,7 +57,10 @@ const CardDonateWithoutProject = ({
       }
     };
 
-    changeCurrency(locale);
+    i18n.on('languageChanged', () => {
+      changeCurrency(i18n.language);
+    });
+    changeCurrency(i18n.language);
 
     // eslint-disable-next-line no-undef
     LiqPayCheckout.on('liqpay.callback', async (d) => {
@@ -99,7 +101,7 @@ const CardDonateWithoutProject = ({
         toast(Toast, { autoClose: false, position: 'top-center', closeOnClick: false, draggable: false });
       }
     });
-  }, [locale]);
+  });
 
   const pay = async () => {
     if (newsletter
@@ -122,7 +124,7 @@ const CardDonateWithoutProject = ({
       subscribe,
       amount,
       currency,
-      language: locale,
+      language: i18n.language,
       _notify: false
     });
 
@@ -133,7 +135,7 @@ const CardDonateWithoutProject = ({
     }
 
     // eslint-disable-next-line no-undef
-    LiqPayCheckout.init({ data, signature, language: locale, mode: 'popup' });
+    LiqPayCheckout.init({ data, signature, language: i18n.language, mode: 'popup' });
   };
 
   return (
@@ -169,7 +171,7 @@ const CardDonateWithoutProject = ({
             />
           </span>
           <span>
-            {locale === 'uk'
+            {i18n.language === 'uk'
               ? 'грн'
               : (
                 <select

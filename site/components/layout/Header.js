@@ -1,15 +1,18 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
+import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
-import { useLocale, useTranslations } from 'next-intl';
-import { usePathname } from 'next-intl/client';
+import { useRouter } from 'next/router';
 import { column, flex } from '../../utils/theme';
 
 const Header = ({ links, brand }) => {
-  const locale = useLocale();
-  const pathname = usePathname() ?? '';
+  const router = useRouter();
+  const { t, i18n } = useTranslation('header');
 
-  const t = useTranslations('header');
+  const changeLanguage = (newLocale) => {
+    const { pathname, asPath, query } = router;
+    router.push({ pathname, query }, asPath, { locale: newLocale });
+  };
 
   return (
     <Navbar collapseOnSelect expand="md" className="header">
@@ -29,27 +32,23 @@ const Header = ({ links, brand }) => {
             </Link>
           ))
         }
-        {!pathname.startsWith('/admin') && (
-          <div style={{ ...flex, ...column, justifyContent: 'center' }}>
-            <Link href={pathname} locale='en'>
-              <button
-                type="button"
-                className={`translate-button ${locale === 'en' && 'active'}`}
-
-              >
-                EN
-              </button>
-            </Link>
-            <Link href={pathname} locale='uk'>
-              <button
-                type="button"
-                className={`translate-button ${locale === 'uk' && 'active'}`}
-
-              >
-                UA
-              </button>
-            </Link>
-          </div>
+        {!router.pathname.startsWith('/admin') && (
+        <div style={{ ...flex, ...column, justifyContent: 'center' }}>
+          <button
+            type="button"
+            className={`translate-button ${i18n.language === 'en' && 'active'}`}
+            onClick={() => changeLanguage('en')}
+          >
+            EN
+          </button>
+          <button
+            type="button"
+            className={`translate-button ${i18n.language === 'uk' && 'active'}`}
+            onClick={() => changeLanguage('uk')}
+          >
+            UA
+          </button>
+        </div>
         )}
       </Navbar.Collapse>
     </Navbar>

@@ -1,19 +1,20 @@
-import { useTranslations } from 'next-intl';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import Page from '../components/layout/Page';
 
-const Agreement = ({ messages }) => {
-  const t = useTranslations('agreement');
+const Agreement = () => {
+  const { t } = useTranslation('agreement');
   return (
     <Page>
       <div className="container">
         <h2>{t('title')}</h2>
-        {messages.agreement.sections.map((section, i) => (
+        {t('sections', { returnObjects: true }).map((_, i) => (
           <div key={i}>
-            {section.title && <h3>{t(`sections.${i}.title`)}</h3>}
+            {t(`sections.${i}.title`, { defaultValue: '' }) !== '' && <h3>{t(`sections.${i}.title`)}</h3>}
             <section>
-              {section.p.map((_, j) => (
-                <p dangerouslySetInnerHTML={{ __html: t.raw(`sections.${i}.p.${j}`).replaceAll(/\{app_url\}/g, process.env.NEXT_PUBLIC_APP_URL)}} key={`sections.${i}.p.${j}`} />
+              {t(`sections.${i}.p`, { app_url: process.env.NEXT_PUBLIC_APP_URL, returnObjects: true }).map((par) => (
+                <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
               ))}
             </section>
           </div>
@@ -25,13 +26,7 @@ const Agreement = ({ messages }) => {
 
 export async function getStaticProps({ locale }) {
   return {
-    props: {
-      messages: {
-        agreement: (await import(`../locales/${locale}/agreement.json`)).default,
-        header: (await import(`../locales/${locale}/header.json`)).default,
-        footer: (await import(`../locales/${locale}/footer.json`)).default,
-      }
-    }
+    props: await serverSideTranslations(locale, ['agreement', 'header', 'footer'])
   };
 }
 

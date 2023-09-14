@@ -1,8 +1,9 @@
 import { withRouter } from 'next/router';
 import Head from 'next/head';
 import { NextSeo } from 'next-seo';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import axios from 'axios';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslation } from 'next-i18next';
 import api from '../../fetch';
 
 import Page from '../../components/layout/Page';
@@ -10,14 +11,9 @@ import ProgressBar from '../../components/ProgressBar';
 import ButtonDonate from '../../components/ButtonDonate';
 
 export async function getStaticProps({ locale, params: { id } }) {
-  console.log({id})
   return {
     props: {
-      messages: {
-        common: (await import(`../../locales/${locale}/common.json`)).default,
-        header: (await import(`../../locales/${locale}/header.json`)).default,
-        footer: (await import(`../../locales/${locale}/footer.json`)).default,
-      },
+      ...await serverSideTranslations(locale, ['common', 'header', 'footer']),
       ...await api.request(`projects/${id}`, 'get'),
       currency: (await axios.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5')).data.find(({ ccy }) => ccy.toUpperCase() === 'USD')
     }
@@ -26,7 +22,7 @@ export async function getStaticProps({ locale, params: { id } }) {
 
 export async function getStaticPaths() {
   const { projects } = await api.get('projects');
-  console.log('length' + projects.length)
+
   const paths = projects.map((project) => ({
     params: { id: project.id.toString() },
   }));
@@ -35,10 +31,8 @@ export async function getStaticPaths() {
 }
 
 const ProjectPage = ({ project, router, currency }) => {
-  // console.log({project})
-  const t = useTranslations('common');
-  const locale = useLocale();
-  const lang = locale || 'uk';
+  const { t, i18n } = useTranslation('common');
+  const lang = i18n.language || 'uk';
   const selectedCurrency = lang === 'en' ? currency : { ccy: 'UAH', buy: 1 };
   const projectURL = process.env.NEXT_PUBLIC_APP_URL + router.asPath;
   // TODO: render NEXT SEO here with translations
@@ -83,12 +77,12 @@ const ProjectPage = ({ project, router, currency }) => {
             <div dangerouslySetInnerHTML={{ __html: project[`actual_spendings_${lang}`] }} key={lang} />
           </section>
         )}
-        {!project.completed && (<ButtonDonate project_id={project.id}/>)}
+        {!project.completed && (<ButtonDonate project_id={project.id} />)}
       </div>
     </Page>
   );
 };
 
-// export const runtime = 'experimental-edge';
+export const runtime = 'experimental-edge';
 
 export default withRouter(ProjectPage);

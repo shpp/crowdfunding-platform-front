@@ -1,9 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import axios from 'axios';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Bar, LabelList, Legend,
 } from 'recharts';
-import { useLocale, useTranslations } from 'next-intl';
+
+import { useTranslation } from 'next-i18next';
 import Page from '../components/layout/Page';
 import CardDonateWithoutProject from '../components/CardDonateWithoutProject';
 import api from '../fetch';
@@ -27,9 +29,9 @@ const USDRate = {
   buy: '39.75000'
 };
 
-const Help = ({ exchangeRate, incomes, expenses, subscriptions, messages }) => {
-  const t = useTranslations('help');
-  const locale = useLocale();
+const Help = ({ exchangeRate, incomes, expenses, subscriptions }) => {
+  const { t, i18n } = useTranslation('help');
+  const locale = i18n.language;
   const precision = locale === 'uk' ? 10000 : 500;
   const expensesMaxValue = Math.ceil(Math.max(...expenses.map((e) => e[`amount-${locale}`])) / precision) * precision;
 
@@ -59,17 +61,18 @@ const Help = ({ exchangeRate, incomes, expenses, subscriptions, messages }) => {
           >
             <div>
               <h2>{t('text.title')}</h2>
-              {messages.help.text.p1.map((_, i) =>
-                <p dangerouslySetInnerHTML={{ __html: t.raw(`text.p1.${i}`) }} key={`text.p1.${i}`} />
-              )}
+              {t('text.p1', { returnObjects: true })
+                .map((par) => (
+                  <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
+                ))}
             </div>
             <img src="/roma-2.jpg" alt="Roman Shmelev" />
           </section>
           <section>
-            {t('text.p2.0')}
-            {messages.help.text.p2.slice(1).map((_, i) =>
-              <p key={`text.p2.${i+1}`}>{t(`text.p2.${i+1}`)}</p>
-            )}
+            {t('text.p2', { returnObjects: true })
+              .map((par) => (
+                <p key={par}>{par}</p>
+              ))}
             {incomes
             && (
             <div className="help-chart-wrapper">
@@ -111,9 +114,10 @@ const Help = ({ exchangeRate, incomes, expenses, subscriptions, messages }) => {
               </div>
             </div>
             )}
-            {messages.help.text.p3.map((_, i) =>
-              <p dangerouslySetInnerHTML={{ __html: t.raw(`text.p3.${i}`) }} key={`text.p3.${i}`} />
-            )}
+            {t('text.p3', { returnObjects: true })
+              .map((par) => (
+                <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
+              ))}
             {expenses
             && (
             <div className="help-chart-wrapper">
@@ -149,13 +153,14 @@ const Help = ({ exchangeRate, incomes, expenses, subscriptions, messages }) => {
               </div>
             </div>
             )}
-            {messages.help.text.p4.map((_, i) =>
-              <p dangerouslySetInnerHTML={{ __html: t.raw(`text.p4.${i}`) }} key={`text.p4.${i}`} />
-            )}
+            {t('text.p4', { returnObjects: true })
+              .map((par) => (
+                <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
+              ))}
           </section>
         </div>
         <aside>
-          <CardDonateWithoutProject exchangeRate={exchangeRate[locale]} subscriptions={subscriptions} locale={locale} />
+          <CardDonateWithoutProject exchangeRate={exchangeRate[locale]} subscriptions={subscriptions} />
         </aside>
       </div>
     </Page>
@@ -172,11 +177,7 @@ export async function getServerSideProps({ locale }) {
 
   return {
     props: {
-      messages: {
-        help: (await import(`../locales/${locale}/help.json`)).default,
-        header: (await import(`../locales/${locale}/header.json`)).default,
-        footer: (await import(`../locales/${locale}/footer.json`)).default,
-      },
+      ...await serverSideTranslations(locale, ['help', 'header', 'footer']),
       incomes: Object.entries(data.incomes).map(([key, value]) => ({
         category: key,
         amount: value * 100

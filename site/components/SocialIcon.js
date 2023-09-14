@@ -1,21 +1,21 @@
 const SocialIcon = ({ children, link }) => {
   return (
-    <a href={link} className="social-icon">
+    <a href={link}>
       <i>{children}</i>
       <style>
         {`
-          .social-icon i {
+          i {
             width: 20px;
             height: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
           }
-          a.social-icon {
+          a {
             cursor: pointer;
             padding: 5px;
           }
-          a.social-icon:hover {
+          a:hover {
             background-color: rgba(0, 0, 0, 0.05);
           }
         `}

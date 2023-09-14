@@ -1,10 +1,11 @@
 import React from 'react';
 import Head from 'next/head';
+import App from 'next/app';
 import { DefaultSeo } from 'next-seo';
 import NextNProgress from 'nextjs-progressbar';
-import {NextIntlClientProvider} from 'next-intl';
-
 import * as Sentry from '@sentry/react';
+
+import { appWithTranslation } from 'next-i18next';
 
 // add stylesheets with this awful way because of awful next.js
 import 'axios-progress-bar/dist/nprogress.css';
@@ -26,7 +27,7 @@ Sentry.init({
 
 // TODO: use NEXT SEO with translations
 const MyApp = ({ Component, pageProps }) => (
-  <NextIntlClientProvider messages={pageProps.messages}>
+  <>
     <DefaultSeo
       title="Ш++ збір коштів"
       description="Підтримай Ш++ - незалежний соціально-культурний проект у Кропивницькому"
@@ -65,9 +66,22 @@ const MyApp = ({ Component, pageProps }) => (
     <NextNProgress color="#27ae60" height={2} />
     {/* eslint-disable-next-line react/jsx-props-no-spreading */}
     <Component {...pageProps} />
-  </NextIntlClientProvider>
+  </>
 );
+
+MyApp.getInitialProps = async (appContext) => {
+  let pageProps = await App.getInitialProps(appContext) ?? { };
+
+  if (appContext.Component.getInitialProps) {
+    pageProps = { ...pageProps, ...await appContext.Component.getInitialProps(appContext.ctx) };
+  }
+
+  return {
+    pageProps,
+    namespacesRequired: ['common', 'header', 'help', 'footer']
+  };
+};
 
 export const runtime = 'experimental-edge';
 
-export default MyApp;
+export default appWithTranslation(MyApp);
