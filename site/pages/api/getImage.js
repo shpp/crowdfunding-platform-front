@@ -1,7 +1,7 @@
 import { parse } from 'url';
 import https from 'https';
 
-export const runtime = 'experimental-edge';
+export const runtime = 'edge';
 
 export default (req, res) => {
   const { hostname, path } = parse(req.query.url, false);

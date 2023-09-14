@@ -2,7 +2,7 @@
   "notification": {
     "success": {
       "general": "Оплата пройшла успішно, дякуємо за підтримку! ♥",
-      "orderId": "<p>Збережіть ID своєї підписки: <strong>{{orderId}}</strong></p> <p>Для того щоб скасувати підписку надішліть свій ID на <a href=\"mailto:donate@kowo.me\">donate@kowo.me</a>.</p>",
+      "orderId": "<p>Збережіть ID своєї підписки: <strong>{orderId}</strong></p> <p>Для того щоб скасувати підписку надішліть свій ID на <a href=\"mailto:donate@kowo.me\">donate@kowo.me</a>.</p>",
       "email": "Будь ласка, перевірте свою електронну пошту, ми надіслали вам листа :)"
     },
     "errors": {
@@ -88,9 +88,9 @@
       "newsletter": "Хочу отримувати регулярну розсилку зі звітами та інсайтами"
     },
     "button": {
-      "regular": "Підписатись на {{amount}} {{curr}}",
+      "regular": "Підписатись на {amount} {curr}",
       "oneTime": "Підтримати одноразово"
     }
   },
-  "subscriptionsList": "Вже є {{donators}} чудових підписників → {{money}} {{currency}} щомісяця"
+  "subscriptionsList": "Вже є {donators} чудових підписників → {money} {currency} щомісяця"
 }

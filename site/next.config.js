@@ -1,7 +1,10 @@
-const { i18n } = require('./next-i18next.config');
-
 module.exports = {
-  i18n,
+  i18n: {
+    defaultLocale: 'uk',
+    locales: ['uk', 'en'],
+    localeDetection: false
+  },
+  transpilePackages: ['next-intl'],
   pageExtensions: ['jsx', 'js'],
   generateBuildId: async () => {
     if (process.env.BUILD_ID) {

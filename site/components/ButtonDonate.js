@@ -1,6 +1,5 @@
 import { toast } from 'react-toastify';
-
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import api from '../fetch';
 
@@ -21,8 +20,9 @@ const styles = {
 const ButtonDonate = ({ project_id }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [phoneIsValid, setPhoneValid] = useState(true);
+  const locale = useLocale();
   const [phone, setPhone] = useState('');
-  const { t, i18n } = useTranslation('common');
+  const t = useTranslations('common');
 
   useEffect(() => {
     // eslint-disable-next-line no-undef
@@ -91,7 +91,7 @@ const ButtonDonate = ({ project_id }) => {
     const { data, signature } = await api.get('project-1', {
       project_id,
       phone: correctPhone,
-      language: i18n.language,
+      language: locale,
       _notify: false
     });
 
@@ -102,7 +102,7 @@ const ButtonDonate = ({ project_id }) => {
     }
 
     // eslint-disable-next-line no-undef
-    LiqPayCheckout.init({ data, signature, language: i18n.language, mode: 'popup' });
+    LiqPayCheckout.init({ data, signature, language: locale, mode: 'popup' });
   }
 
   return (

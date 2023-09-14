@@ -1,19 +1,18 @@
 import { withRouter } from 'next/router';
 import Link from 'next/link';
 import axios from 'axios';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
-
+import { useLocale, useTranslations } from 'next-intl';
 import api from '../fetch';
 import Page from '../components/layout/Page';
 import CardProject from '../components/CardProject';
 import { grow, p } from '../utils/theme';
 import ProgressBar from '../components/ProgressBar';
 
-const HomePage = ({ currency, projects }) => {
-  const { t, i18n } = useTranslation('common');
+const HomePage = ({ currency, projects, messages }) => {
+  const t = useTranslations('common');
+  const locale = useLocale();
   const livelihood = projects.find(({ slug }) => slug === 'shpp-kowo');
-  const selectedCurrency = i18n.language === 'en' ? currency : { ccy: 'UAH', buy: 1 };
+  const selectedCurrency = locale === 'en' ? currency : { ccy: 'UAH', buy: 1 };
   return (
     <Page>
       <div className="homepage">
@@ -26,9 +25,9 @@ const HomePage = ({ currency, projects }) => {
                   {t('supportCard.title')}
                 </h3>
               </Link>
-              {t('supportCard.p', { returnObjects: true })
-                .map((par) => (
-                  <p dangerouslySetInnerHTML={{ __html: par }} key={par} style={p} />
+              {messages.common.supportCard.p
+                .map((_, i) => (
+                  <p dangerouslySetInnerHTML={{ __html: t.raw(`supportCard.p.${i}`) }} key={`supportCard.p.${i}`} style={p} />
                 ))}
               <p style={p}><Link href="/help">{t('details')}</Link></p>
               <div style={grow} />
@@ -71,7 +70,12 @@ export async function getServerSideProps({ locale, query }) {
 
   return {
     props: {
-      ...await serverSideTranslations(locale, ['help', 'common', 'header', 'footer']),
+      messages: {
+        help: (await import(`../locales/${locale}/help.json`)).default,
+        common: (await import(`../locales/${locale}/common.json`)).default,
+        header: (await import(`../locales/${locale}/header.json`)).default,
+        footer: (await import(`../locales/${locale}/footer.json`)).default,
+      },
       projects: getSortedProjects((await api.get('projects')).projects),
       currency: (await axios.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5')).data.find(({ ccy }) => ccy.toUpperCase() === 'USD')
     }

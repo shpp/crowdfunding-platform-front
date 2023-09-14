@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 import SocialIcon from '../SocialIcon';
@@ -17,7 +17,7 @@ const facebook = 'https://facebook.com/shpp.kr';
 const telegram = 'https://t.me/shppkr';
 
 const Footer = () => {
-  const { t } = useTranslation('footer');
+  const t = useTranslations('footer');
   return (
     <footer>
       <div className="container">
