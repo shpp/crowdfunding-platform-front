@@ -23,11 +23,13 @@ class TransactionView extends Component {
   };
 
   async componentDidMount() {
+    console.log('transaction component did mount');
     await this.getTransaction();
   }
 
   async getTransaction() {
     const { transaction } = await api.request(`admin/transactions/${this.props.router.query.id}`, 'get');
+    console.log(transaction);
     this.setState({
       transaction
     });
