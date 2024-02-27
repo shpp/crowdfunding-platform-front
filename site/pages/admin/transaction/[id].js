@@ -26,9 +26,9 @@ class TransactionView extends Component {
   }
 
   async getTransaction() {
-    const { transactions } = await api.get('transactions');
+    const { transaction } = await api.request(`admin/transactions/${this.props.router.query.id}`, 'get');
     this.setState({
-      transaction: transactions.filter((t) => t.id === this.props.router.query.id).pop()
+      transaction
     });
   }
 
@@ -62,7 +62,7 @@ class TransactionView extends Component {
             <p>Проект:
               <Link
                 href="/admin/project/view/[id]"
-                as={`/admin/project/view/${transaction.project_id}`}
+                as={`/admin/project/view/${transaction.project.id}`}
               ><span className="text-success" style={styles.link}>{transaction.project?.name}</span>
               </Link>
             </p>
