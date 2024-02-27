@@ -34,12 +34,11 @@ class TransactionView extends Component {
 
   render() {
     const { transaction } = this.state;
-    document.getElementById("json").textContent = JSON.stringify(transaction, undefined, 2);
 
     return (
         <Page>
           <h3>Transaction data</h3>
-          <pre id="json"></pre>
+          <pre>{ JSON.stringify(transaction, undefined, 2) }</pre>
         </Page>
     );
   }
