@@ -34,8 +34,8 @@ const TableTransactions = ({ transactions, fullTable }) => {
       && transactions.map((transaction, index) => (
         <Link
           key={transaction.id}
-          href="/admin/transaction/[id]"
-          as={`/admin/transaction/${transaction.id}`}
+          href="/admin/transaction/view/[id]"
+          as={`/admin/transaction/view/${transaction.id}`}
         >
           <tr key={transaction.id} style={style}>
             <td>{ index + 1 }</td>

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Col, Button } from 'react-bootstrap';
 import Link from 'next/link';
-import Page from '../../../components/layout/admin/Page';
-import withAuth from '../../../components/layout/admin/HOC/withAuth';
+import Page from '../../../../components/layout/admin/Page';
+import withAuth from '../../../../components/layout/admin/HOC/withAuth';
 import { withRouter } from 'next/router';
-import api from '../../../api';
+import api from '../../../../api';
 
 const styles = {
   container: {
@@ -33,16 +33,6 @@ class TransactionView extends Component {
     this.setState({
       transaction
     });
-  }
-
-  async revoke() {
-    await api.post('revoke_transaction', { id: this.props.router.query.id });
-    await this.getTransaction();
-  }
-
-  async reaffirm() {
-    await api.post('reaffirm_transaction', { id: this.props.router.query.id });
-    await this.getTransaction();
   }
 
   render() {
