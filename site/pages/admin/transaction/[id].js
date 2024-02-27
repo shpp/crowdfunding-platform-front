@@ -3,6 +3,7 @@ import { Container, Col, Button } from 'react-bootstrap';
 import Link from 'next/link';
 import Page from '../../../components/layout/admin/Page';
 import withAuth from '../../../components/layout/admin/HOC/withAuth';
+import { withRouter } from 'next/router';
 import api from '../../../api';
 
 const styles = {
@@ -86,4 +87,4 @@ class TransactionView extends Component {
   }
 }
 
-export default withAuth(TransactionView);
+export default withAuth(withRouter(TransactionView));
