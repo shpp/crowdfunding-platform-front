@@ -95,10 +95,12 @@ class Help extends Component {
                 <img src="/roma-2.jpg" alt="Roman Shmelev" />
               </section>
               <section>
-                {t('text.p2', { returnObjects: true })
-                  .map((par) => (
-                    <p key={par}>{par}</p>
-                  ))}
+                {t("text.p2", {
+                  returnObjects: true,
+                  years: kowoAge,
+                }).map((par) => (
+                  <p key={par}>{par}</p>
+                ))}
                 <div className="help-chart-wrapper">
                   <div className="help-chart-container">
                     <ResponsiveContainer>

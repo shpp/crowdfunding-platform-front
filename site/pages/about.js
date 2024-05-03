@@ -8,9 +8,9 @@ const AboutPage = ({ t }) => (
         <div key={i}>
           <h3>{t(`sections.${i}.title`)}</h3>
           <section>
-            {t(`sections.${i}.p`, { returnObjects: true }).map((par) => (
               <p dangerouslySetInnerHTML={{ __html: par }} key={par} />
             ))}
+            {t(`sections.${i}.p`, { returnObjects: true, years: kowoAge }).map(
           </section>
         </div>
       ))}
