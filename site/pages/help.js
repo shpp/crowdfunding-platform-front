@@ -10,7 +10,7 @@ import Page from '../components/layout/Page';
 import CardDonateWithoutProject from '../components/CardDonateWithoutProject';
 
 import { flex, row } from '../utils/theme';
-import { formatMoney, isMobile, isTablet } from '../utils';
+import { formatMoney, isMobile, isTablet, kowoAge } from '../utils';
 import { withTranslation, i18n } from '../utils/translations';
 
 const colors = [
@@ -95,12 +95,10 @@ class Help extends Component {
                 <img src="/roma-2.jpg" alt="Roman Shmelev" />
               </section>
               <section>
-                {t("text.p2", {
-                  returnObjects: true,
-                  years: kowoAge,
-                }).map((par) => (
-                  <p key={par}>{par}</p>
-                ))}
+                {t('text.p2', { returnObjects: true, years: kowoAge })
+                  .map((par) => (
+                    <p key={par}>{par}</p>
+                  ))}
                 <div className="help-chart-wrapper">
                   <div className="help-chart-container">
                     <ResponsiveContainer>

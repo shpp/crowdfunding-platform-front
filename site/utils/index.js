@@ -28,5 +28,5 @@ export const isMobile = () => (typeof window !== 'undefined' ? window.matchMedia
 export const isTablet = () => (typeof window !== 'undefined' ? window.matchMedia('only screen and (max-width: 768px)').matches : false);
 
 export const kowoAge = Math.floor(
-  (Date.now() - new Date("2015-02-01").getTime()) / (1000 * 60 * 60 * 24 * 365)
+  (Date.now() - new Date('2015-02-01').getTime()) / (1000 * 60 * 60 * 24 * 365)
 );
