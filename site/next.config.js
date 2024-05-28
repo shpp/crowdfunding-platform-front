@@ -8,15 +8,6 @@ module.exports = {
       return `${new Date().getTime()}`;
     }
   },
-  env: {
-    API_URL: "<<API_URL>>",
-    APP_URL: "<<APP_URL>>",
-    SHEETS_URL: "<<SHEETS_URL>>",
-    HASH_SALT: "<<HASH_SALT>>",
-    SENTRY_DSN: "<<SENTRY_DSN>>",
-    ALTERNATIVE_DONATE_LINK: "<<ALTERNATIVE_DONATE_LINK>>",
-    GOOGLE_ANALYTICS_KEY: "<<GOOGLE_ANALYTICS_KEY>>"
-  },
   serverRuntimeConfig: {},
   publicRuntimeConfig: {
     DEPLOY_ENV: process.env.DEPLOY_ENV,
