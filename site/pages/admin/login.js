@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { withRouter } from 'next/router';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import createAndSetToken from '../../utils/createToken';
+import { createAuthToken, getAuthToken } from '../../utils/authToken';
 import api from '../../api';
 import Page from '../../components/layout/admin/Page';
 
@@ -14,7 +14,7 @@ class Login extends Component {
   }
 
   async componentDidMount() {
-    if (sessionStorage.getItem('token')) {
+    if (getAuthToken()) {
       await this.props.router.push('/admin/projects');
     }
   }
@@ -25,7 +25,7 @@ class Login extends Component {
 
   async handleSubmit(e) {
     e.preventDefault();
-    createAndSetToken(this.state.pass);
+    createAuthToken(this.state.pass);
     await api.get('admin_projects');
     await this.props.router.push('/admin/projects');
   }
