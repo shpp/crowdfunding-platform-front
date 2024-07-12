@@ -1,5 +1,4 @@
 import React from 'react';
-// import Link from 'next/link';
 import ProgressBar from './ProgressBar';
 import Check from '../assets/icon/check.svg';
 import Cross from '../assets/icon/cross.svg';
@@ -16,8 +15,15 @@ class CardProject extends React.Component {
     return (
       <div style={{ ...flex, ...column, ...grow }}>
         {project.completed && <div className="project-status-completed"><Check style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('completed')}</div> }
-        {project.expired && <div className="project-status-expired"><Cross style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('expired')} <Question style={{ verticalAlign: 'top' }}/></div> }
-
+        {project.expired && (
+        <div className="project-status-expired"><Cross style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('expired')}
+          <Link
+            href="/agreement#deadlines"
+            as="/agreement#deadlines"
+          ><Question style={{ verticalAlign: 'top' }} />
+          </Link>
+        </div>
+        ) }
         <Link
           href={`${i18n.language === 'uk' ? '' : `/${i18n.language}`}/project/[id]`}
           as={`/project/${project.id}`}

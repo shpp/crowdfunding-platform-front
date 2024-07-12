@@ -25,7 +25,7 @@ Sentry.init({
   integrations: [
     new Integrations.BrowserTracing(),
   ],
- tracesSampleRate: 1.0,
+  tracesSampleRate: 1.0,
 });
 
 // TODO: use NEXT SEO with translations

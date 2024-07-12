@@ -41,7 +41,7 @@ class HomePage extends Component {
 
   getFilteredProjects(projects = []) {
     const { filter } = this.props.router.query;
-    const publishedProjects = projects.filter(({ state }) => state === 'published')
+    const publishedProjects = projects.filter(({ state }) => state === 'published');
     const completedProjects = publishedProjects.filter((project) => project.completed);
     const notCompletedProjects = publishedProjects.filter((project) => !project.completed);
 
@@ -51,7 +51,7 @@ class HomePage extends Component {
   }
 
   render() {
-    const projects = this.getFilteredProjects(this.state.projects).map(project => ({
+    const projects = this.getFilteredProjects(this.state.projects).map((project) => ({
       ...project,
       // 50 days expiration
       expired: !project.completed && Date.now() - new Date(project.created_at) > 1000 * 60 * 60 * 24 * 50

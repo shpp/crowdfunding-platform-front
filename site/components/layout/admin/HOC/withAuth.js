@@ -1,6 +1,6 @@
 import { withRouter } from 'next/router';
 import React, { Component } from 'react';
-import { getAuthToken } from "../../../../utils/authToken";
+import { getAuthToken } from '../../../../utils/authToken';
 
 /**
  * HOC to wrap admin pages with auth component

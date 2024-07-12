@@ -40,8 +40,10 @@
     },
     {
       "title": "Term for Fundraising",
+      "id": "deadlines",
       "p": [
-        "1. The public fund-raising of the Charitable Donation lasts until the termination of the activities of the Organization (including by liquidation) unless another term is determined by the decision of the Organization which will be notified to the Donor by posting the relevant information on the site: <a href={{app_url}}>{{app_url}}</a>"
+        "1. The public fund-raising of the Charitable Donation lasts until the termination of the activities of the Organization (including by liquidation) unless another term is determined by the decision of the Organization which will be notified to the Donor by posting the relevant information on the site: <a href={{app_url}}>{{app_url}}</a>.",
+        "2. The fundraising may also be completed within 50 days if the sufficient amount is not raised, or as soon as the sufficient amount is raised."
       ]
     },
     {
@@ -56,7 +58,8 @@
         "1. Charges related to the transfer of Charitable Donations (commissions for transfer of funds, taxes, fees, etc.) shall be borne by the Donor.",
         "2. By accepting the Offer, the Donor confirms that he is fully aware of and agrees to the terms of this Offer and gives his permission for the processing of his personal data in order to fulfill the terms of this Offer. Permission for data processing is valid throughout the term of this Offer. Moreover, Donor confirms that he was notified(without any additional notification) about rights that are provided by the Law of Ukraine “On Personal Data Protection”. The scope of Donor's rights as of a subject of personal data according to the Law of Ukraine “On Personal Data Protection” is well-known and understandable to Donor.",
         "3. The Donor agrees that his contact information may be used by the Organization to send letters and messages including in electronic format after his personal data have been provided and registered on the site of the Organization. Meanwhile, the Organization undertakes not to disclose information on the Donor’s contact information to third parties, except in cases explicitly provided for by the legislation of Ukraine. Also, the Donor consents that his information (surname, first name, patronymic among others) can be used by the Organization in the media or on the website of the Organization: <a href={{app_url}}>{{app_url}}</a>",
-        "4. Donor gives his consent for redistribution/usage of surplus funds from the Charity Donation in case of completion of the crowdfunding campaign of a supported project or other non-commercial projects of Organization."
+        "4. Donor gives his consent for redistribution/usage of surplus funds from the Charity Donation in case of completion of the crowdfunding campaign of a supported project or other non-commercial projects of Organization.",
+        "5. A charitable donation is voluntary and non-refundable to the donor."
       ]
     }
   ]

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { loadProgressBar } from 'axios-progress-bar';
 import Router from 'next/router';
-import { getAuthToken } from "../utils/authToken";
+import { getAuthToken } from '../utils/authToken';
 
 const isClientSide = () => typeof window !== 'undefined';
 
