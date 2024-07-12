@@ -5,12 +5,15 @@ import { NextSeo } from 'next-seo';
 
 import axios from 'axios';
 import api from '../../api';
+import Cross from '../../assets/icon/cross.svg';
+import Question from '../../assets/icon/question.svg';
+import Check from '../../assets/icon/check.svg';
 
 import Page from '../../components/layout/Page';
 import ProgressBar from '../../components/ProgressBar';
 import ButtonDonate from '../../components/ButtonDonate';
 
-import { withTranslation, i18n } from '../../utils/translations';
+import { withTranslation, i18n, Link } from '../../utils/translations';
 
 class ProjectPage extends React.Component {
   constructor(props) {
@@ -40,6 +43,7 @@ class ProjectPage extends React.Component {
 
   render() {
     const { project, router, t } = this.props;
+    project.expired = !project.completed && (Date.now() - new Date(project.created_at) > 1000 * 60 * 60 * 24 * 50);
     const { currency } = this.state;
     const selectedCurrency = i18n.language === 'en' ? currency : { ccy: 'UAH', buy: 1 };
     const lang = i18n.language || 'uk';
@@ -69,6 +73,16 @@ class ProjectPage extends React.Component {
             </Head>
             <div className="project-image-wrapper" style={{ backgroundImage: `url(${project.image})` }} />
             <div className="container project-info big">
+              {project.completed && <div className="project-status-completed"><Check style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('completed')}</div> }
+              {project.expired && (
+              <div className="project-status-expired"><Cross style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('expired')}
+                <Link
+                  href="/agreement#deadlines"
+                  as="/agreement#deadlines"
+                ><Question style={{ verticalAlign: 'top' }} />
+                </Link>
+              </div>
+              ) }
               <div>
                 <h1>{project[`name_${lang}`]}&nbsp;</h1>
                 <span className="text-green">{project.completed ? `(${t('funded')})` : ''}</span>
