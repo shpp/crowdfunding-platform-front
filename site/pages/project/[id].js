@@ -88,7 +88,7 @@ class ProjectPage extends React.Component {
                   <div dangerouslySetInnerHTML={{ __html: project[`actual_spendings_${lang}`] }} key={lang} />
                 </section>
               )}
-              {!project.completed && (<ButtonDonate project_id={project.id} />)}
+              {!(project.completed || project.expired) && (<ButtonDonate project_id={project.id} />)}
             </div>
           </Page>
         );

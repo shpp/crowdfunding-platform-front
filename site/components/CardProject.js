@@ -2,6 +2,9 @@ import React from 'react';
 // import Link from 'next/link';
 import ProgressBar from './ProgressBar';
 import Check from '../assets/icon/check.svg';
+import Cross from '../assets/icon/cross.svg';
+import Question from '../assets/icon/question.svg';
+
 import { formatDate } from '../utils';
 import ButtonDonate from './ButtonDonate';
 import { flex, column, p, grow } from '../utils/theme';
@@ -12,7 +15,9 @@ class CardProject extends React.Component {
     const { project, t, currency } = this.props;
     return (
       <div style={{ ...flex, ...column, ...grow }}>
-        {project.completed && <div className="project-completed"><Check style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('completed')}</div> }
+        {project.completed && <div className="project-status-completed"><Check style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('completed')}</div> }
+        {project.expired && <div className="project-status-expired"><Cross style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('expired')} <Question style={{ verticalAlign: 'top' }}/></div> }
+
         <Link
           href={`${i18n.language === 'uk' ? '' : `/${i18n.language}`}/project/[id]`}
           as={`/project/${project.id}`}
@@ -43,7 +48,7 @@ class CardProject extends React.Component {
               </Link>
             </p>
           </div>
-          {!project.completed && (<ButtonDonate project_id={project.id} />)}
+          {!(project.completed || project.expired) && (<ButtonDonate project_id={project.id} />)}
 
           <ProgressBar
             amount={project.amount}

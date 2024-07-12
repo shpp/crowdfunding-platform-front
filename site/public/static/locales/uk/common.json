@@ -2,6 +2,7 @@
   "support": "Підтримати",
   "createdAt": "Створено",
   "completed": "Завершено",
+  "expired": "Непрофінансовано",
   "funded": "профінансовано",
   "details": "детальніше",
   "supportCard": {

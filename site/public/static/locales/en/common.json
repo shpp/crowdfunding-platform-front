@@ -2,6 +2,7 @@
   "support": "Donate",
   "createdAt": "Created on",
   "completed": "Funded",
+  "expired": "Expired",
   "funded": "funded",
   "details": "show more",
   "supportCard": {

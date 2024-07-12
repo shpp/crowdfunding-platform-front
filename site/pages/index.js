@@ -30,7 +30,7 @@ class HomePage extends Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     api.get('projects')
       .then(({ projects }) => this.setState({ projects, loading: false }));
     axios.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5')
@@ -39,20 +39,23 @@ class HomePage extends Component {
       }));
   }
 
-  getSortedProjects(projects = []) {
+  getFilteredProjects(projects = []) {
     const { filter } = this.props.router.query;
-    const completedProjects = projects.filter((project) => project.completed);
-    const notCompletedProjects = projects.filter((project) => !project.completed);
+    const publishedProjects = projects.filter(({ state }) => state === 'published')
+    const completedProjects = publishedProjects.filter((project) => project.completed);
+    const notCompletedProjects = publishedProjects.filter((project) => !project.completed);
 
     return filter === 'completed'
       ? completedProjects
-      : [...notCompletedProjects, ...completedProjects]
-        .filter(({ state }) => state === 'published')
-        .sort((a, b) => Date.parse(a.created_at) - Date.parse(b.created_at));
+      : [...notCompletedProjects, ...completedProjects];
   }
 
   render() {
-    const projects = this.getSortedProjects(this.state.projects);
+    const projects = this.getFilteredProjects(this.state.projects).map(project => ({
+      ...project,
+      // 50 days expiration
+      expired: !project.completed && Date.now() - new Date(project.created_at) > 1000 * 60 * 60 * 24 * 50
+    }));
     const { loading, currency } = this.state;
     const { t, i18n } = this.props;
     const livelihood = this.state.projects.find(({ slug }) => slug === 'shpp-kowo') || {};
