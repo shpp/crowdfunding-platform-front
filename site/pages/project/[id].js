@@ -1,59 +1,55 @@
-import { NextSeo } from "next-seo";
-import Head from "next/dist/next-server/lib/head";
-import { withRouter } from "next/router";
-import React from "react";
+import { NextSeo } from 'next-seo';
+import Head from 'next/dist/next-server/lib/head';
+import { withRouter } from 'next/router';
+import React from 'react';
 
-import axios from "axios";
-import api from "../../api";
-import Check from "../../assets/icon/check.svg";
-import Cross from "../../assets/icon/cross.svg";
-import Question from "../../assets/icon/question.svg";
+import axios from 'axios';
+import api from '../../api';
+import Check from '../../assets/icon/check.svg';
+import Cross from '../../assets/icon/cross.svg';
+import Question from '../../assets/icon/question.svg';
 
-import ButtonDonate from "../../components/ButtonDonate";
-import Page from "../../components/layout/Page";
-import ProgressBar from "../../components/ProgressBar";
+import ButtonDonate from '../../components/ButtonDonate';
+import Page from '../../components/layout/Page';
+import ProgressBar from '../../components/ProgressBar';
 
-import { formatDate, getCloseDate } from "../../utils";
-import { i18n, Link, withTranslation } from "../../utils/translations";
+import { formatDate, getCloseDate } from '../../utils';
+import { i18n, Link, withTranslation } from '../../utils/translations';
 
 class ProjectPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currency: {
-        ccy: "UAH",
+        ccy: 'UAH',
         buy: 1,
       },
     };
   }
 
   static async getInitialProps({ query: { id } }) {
-    const { project } = await api.request(`projects/${id}`, "get");
+    const { project } = await api.request(`projects/${id}`, 'get');
     return {
       project,
-      namespacesRequired: ["common"],
+      namespacesRequired: ['common'],
     };
   }
 
   componentDidMount() {
     axios
-      .get("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5")
-      .then(({ data }) =>
-        this.setState({
-          currency: data.find(({ ccy }) => ccy.toUpperCase() === "USD"),
-        })
-      );
+      .get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5')
+      .then(({ data }) => this.setState({
+        currency: data.find(({ ccy }) => ccy.toUpperCase() === 'USD'),
+      }));
   }
 
   render() {
     const { project, router, t } = this.props;
-    project.expired =
-      !project.completed &&
-      Date.now() - new Date(project.created_at) > 1000 * 60 * 60 * 24 * 50;
+    project.expired = !project.completed
+      && Date.now() - new Date(project.created_at) > 1000 * 60 * 60 * 24 * 50;
     const { currency } = this.state;
-    const selectedCurrency =
-      i18n.language === "en" ? currency : { ccy: "UAH", buy: 1 };
-    const lang = i18n.language || "uk";
+    const selectedCurrency = i18n.language === 'en' ? currency : { ccy: 'UAH', buy: 1 };
+    const lang = i18n.language || 'uk';
     const projectURL = process.env.APP_URL + router.asPath;
     if (project) {
       if (i18n.language) {
@@ -76,7 +72,7 @@ class ProjectPage extends React.Component {
                   },
                   { url: `${process.env.APP_URL}/cover-image.jpg` },
                 ],
-                site_name: "Підтримай++ - спільнокошт",
+                site_name: 'Підтримай++ - спільнокошт',
               }}
             />
             <Head>
@@ -89,26 +85,26 @@ class ProjectPage extends React.Component {
             <div className="container project-info big">
               {project.completed && (
                 <div className="project-status-completed">
-                  <Check style={{ verticalAlign: "bottom" }} /> &nbsp;
-                  {t("completed")}
+                  <Check style={{ verticalAlign: 'bottom' }} /> &nbsp;
+                  {t('completed')}
                 </div>
               )}
               {project.expired && (
                 <div className="project-status-expired">
-                  <Cross style={{ verticalAlign: "bottom" }} /> &nbsp;
-                  {t("expired")}&nbsp;
+                  <Cross style={{ verticalAlign: 'bottom' }} /> &nbsp;
+                  {t('expired')}&nbsp;
                   <Link href="/agreement#deadlines" as="/agreement#deadlines">
-                    <Question style={{ verticalAlign: "sub" }} />
+                    <Question style={{ verticalAlign: 'sub' }} />
                   </Link>
                 </div>
               )}
               <div>
                 <h1>{project[`name_${lang}`]}&nbsp;</h1>
                 <span className="text-green">
-                  {project.completed ? `(${t("funded")})` : ""}
+                  {project.completed ? `(${t('funded')})` : ''}
                 </span>
                 <span className="creation-date">
-                  {formatDate(project.created_at)} &mdash;{" "}
+                  {formatDate(project.created_at)} &mdash;{' '}
                   {getCloseDate(project.created_at, lang)}
                 </span>
               </div>
@@ -125,11 +121,11 @@ class ProjectPage extends React.Component {
                 funded={project.amount_funded}
                 currency={selectedCurrency}
               />
-              {project.completed &&
-                project[`actual_spendings_${lang}`] &&
-                project[`actual_spendings_${lang}`].length && (
+              {project.completed
+                && project[`actual_spendings_${lang}`]
+                && project[`actual_spendings_${lang}`].length && (
                   <section>
-                    <h2>{this.props.t("expenses.actual.title")}:</h2>
+                    <h2>{this.props.t('expenses.actual.title')}:</h2>
                     <div
                       dangerouslySetInnerHTML={{
                         __html: project[`actual_spendings_${lang}`],
@@ -137,7 +133,7 @@ class ProjectPage extends React.Component {
                       key={lang}
                     />
                   </section>
-                )}
+              )}
               {!(project.completed || project.expired) && (
                 <ButtonDonate project_id={project.id} />
               )}
@@ -163,14 +159,14 @@ class ProjectPage extends React.Component {
                 },
                 { url: `${process.env.APP_URL}/cover-image.jpg` },
               ],
-              site_name: "Підтримай++ - спільнокошт",
+              site_name: 'Підтримай++ - спільнокошт',
             }}
           />
         </Page>
       );
     }
-    return "";
+    return '';
   }
 }
 
-export default withRouter(withTranslation("common")(ProjectPage));
+export default withRouter(withTranslation('common')(ProjectPage));
