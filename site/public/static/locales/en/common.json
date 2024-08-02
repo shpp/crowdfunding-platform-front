@@ -1,6 +1,7 @@
 {
   "support": "Donate",
   "createdAt": "Created on",
+  "closedAt": "Closed on",
   "completed": "Funded",
   "expired": "Expired",
   "funded": "funded",
@@ -12,8 +13,14 @@
       "From monthly expenses of <strong>~3 000 USD</strong> the half is already covered by donations of people/companies, who believe in us.",
       "Help us to grow even faster &mdash; subscribe to a small monthly donation!"
     ],
-    "small": "Already have for the current month"
+    "small": "Fundraising for {{month}} (expires on {{expiryDay}} of {{expiryMonth}})"
   },
+  "expiryMonths": [
+    "of Jan.", "of Feb.", "of Mar.", "of Apr.", "of May", "of Jun.", "of Jul.", "of Aug.", "of Sep.", "of Oct.", "of Nov.", "of Dec."
+  ],
+  "months": [
+    "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+  ],
   "noresults": "There is nothing here yet :(",
   "expenses": {
     "actual": {
