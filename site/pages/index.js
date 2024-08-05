@@ -36,9 +36,11 @@ class HomePage extends Component {
       .then(({ projects }) => this.setState({ projects, loading: false }));
     axios
       .get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5')
-      .then(({ data }) => this.setState({
-        currency: data.find(({ ccy }) => ccy.toUpperCase() === 'USD'),
-      }));
+      .then(({ data }) =>
+        this.setState({
+          currency: data.find(({ ccy }) => ccy.toUpperCase() === 'USD'),
+        })
+      );
   }
 
   getFilteredProjects(projects = []) {
@@ -63,15 +65,16 @@ class HomePage extends Component {
       (project) => ({
         ...project,
         // 50 days expiration
-        expired:
-          !project.completed
-          && Date.now() - new Date(project.created_at) > 1000 * 60 * 60 * 24 * 50,
+        expire_at:
+          Number(new Date(project.created_at)) + 1000 * 60 * 60 * 24 * 50,
       })
     );
     const { loading, currency } = this.state;
     const { t, i18n } = this.props;
-    const livelihood = this.state.projects.find(({ slug }) => slug === 'shpp-kowo') || {};
-    const selectedCurrency = i18n.language === 'en' ? currency : { ccy: 'UAH', buy: 1 };
+    const livelihood =
+      this.state.projects.find(({ slug }) => slug === 'shpp-kowo') || {};
+    const selectedCurrency =
+      i18n.language === 'en' ? currency : { ccy: 'UAH', buy: 1 };
     const currentMonth = new Date().getMonth();
     const currentYear = new Date().getFullYear();
     const expiryDay = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -131,24 +134,24 @@ class HomePage extends Component {
           {/* eslint-disable-next-line no-nested-ternary */}
           {projects.length
             ? projects
-              .sort(
-                (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
-              )
-              .map((project) => (
-                <div key={project.id} className="card item">
-                  <CardProject
-                    project={project}
-                    currency={selectedCurrency}
-                  />
-                </div>
-              ))
+                .sort(
+                  (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
+                )
+                .map((project) => (
+                  <div key={project.id} className="card item">
+                    <CardProject
+                      project={project}
+                      currency={selectedCurrency}
+                    />
+                  </div>
+                ))
             : loading
-              ? [1, 2, 3, 4, 5, 6].map((i) => (
+            ? [1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="card item">
                   <CardSkeleton />
                 </div>
               ))
-              : t('noresults')}
+            : t('noresults')}
         </div>
       </Page>
     );

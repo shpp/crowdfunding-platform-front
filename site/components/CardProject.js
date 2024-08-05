@@ -14,19 +14,20 @@ class CardProject extends React.Component {
     const { project, t, currency } = this.props;
     return (
       <div style={{ ...flex, ...column, ...grow }}>
-        {project.completed && (
+        {project.completed ? (
           <div className="project-status-completed">
             <Check style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('completed')}
           </div>
-        )}
-        {project.expired && (
-          <div className="project-status-expired">
-            <Cross style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('expired')}
-            &nbsp;
-            <Link href="/agreement#deadlines" as="/agreement#deadlines">
-              <Question style={{ verticalAlign: 'sub' }} />
-            </Link>
-          </div>
+        ) : (
+          project.expire_at < Date.now() && (
+            <div className="project-status-expired">
+              <Cross style={{ verticalAlign: 'bottom' }} /> &nbsp;{t('expired')}
+              &nbsp;
+              <Link href="/agreement#deadlines" as="/agreement#deadlines">
+                <Question style={{ verticalAlign: 'sub' }} />
+              </Link>
+            </div>
+          )
         )}
         <Link
           href={`${
@@ -60,7 +61,7 @@ class CardProject extends React.Component {
               </Link>
             </p>
           </div>
-          {!(project.completed || project.expired) && (
+          {!(project.completed || project.expire_at < Date.now()) && (
             <ButtonDonate project_id={project.id} />
           )}
 
@@ -70,13 +71,17 @@ class CardProject extends React.Component {
             currency={currency}
           />
           <div className="text-small">
-            {project.completed || project.expired
-              ? `${t('closedAt')
-              } ${
-                getCloseDate(project.created_at, i18n.language)}`
-              : `${t('createdAt')
-              } ${
-                formatDate(project.created_at, i18n.language)}`}
+            {project.completed || project.expire_at < Date.now()
+              ? `${t('closedAt')} ${getCloseDate(
+                  project.completed
+                    ? project.last_transaction_at
+                    : project.expire_at,
+                  i18n.language
+                )}`
+              : `${t('createdAt')} ${formatDate(
+                  project.created_at,
+                  i18n.language
+                )}`}
           </div>
         </div>
       </div>

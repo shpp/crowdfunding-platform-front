@@ -13,7 +13,7 @@ import ButtonDonate from '../../components/ButtonDonate';
 import Page from '../../components/layout/Page';
 import ProgressBar from '../../components/ProgressBar';
 
-import { formatDate, getCloseDate } from '../../utils';
+import { formatDate } from '../../utils';
 import { i18n, Link, withTranslation } from '../../utils/translations';
 
 class ProjectPage extends React.Component {
@@ -38,17 +38,20 @@ class ProjectPage extends React.Component {
   componentDidMount() {
     axios
       .get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5')
-      .then(({ data }) => this.setState({
-        currency: data.find(({ ccy }) => ccy.toUpperCase() === 'USD'),
-      }));
+      .then(({ data }) =>
+        this.setState({
+          currency: data.find(({ ccy }) => ccy.toUpperCase() === 'USD'),
+        })
+      );
   }
 
   render() {
     const { project, router, t } = this.props;
-    project.expired = !project.completed
-      && Date.now() - new Date(project.created_at) > 1000 * 60 * 60 * 24 * 50;
+    project.expire_at =
+      Number(new Date(project.created_at)) + 1000 * 60 * 60 * 24 * 50;
     const { currency } = this.state;
-    const selectedCurrency = i18n.language === 'en' ? currency : { ccy: 'UAH', buy: 1 };
+    const selectedCurrency =
+      i18n.language === 'en' ? currency : { ccy: 'UAH', buy: 1 };
     const lang = i18n.language || 'uk';
     const projectURL = process.env.APP_URL + router.asPath;
     if (project) {
@@ -83,29 +86,33 @@ class ProjectPage extends React.Component {
               style={{ backgroundImage: `url(${project.image})` }}
             />
             <div className="container project-info big">
-              {project.completed && (
+              {project.completed ? (
                 <div className="project-status-completed">
                   <Check style={{ verticalAlign: 'bottom' }} /> &nbsp;
                   {t('completed')}
                 </div>
-              )}
-              {project.expired && (
-                <div className="project-status-expired">
-                  <Cross style={{ verticalAlign: 'bottom' }} /> &nbsp;
-                  {t('expired')}&nbsp;
-                  <Link href="/agreement#deadlines" as="/agreement#deadlines">
-                    <Question style={{ verticalAlign: 'sub' }} />
-                  </Link>
-                </div>
+              ) : (
+                project.expire_at &&
+                project.expire_at < Date.now() && (
+                  <div className="project-status-expired">
+                    <Cross style={{ verticalAlign: 'bottom' }} /> &nbsp;
+                    {t('expired')}&nbsp;
+                    <Link href="/agreement#deadlines" as="/agreement#deadlines">
+                      <Question style={{ verticalAlign: 'sub' }} />
+                    </Link>
+                  </div>
+                )
               )}
               <div>
                 <h1>{project[`name_${lang}`]}&nbsp;</h1>
-                <span className="text-green">
-                  {project.completed ? `(${t('funded')})` : ''}
-                </span>
                 <span className="creation-date">
                   {formatDate(project.created_at)} &mdash;{' '}
-                  {getCloseDate(project.created_at, lang)}
+                  {formatDate(
+                    project.completed
+                      ? project.last_transaction_at
+                      : project.expire_at,
+                    lang
+                  )}
                 </span>
               </div>
               <section>
@@ -121,9 +128,9 @@ class ProjectPage extends React.Component {
                 funded={project.amount_funded}
                 currency={selectedCurrency}
               />
-              {project.completed
-                && project[`actual_spendings_${lang}`]
-                && project[`actual_spendings_${lang}`].length && (
+              {project.completed &&
+                project[`actual_spendings_${lang}`] &&
+                project[`actual_spendings_${lang}`].length && (
                   <section>
                     <h2>{this.props.t('expenses.actual.title')}:</h2>
                     <div
@@ -133,7 +140,7 @@ class ProjectPage extends React.Component {
                       key={lang}
                     />
                   </section>
-              )}
+                )}
               {!(project.completed || project.expired) && (
                 <ButtonDonate project_id={project.id} />
               )}
