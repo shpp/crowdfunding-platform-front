@@ -73,15 +73,15 @@ class CardProject extends React.Component {
           <div className="text-small">
             {project.completed || project.expire_at < Date.now()
               ? `${t('closedAt')} ${getCloseDate(
-                  project.completed
-                    ? project.last_transaction_at
-                    : project.expire_at,
-                  i18n.language
-                )}`
+                project.completed
+                  ? project.last_transaction_at
+                  : project.expire_at,
+                i18n.language
+              )}`
               : `${t('createdAt')} ${formatDate(
-                  project.created_at,
-                  i18n.language
-                )}`}
+                project.created_at,
+                i18n.language
+              )}`}
           </div>
         </div>
       </div>
